@@ -3,4 +3,20 @@
 --pip freeze > requirements.txt
 --pip install -d /path/to/save/package -r requirements.txt  # 安装包到指定位置
 3-配置好github
+3.1-通过pycharm创建github项目，并且将新建的项目commit
+3.2-push的时候遇到报错，处理方式如下，创建秘钥，配置秘钥到github中，成功push
 --tiaoshe
+C:\Users\admin>ssh-keygen -t rsa -C "tiaoshe"
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\admin/.ssh/id_rsa):
+C:\Users\admin/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in C:\Users\admin/.ssh/id_rsa.
+Your public key has been saved in C:\Users\admin/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:uYhNxq/ALFFJB+tOYLAlaRDvLDhAm+3oRiQwJnaxgM8 tiaoshe
+4-公共代码库新增config.ini 控制文件
+5-日志记录文件 writelog 文件编写
+6-新增excel读写操作文件
