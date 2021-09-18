@@ -51,4 +51,5 @@ class WriteConfig(object):
 
 if __name__ == '__main__':
     # print(ReadConfig().get("URL", "host"))
-    WriteConfig().write('URL', 'key', 'test')
+    print(ReadConfig().get("URL", "host_star_b"))
+    # WriteConfig().write('URL', 'key', 'test')
