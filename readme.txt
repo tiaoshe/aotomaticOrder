@@ -17,6 +17,7 @@ Your identification has been saved in C:\Users\admin/.ssh/id_rsa.
 Your public key has been saved in C:\Users\admin/.ssh/id_rsa.pub.
 The key fingerprint is:
 SHA256:uYhNxq/ALFFJB+tOYLAlaRDvLDhAm+3oRiQwJnaxgM8 tiaoshe
-4-公共代码库新增config.ini 控制文件
+4-公共代码库新增config.ini 控制文件 问题：调用方法与指定方法层级不同会找不到对应的文件，每个层级不同的文件传入filepath 保证其正常运行
 5-日志记录文件 writelog 文件编写
 6-新增excel读写操作文件
+7-B端登录公共文件调通
