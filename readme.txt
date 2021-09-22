@@ -21,3 +21,18 @@ SHA256:uYhNxq/ALFFJB+tOYLAlaRDvLDhAm+3oRiQwJnaxgM8 tiaoshe
 5-日志记录文件 writelog 文件编写
 6-新增excel读写操作文件
 7-B端登录公共文件调通
+8-测试案例相关公共代码配置
+9-编写部分工作测试用例
+10-Faker安装
+--pip临时源配置
+1、采用国内源，加速下载模块的速度
+2、常用pip源：
+    -- 豆瓣：https://pypi.douban.com/simple
+    -- 阿里：https://mirrors.aliyun.com/pypi/simple
+    -- 清华：https://pypi.tuna.tsinghua.edu.cn/simple
+    -- 中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple/
+    -- 华中理工大学：http://pypi.hustunique.com/
+    -- 山东理工大学：http://pypi.sdutlinux.org/
+3、加速安装的命令：
+    -- >: pip install -i https://pypi.douban.com/simple 模块名
+"""

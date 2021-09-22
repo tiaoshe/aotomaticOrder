@@ -3,6 +3,8 @@
 # @File test_starb.PY
 import pytest
 from test_workplace.starmall.starb import StarUtil
+from faker import Faker
+import random
 
 
 class TestMember(object):
@@ -38,6 +40,38 @@ class TestMember(object):
         print(member_ids)
         assert len(member_ids) == 10
 
+    def test_change_user_type(self):
+        args = ("interface", "test_edit_user_type")
+        data = {"member_id": "23", "type_id": "3"}
+        temp = StarUtil()
+        for num in range(1, 1000):
+            data['type_id'] = random.randint(1, 3)
+            data['member_id'] = random.randint(12, 23)
+            temp.post(*args, **data)
+
+
+class TestContent(object):
+    """
+    运营内容管理
+    """
+
+    def setup_class(self):
+        self.fake = Faker(locale='zh_CN')
+
+    # 运营-内容管理-作者管理-添加作者
+    def test_add_author(self):
+        # http://staradmin.dev.jzwp.shop/v1/forum/author/save  add_author
+        args = ("interface", "add_author")
+        data = {"id": "", "name": "邓齐西", "avatar": "https://shopcdn.jzwp.cn/vc-upload-1632297790084-6.jpeg",
+                "status": 10}
+        temp = StarUtil()
+        for num in range(120, 130):
+            data['name'] = self.fake.name()
+            # 调用请求方法
+            temp.post(*args, **data)
+
 
 if __name__ == '__main__':
-    pytest.main(["-s", "starb.py::TestMember::test_get_users"])
+    # pytest.main(["-s", "starb.py::TestMember::test_get_users"])
+    pytest.main(["-s", "starb.py::TestMember::test_change_user_type"])
+    # pytest.main(["-s", "starb.py::TestContent::test_add_author"])
