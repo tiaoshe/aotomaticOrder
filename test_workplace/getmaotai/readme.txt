@@ -1,1 +1,1 @@
-1-adb logcat |grep -i displayed 获取app报名和 activity名称
+1-adb logcat |grep -i displayed 获取app报名和 activity名称1
