@@ -3,6 +3,7 @@
 # @File test_starb.PY
 import pytest
 from test_workplace.starmall.starb import StarUtil
+from test_workplace.starmall.utils import GetView
 from faker import Faker
 import random
 
@@ -79,6 +80,7 @@ class TestContent(object):
         temp = StarUtil()
         for num in range(1, 2):
             data['content'] = self.fake.name()
+            data['imgs'] = GetView().get_images(2)
             # 调用请求方法
             temp.post(*args, **data)
 

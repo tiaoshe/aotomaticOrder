@@ -5,6 +5,7 @@ import requests
 from common.controlconfig import ReadConfig
 from common.writelog import WriteLog
 import os
+import random
 
 
 class Login(object):
@@ -38,5 +39,35 @@ class Login(object):
         pass
 
 
+class GetView(object):
+    """
+    获取data配置文件中的images和videos
+    """
+
+    def __init__(self):
+        self.filepath = os.path.abspath(
+            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'data.ini'))
+
+    def get_images(self, number):
+        images = []
+        for i in range(0, number):
+            temp = random.randint(0, 1)
+            name = "image" + str(temp)
+            image_url = ReadConfig(self.filepath).get("images", name)
+            images.append(image_url)
+        return images
+
+    def get_video(self, number):
+        videos = []
+        for i in range(0, number):
+            temp = random.randint(0, 1)
+            name = "video" + str(temp)
+            video_url = ReadConfig(self.filepath).get("videos", name)
+            videos.append(video_url)
+        return videos
+
+
 if __name__ == '__main__':
-    Login("host_star_b", "admin_login").login_b()
+    # Login("host_star_b", "admin_login").login_b()
+    print(GetView().get_images(3))
+    print(GetView().get_video(3))
