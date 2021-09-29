@@ -35,4 +35,3 @@ SHA256:uYhNxq/ALFFJB+tOYLAlaRDvLDhAm+3oRiQwJnaxgM8 tiaoshe
     -- 山东理工大学：http://pypi.sdutlinux.org/
 3、加速安装的命令：
     -- >: pip install -i https://pypi.douban.com/simple 模块名
-"""
