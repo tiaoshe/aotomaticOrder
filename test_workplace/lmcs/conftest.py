@@ -8,7 +8,7 @@ from common.writelog import WriteLog
 import requests
 
 
-# @pytest.fixture()
+@pytest.fixture()
 def login_b():
     filepath = os.path.abspath(
         os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'config.ini'))
@@ -18,11 +18,14 @@ def login_b():
     host = ReadConfig(filepath).get("URL", "host_lmcs_b")
     interface = ReadConfig(filepath).get("lmcs_interface", "admin_login")
     url = host + interface
-    print(url)
     data = {"username": "李杰1", "password": "123456"}
     s = requests.Session()
     p = s.post(url=url, json=data)
-    return s
+    if p.json()['message'] == "ok":
+        WriteLog(filepath_write_log).write_str(content=data['username'] + " 登录成功")
+        return s
+    else:
+        WriteLog(filepath_write_log).write_str(content=data["username"] + "登录失败")
 
 
 if __name__ == '__main__':

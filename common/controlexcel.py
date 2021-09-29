@@ -5,6 +5,7 @@
 import xlrd
 from xlutils3.copy import copy
 import os
+import time
 
 
 class ExcelUtil(object):
@@ -12,8 +13,8 @@ class ExcelUtil(object):
         self.excelPath = excelpath
         self.data = xlrd.open_workbook(excelpath)
         self.table = self.data.sheet_by_name(sheetname)
-        # 获取第二行作为key值
-        self.keys = self.table.row_values(1)
+        # # 获取第二行作为key值
+        # self.keys = self.table.row_values(1)
         # 获取总行数
         self.rowNum = self.table.nrows
         # 获取总列数
@@ -66,16 +67,25 @@ class ExcelUtil(object):
             key_list = list(items[0].keys())
             # 得到当前行并在当前行指针接着写数据
             for num in range(1, len(key_list) + 1):
-                self.worksheet.write(self.rowNum, num, key_list[num - 1])
+                self.worksheet.write(self.rowNum, num - 1, key_list[num - 1])
             for y in range(0, len(items)):
                 count = 0
                 for x in key_list:
-                    self.worksheet.write(self.rowNum + y + 1, count + 1, str(items[y][x]))
+                    try:
+                        data = str(items[y][x])
+                    except Exception:
+                        data = "None"
+                    self.worksheet.write(self.rowNum + y + 1, count, data)
                     count += 1
             self.workbook.save(self.excelPath)
         else:
             print("传入列表为空,不写入表格")
             return
+
+    def write_start(self):
+        time_now = time.strftime("%Y-%m-%d %H:%M:%S  ", time.localtime())
+        self.worksheet.write(self.rowNum + 1, 1, "start:" + str(time_now))
+        self.workbook.save(self.excelPath)
 
 
 if __name__ == '__main__':
