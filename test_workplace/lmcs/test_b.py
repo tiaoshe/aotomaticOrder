@@ -54,6 +54,12 @@ class TestLB(object):
         data = {"name": name}
         self.worker.add_channel(**data)
 
+    @pytest.mark.parametrize("name", ["", "sdfksdlfkjsdkfj", "收到了非跨境卵看书近地方粝食空弹剑"])
+    @pytest.mark.parametrize("qd_id", ["1", "2"])
+    def test_edit_channel(self, qd_id, name):
+        data = {"id": qd_id, "name": name}
+        self.worker.add_channel(**data)
+
 
 if __name__ == '__main__':
     pytest.main(['-v', '-s'])
