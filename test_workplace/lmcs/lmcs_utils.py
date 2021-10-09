@@ -13,7 +13,7 @@ class Login(object):
         self.filepath = os.path.abspath(
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'config.ini'))
         self.filepath_write_log = os.path.abspath(
-            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'lmcslog.txt'))
+            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'lmcslog.log'))
         self.s = requests.Session()
 
     def login_b(self, host_url, login_api):
@@ -61,19 +61,28 @@ class Login(object):
 
     def login_c(self, uid):
         token = self.get_token(uid)
-        self.s.headers['auth-key'] = 'Bearer ' + token
-        self.s.headers['authorization'] = 'Bearer ' + token
-        return self.s
+        if token:
+            self.s.headers['auth-key'] = 'Bearer ' + token
+            self.s.headers['authorization'] = 'Bearer ' + token
+            WriteLog(self.filepath_write_log).write_str(content="用户" + str(uid) + "在C端登录成功")
+            return self.s
+        else:
+            WriteLog(self.filepath_write_log).write_str(content="登录失败")
+            return None
 
 
 class CommonRequest(object):
-    def __init__(self):
+    def __init__(self, test_to, uid=None):
         self.filepath = os.path.abspath(
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'config.ini'))
         self.filepath_write_log = os.path.abspath(
-            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'lmcslog.txt'))
-        self.host = ReadConfig(self.filepath).get("URL", "host_lmcs_b")
-        self.s = Login().login_b("host_lmcs_b", "admin_login")
+            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'lmcslog.log'))
+        if test_to == "B":
+            self.host = ReadConfig(self.filepath).get("URL", "host_lmcs_b")
+            self.s = Login().login_b("host_lmcs_b", "admin_login")
+        elif test_to == "C":
+            self.host = ReadConfig(self.filepath).get("URL", "host_lmcs_c")
+            self.s = Login().login_c(uid)
 
     def get(self, *getargs, **kwargs):
         api = ReadConfig(self.filepath).get("lmcs_interface", *getargs)
