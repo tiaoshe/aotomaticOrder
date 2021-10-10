@@ -72,7 +72,7 @@ class Login(object):
 
 
 class CommonRequest(object):
-    def __init__(self, test_to, uid=None):
+    def __init__(self, test_to, session=None):
         self.filepath = os.path.abspath(
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'config.ini'))
         self.filepath_write_log = os.path.abspath(
@@ -82,7 +82,7 @@ class CommonRequest(object):
             self.s = Login().login_b("host_lmcs_b", "admin_login")
         elif test_to == "C":
             self.host = ReadConfig(self.filepath).get("URL", "host_lmcs_c")
-            self.s = Login().login_c(uid)
+            self.s = session
 
     def get(self, *getargs, **kwargs):
         api = ReadConfig(self.filepath).get("lmcs_interface", *getargs)
