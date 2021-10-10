@@ -15,7 +15,6 @@ class TestLC(object):
         data = {"type": 1, "goods_id": 100004298, "sku_id": 100003277, "nums": 1, "coupon_id": 0,
                 "address_ids": 4921624, "buyer_message": "这是备注信息", "remark": "备注", "from": 0, }
         p = self.worker.order_submit(**data)
-        print(p.json())
 
 
 if __name__ == '__main__':
