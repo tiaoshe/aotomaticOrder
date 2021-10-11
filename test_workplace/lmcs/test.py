@@ -29,18 +29,36 @@ if __name__ == '__main__':
     # """
     #
     # print(render(tmpl_list, fruits=fruits))
-    tml_class = """
-    /n
-    def {{methed}}(self):
-        pass
-    """
+    #
+    # def pay_order(self, order_sn, **kwargs):
+    #     if kwargs:
+    #         temp_data = kwargs
+    #     else:
+    #         temp_data = {"pay_type": 1, "order_sn": order_sn, "appName": "榴芒传说", "appVersion": "v0.1.3",
+    #                      "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+    #                      "deviceModel": "microsoft"}
+    #     p = self.worker.post("pay_order", **temp_data)
+    #     return p
 
-    result = render(tml_class, methed="howell")
+    tml_class = """
+    def {{methed}}(self, **kwargs):
+    if kwargs:
+        temp_data = kwargs
+    else:
+        temp_data = {{data}}
+    p = self.worker.post("{{methed}}", **temp_data)
+    return p
+
+    """
+    data = {"pay_type": 1, "appName": "榴芒传说", "appVersion": "v0.1.3",
+            "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+            "deviceModel": "microsoft"}
+
+    result = render(tml_class, methed="howell", data=data)
 
 
     def save(data, filename='codes.py'):
-        with open(filename, 'a') as f:
+        with open(filename, 'a+') as f:
             f.write(data)
-
-
+            f.write("\n\n")
     save(data=result)

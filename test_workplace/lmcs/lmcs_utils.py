@@ -36,7 +36,7 @@ class Login(object):
 
     # 链接数据库
     def conn_mysql(self):
-        conn = pymysql.connect(host='118.31.18.87', user='admin', passwd='gwUuVyOsjdb2', port=3306, db='lmcs-dev',
+        conn = pymysql.connect(host='112.124.11.179', user='admin', passwd='gwUuVyOsjdb2', port=3306, db='lmcs-dev',
                                charset='utf8mb4')
         cur = conn.cursor()  # 生成游标对象
         return conn, cur
@@ -62,7 +62,7 @@ class Login(object):
     def login_c(self, uid):
         token = self.get_token(uid)
         if token:
-            self.s.headers['auth-key'] = 'Bearer ' + token
+            # self.s.headers['auth-key'] = 'Bearer ' + token
             self.s.headers['authorization'] = 'Bearer ' + token
             WriteLog(self.filepath_write_log).write_str(content="用户" + str(uid) + "在C端登录成功")
             return self.s
@@ -123,5 +123,5 @@ class CommonRequest(object):
 
 if __name__ == '__main__':
     uids = 10001535
-    c = Login().login_c(uids)
+    c = Login().get_token(uids)
     print(c)

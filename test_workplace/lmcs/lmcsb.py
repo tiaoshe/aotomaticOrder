@@ -31,7 +31,7 @@ class InterfaceWorker(object):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"contribution_proportion": 40, "base_commission_proportion": 60,
+            temp_data = {"contribution_proportion": 10, "base_commission_proportion": 60,
                          "overflow_commission_proportion": 20}
         p = self.worker.post("set_commission", **temp_data)
         return p
@@ -179,11 +179,11 @@ class InterfaceWorker(object):
                          "is_quick": 0, "is_top": 0, "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0,
                          "team_angel1": 0, "team_angel2": 0, "brand_id": 17, "store_ids": [], "store_extend": [],
                          "start_type": 1, "end_type": 3, "cat_id": ["304"], "seckill_type": 1, "shop_type": 0,
-                         "activity_svip": 1, "activity_star": 0, "title": "商品名称测试抢购须知", "subtitle": "副标题",
+                         "activity_svip": 1, "activity_star": 0, "title": "测试下单的商品前驱", "subtitle": "副标题",
                          "goods_sn": "商品货号",
                          "supplier_id": 30357, "sort": "9999", "weight": "100", "volume_width": "101",
                          "content": "<p>图文详情</p>", "day_max": "127", "limit_max": "127", "single_max": "99",
-                         "single_min": "1", "freight_type": 3, "shop_value": [1, 2, 3, 6, 7, 14, 15, 16, 17],
+                         "single_min": "1", "freight_type": 3, "shop_value": [],
                          "long_thumb": "https://dcygcdn.jzwp.cn/1632982609973.png", "seckill_begin_time": 1632931200,
                          "seckill_end_time": 1633104000, "seckill_flag": 1, "is_coupon_convert": 0, "cat_id1": "304",
                          "cat_id2": 0, "cat_id3": 0, "thumb": "https://dcygcdn.jzwp.cn/1632982603434.jpg",
@@ -193,7 +193,7 @@ class InterfaceWorker(object):
                      "star_price": "110", "star_fee": "12", "thrift_fee": "14", "storage_cost": "null",
                      "clear_price": "null", "shop_price": "119", "vip_price": "115", "cost_price": "50"}],
                          "sku_imgs": {},
-                         "params": [{"key": "水电费", "value": "水电费"}], "goods_id": 100004246, "supplier_type": 0,
+                         "params": [{"key": "水电费", "value": "水电费"}], "goods_id": 100004300, "supplier_type": 0,
                          "buy_notice": "冷风机是砥砺奋进收到了看法就熟练度开飞机SDK返利将收到了非跨境收到了看法就是邓刘克俭发送到联发科就收到了非跨境收到了反馈"}
         p = self.worker.post("add_goods", **temp_data)
         return p
@@ -367,5 +367,5 @@ class InterfaceWorker(object):
 
 
 if __name__ == '__main__':
-    InterfaceWorker().update_vip_card()
+    InterfaceWorker().add_goods()
     # InterfaceWorker().member_vip_card()
