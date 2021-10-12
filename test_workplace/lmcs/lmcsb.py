@@ -136,7 +136,7 @@ class InterfaceWorker(object):
             temp_data = kwargs
         else:
             # shop_id -1所有
-            temp_data = {"shop_id": "-1", "uid": "10001537", "keywords": "", "phone": "",
+            temp_data = {"shop_id": "-1", "uid": "", "keywords": "", "phone": "",
                          "first_uid": "", "start_time": "", "end_time": "", "page": "1",
                          "pageSize": "10"}
         p = self.worker.get("integral_record", **temp_data)
@@ -174,27 +174,30 @@ class InterfaceWorker(object):
             kwargs["title"] = kwargs['title'] + str(self.count)
             self.count += 1
         else:
-            temp_data = {"is_break": 1, "is_receive_way_logistics": 1, "freight_id": 543, "first_fee": 0,
-                         "cross_border": 2, "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1,
-                         "is_quick": 0, "is_top": 0, "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0,
-                         "team_angel1": 0, "team_angel2": 0, "brand_id": 17, "store_ids": [], "store_extend": [],
-                         "start_type": 1, "end_type": 3, "cat_id": ["304"], "seckill_type": 1, "shop_type": 0,
-                         "activity_svip": 1, "activity_star": 0, "title": "测试下单的商品前驱", "subtitle": "副标题",
-                         "goods_sn": "商品货号",
-                         "supplier_id": 30357, "sort": "9999", "weight": "100", "volume_width": "101",
-                         "content": "<p>图文详情</p>", "day_max": "127", "limit_max": "127", "single_max": "99",
-                         "single_min": "1", "freight_type": 3, "shop_value": [],
-                         "long_thumb": "https://dcygcdn.jzwp.cn/1632982609973.png", "seckill_begin_time": 1632931200,
-                         "seckill_end_time": 1633104000, "seckill_flag": 1, "is_coupon_convert": 0, "cat_id1": "304",
-                         "cat_id2": 0, "cat_id3": 0, "thumb": "https://dcygcdn.jzwp.cn/1632982603434.jpg",
-                         "imgs": ["https://dcygcdn.jzwp.cn/1632982606675.jpg"], "stock_base": "10000", "type_id": 28,
-                         "type": 28, "attr_datas": [
-                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "", "incr_stock": "1000", "market_price": "120",
-                     "star_price": "110", "star_fee": "12", "thrift_fee": "14", "storage_cost": "null",
-                     "clear_price": "null", "shop_price": "119", "vip_price": "115", "cost_price": "50"}],
+            temp_data = {"is_break": 0, "is_receive_way_logistics": 1, "cross_border": 2, "team_angel1": 0,
+                         "team_angel2": 0, "brand_id": 17, "start_type": 1, "end_type": 3, "cat_id": ["303"],
+                         "shop_type": 2, "activity_svip": 0, "activity_star": 0, "title": "先行测试商品2", "subtitle": "副标题",
+                         "goods_sn": "商品货号", "supplier_id": 30356, "sort": "9999", "weight": "2", "volume_width": "3",
+                         "content": "<p>图文详情</p>", "buy_notice": "抢购须知", "shop_value": [22],
+                         "long_thumb": "https://lmcscdn.jzwp.cn/1634030440867.jpg", "is_coupon_convert": 0,
+                         "cat_id1": "303", "cat_id2": 0, "cat_id3": 0,
+                         "thumb": "https://lmcscdn.jzwp.cn/1634030433558.jpg",
+                         "imgs": ["https://lmcscdn.jzwp.cn/1634030436805.jpg"], "stock_base": "1000", "type_id": 27,
+                         "type": 27, "attr_datas": [
+                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1035", "incr_stock": "1000",
+                     "market_price": "299",
+                     "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
+                     "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"},
+                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "2062", "incr_stock": "1000",
+                     "market_price": "299",
+                     "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
+                     "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"},
+                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "2063", "incr_stock": "1000",
+                     "market_price": "299",
+                     "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
+                     "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"}],
                          "sku_imgs": {},
-                         "params": [{"key": "水电费", "value": "水电费"}], "goods_id": 100004300, "supplier_type": 0,
-                         "buy_notice": "冷风机是砥砺奋进收到了看法就熟练度开飞机SDK返利将收到了非跨境收到了看法就是邓刘克俭发送到联发科就收到了非跨境收到了反馈"}
+                         "params": [], "goods_id": 100004339, "supplier_type": 0}
         p = self.worker.post("add_goods", **temp_data)
         return p
 

@@ -19,17 +19,21 @@ class InterfaceWorkerForC(object):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100004300",
-                         "sku_id": "100003279", "nums": 1, "couponNeedNum": 1, "cart_ids": "", "address_ids": 4921611,
+            temp_data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100004335",
+                         "sku_id": "100003289", "nums": 2, "couponNeedNum": 1, "cart_ids": "",
+                         "address_ids": "4921628",
                          "coupon_id": "", "extend": {"100000194": {"buy_insurance": 0, "buyer_message": ""}},
                          "scene": "null", "source": "null", "appName": "榴芒传说", "appVersion": "v0.1.3",
                          "systemType": "mp", "systemVersion": "Android 10", "deviceId": "mini app",
                          "deviceModel": "Redmi K20 Pro", "shopId": "22"}
         p = self.worker.post("order_submit", **temp_data)
-        print(p.json())
-        # order_sn = p.json()['data']['order_sn']
-        # self.pay_order(order_sn)
-        return p
+
+        if p.json()['data'] == None:
+            print("下单不成功" + str(p.json()))
+        else:
+            order_sn = p.json()['data']['order_sn']
+            self.pay_order(order_sn)
+            return p
 
     # 支付接口
     def pay_order(self, order_sn, **kwargs):
@@ -51,7 +55,6 @@ class InterfaceWorkerForC(object):
         p = self.worker.post("confirm_top_up", **temp_data)
         order_sn = p.json()['data']['order_sn']
         p1 = self.pay_order(order_sn)
-        print(p1.json())
 
         return p
 
@@ -217,9 +220,51 @@ class InterfaceWorkerForC(object):
         print(p.json())
         return p
 
+    # 添加收货地址
+    def add_address(self, **kwargs):
+        if kwargs:
+            address = kwargs['province'] + kwargs['city'] + kwargs['district'] + kwargs['full_address']
+            user_address_map = self.worker.get_map(address)
+            kwargs["longitude"] = str(user_address_map['result']['location']['lng'])
+            kwargs["latitude"] = str(user_address_map['result']['location']['lat'])
+            temp_data = kwargs
+        else:
+            user_address_map = self.worker.get_map("四川省成都市武侯区环球中心")
+            longitude = str(user_address_map['result']['location']['lng'])
+            latitude = str(user_address_map['result']['location']['lat'])
+            temp_data = {"id": "0", "name": "李杰", "phone": "13980883526", "address": "环球中心s1", "id_card_name": "",
+                         "id_card": "", "is_default": 1, "province": "四川省", "province_id": 510000, "city": "成都市",
+                         "city_id": 510100, "district": "武侯区", "district_id": 510107, "full_address": "四川省成都市武侯区环球中心s1",
+                         "longitude": longitude, "latitude": latitude}
+        p = self.worker.post("add_address", **temp_data)
+        return p
+
+    # 获取收货地址
+    def get_address_list(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"page": 1, "pageSize": 10}
+        p = self.worker.post("get_address_list", **temp_data)
+        print(p.json())
+        return p
+
+    # 商品管理 shop_goods_edit
+    def shop_goods_edit(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            # stataus 0暂不售卖 10 售卖
+            temp_data = {"goods_id": 100004335, "status": 10,
+                         "sku": [{"sku_id": 100003289, "nums": 100}, {"sku_id": 100003288, "nums": 100},
+                                 {"sku_id": 100003287, "nums": 100}]}
+        p = self.worker.post("shop_goods_edit", **temp_data)
+        print(p.json())
+        return p
+
 
 if __name__ == '__main__':
-    s = Login().login_c("10001520")
+    s = Login().login_c("10001530")
     order_sn = "202110111135237722229"
     order_id = 14986
     InterfaceWorkerForC(s).order_submit()

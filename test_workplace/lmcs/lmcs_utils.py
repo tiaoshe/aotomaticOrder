@@ -6,6 +6,15 @@ from common.controlconfig import ReadConfig
 from common.writelog import WriteLog
 import os
 import pymysql
+import json
+
+
+# 链接数据库
+def conn_mysql():
+    conn = pymysql.connect(host='112.124.11.179', user='admin', passwd='gwUuVyOsjdb2', port=3306, db='lmcs-dev',
+                           charset='utf8mb4')
+    cur = conn.cursor()  # 生成游标对象
+    return conn, cur
 
 
 class Login(object):
@@ -34,16 +43,9 @@ class Login(object):
             WriteLog(self.filepath_write_log).write_str(content="登录接口报错")
             print(response.json())
 
-    # 链接数据库
-    def conn_mysql(self):
-        conn = pymysql.connect(host='112.124.11.179', user='admin', passwd='gwUuVyOsjdb2', port=3306, db='lmcs-dev',
-                               charset='utf8mb4')
-        cur = conn.cursor()  # 生成游标对象
-        return conn, cur
-
     # 获取用户列表中的token
     def get_token(self, uid):
-        conn, cur = self.conn_mysql()
+        conn, cur = conn_mysql()
         sql = "SELECT token FROM `dcyg-dev`.`dcyg_member_access_token` WHERE `uid` = %s" % uid
         try:
             q = cur.execute(sql)  # 执行查询语句
@@ -120,8 +122,39 @@ class CommonRequest(object):
             return "文件处于打开状态请手动关闭"
         return "ok"
 
+    def get_map(self, address):
+        get_url = "https://apis.map.qq.com/ws/geocoder/v1/?key=T5OBZ-KJKWI-AFMGR-5GL4Z-6AED6-75BNH&output=jsonp&callback=QQmap"
+        data = {"address": address}
+        p = requests.get(url=get_url, params=data, verify=True)
+        string_temp = p.text[13:][:-1]
+        try:
+            json_data = json.loads(string_temp)
+            return json_data
+        except BaseException:
+            WriteLog(self.filepath_write_log).write_str(content="发生异常，获取地址返回信息" + p.text)
+
+    def get_sku_id(self, goods_id):
+        conn, cur = conn_mysql()
+        sql = "SELECT * FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s" % goods_id
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                sku_id = cur.fetchone()[0]
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return sku_id
+
 
 if __name__ == '__main__':
     uids = 10001535
-    c = Login().get_token(uids)
-    print(c)
+    address = "四川省成都市武侯区环球中心"
+    # s = Login().login_c(uids)
+    # p = CommonRequest("C", s).get_map(address)
+    # print(p)
+    print(CommonRequest("B").get_sku_id(100004335))

@@ -5,6 +5,7 @@ import pytest
 from test_workplace.lmcs.lmcsb import InterfaceWorker
 from common.controlexcel import ExcelUtil
 import os
+from faker import Faker
 
 
 class TestLB(object):
@@ -13,6 +14,7 @@ class TestLB(object):
         self.excel_filepath = os.path.abspath(
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
         self.worker = InterfaceWorker()
+        self.faker = Faker(locale='zh_CN')
 
     @pytest.mark.parametrize("uid", ["", "10001537"])
     @pytest.mark.parametrize("keywords", ["", "昵称"])
@@ -47,21 +49,10 @@ class TestLB(object):
                 "overflow_commission_proportion": overflow_commission_proportion}
         self.worker.set_commission(**data)
 
-    @pytest.mark.parametrize("name", ["", "50", "疯狂的小兔兔", "   ",
-                                      "等黄河时空裂缝就刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵"
-                                      "看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地"
-                                      "方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭"
-                                      "等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时"
-                                      "空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝"
-                                      "就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克"
-                                      "俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒"
-                                      "服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书"
-                                      "近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘"
-                                      "克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄河时空裂缝就刘克俭多舒服卵看书近地方刘克俭等黄"
-                                      "河时空裂缝就刘克俭多舒服卵看书近地方刘克俭多舒服卵看书近地方刘克俭",
-                                      "涛哥哥哥哥哥二哥哥", "   天才兔兔    "])
+    @pytest.mark.parametrize("name", [str(h) for h in range(100)])
     def test_add_channel(self, name):
-        data = {"name": name}
+        name_end = self.faker.name()+name
+        data = {"name": name_end}
         self.worker.add_channel(**data)
 
     @pytest.mark.parametrize("name", ["", "sdfksdlfkjsdkfj", "收到了非跨境卵看书近地方粝食空弹剑"])
