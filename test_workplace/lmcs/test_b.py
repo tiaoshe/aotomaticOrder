@@ -2,7 +2,7 @@
 # @Author howell
 # @File test_b.PY
 import pytest
-from test_workplace.lmcs.lmcsb import InterfaceWorker
+from test_workplace.lmcs.lmcsb import InterfaceWorkerB
 from common.controlexcel import ExcelUtil
 import os
 from faker import Faker
@@ -13,7 +13,7 @@ class TestLB(object):
     def setup_class(self):
         self.excel_filepath = os.path.abspath(
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
-        self.worker = InterfaceWorker()
+        self.worker = InterfaceWorkerB()
         self.faker = Faker(locale='zh_CN')
 
     @pytest.mark.parametrize("uid", ["", "10001537"])
@@ -49,9 +49,9 @@ class TestLB(object):
                 "overflow_commission_proportion": overflow_commission_proportion}
         self.worker.set_commission(**data)
 
-    @pytest.mark.parametrize("name", [str(h) for h in range(100)])
+    @pytest.mark.parametrize("name", [" ", "sdfksdfkj", "   禄口街道付了款  ","地方"])
     def test_add_channel(self, name):
-        name_end = self.faker.name()+name
+        name_end = name
         data = {"name": name_end}
         self.worker.add_channel(**data)
 
@@ -141,8 +141,8 @@ class TestLB(object):
                                             "order_cancel_refund_minutes": order_cancel_refund_minutes}}  # 订单在支付 分钟后不可取消订单
         self.worker.set_config(**data)
 
-    @pytest.mark.parametrize("key_value", [[1000, 2000, 3000], [-1000, 2000, 3000], [1000, 2000, 2000, 6000],
-                                           [1000, 2000, 2000, 6000, 5, 6, 7, 9], [1000, "", 2000, 6000]])
+    @pytest.mark.parametrize("key_value", ["[1000, 2000, 3000]", "[-1000, 2000, 3000]", "[1000, 2000, 2000, 6000]",
+                                           "[1000, 2000, 2000, 6000, 5, 6, 7, 9]", "[1000, "", 2000, 6000]"])
     def test_set_amount(self, key_value):
         data = {"key_value": key_value}
         self.worker.set_amount(**data)

@@ -5,23 +5,30 @@
 from test_workplace.lmcs.lmcs_utils import CommonRequest
 from common.controlexcel import ExcelUtil
 import os
+from faker import Faker
 
 
-class InterfaceWorker(object):
+class InterfaceWorkerB(object):
     def __init__(self):
         self.excel_filepath = os.path.abspath(
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
         self.count = 1
         self.worker = CommonRequest("B")
+        self.faker = Faker(locale='zh_CN')
 
     # 获取用户列表数据
     def get_user_list(self, **kwargs):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"page": 1, "pageSize": 10, "type": -1}
+            temp_data = {"page": 1, "pageSize": 20, "type": -1}
         p = self.worker.get("member_list", **temp_data)
         items = p.json()['data']['items']
+        userid_list = []
+        for user in items:
+            userid_list.append(user['id'])
+        print(userid_list)
+
         items.append(p.json()['data']['fields'])
         ExcelUtil(self.excel_filepath, sheetname="Sheet1").write_response_data(items)
         return p
@@ -174,11 +181,12 @@ class InterfaceWorker(object):
             kwargs["title"] = kwargs['title'] + str(self.count)
             self.count += 1
         else:
+            title = self.faker.sentence()
             temp_data = {"is_break": 0, "is_receive_way_logistics": 1, "cross_border": 2, "team_angel1": 0,
                          "team_angel2": 0, "brand_id": 17, "start_type": 1, "end_type": 3, "cat_id": ["303"],
-                         "shop_type": 2, "activity_svip": 0, "activity_star": 0, "title": "先行测试商品2", "subtitle": "副标题",
+                         "activity_svip": 0, "activity_star": 0, "title": title, "subtitle": "副标题",
                          "goods_sn": "商品货号", "supplier_id": 30356, "sort": "9999", "weight": "2", "volume_width": "3",
-                         "content": "<p>图文详情</p>", "buy_notice": "抢购须知", "shop_value": [22],
+                         "content": "<p>图文详情</p>", "buy_notice": "抢购须知", "shop_type": 0, "shop_value": [22, 100],
                          "long_thumb": "https://lmcscdn.jzwp.cn/1634030440867.jpg", "is_coupon_convert": 0,
                          "cat_id1": "303", "cat_id2": 0, "cat_id3": 0,
                          "thumb": "https://lmcscdn.jzwp.cn/1634030433558.jpg",
@@ -197,7 +205,7 @@ class InterfaceWorker(object):
                      "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
                      "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"}],
                          "sku_imgs": {},
-                         "params": [], "goods_id": 100004339, "supplier_type": 0}
+                         "params": [], "goods_id": 100004348, "supplier_type": 0}
         p = self.worker.post("add_goods", **temp_data)
         return p
 
@@ -280,7 +288,8 @@ class InterfaceWorker(object):
             temp_data = kwargs
         else:
             # type=3加款  type=4扣款
-            temp_data = {"uid": 10001537, "type": 3, "money": 12, "password": "234890", "remark": "测试加款啦"}
+            temp_data = {"uid": 10001545, "type": 4, "money": 12.89, "password": "234890",
+                         "remark": "测试四道口是否撒旦发附近上来看积分卢卡斯的积分顺利打开附件加款啦"}
         p = self.worker.post("update_vip_card", **temp_data)
         return p
 
@@ -290,8 +299,8 @@ class InterfaceWorker(object):
             temp_data = kwargs
         else:
             temp_data = {
-                "shop_id": 1,
-                "money": 1000,
+                "shop_id": 136,
+                "money": 1000000.01,
                 "password": "234890",
                 "remark": "备注"
             }
@@ -304,7 +313,7 @@ class InterfaceWorker(object):
             temp_data = kwargs
         else:
             temp_data = {
-                "shop_id": 1,
+                "shop_id": 136,
                 "money": 1000,
                 "password": "234890",
                 "remark": "备注"
@@ -368,7 +377,44 @@ class InterfaceWorker(object):
         print(p.json())
         return p
 
+    # add_shop 添加门店
+    def add_shop(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            name = self.faker.company()
+            temp_data = {"name": name, "province_id": 510000, "city_id": 510100, "district_id": 510112,
+                         "address": "吾悦广场", "longitude": "104.240829", "latitude": "30.577833", "phone": "13980883526",
+                         "status": 10, "account_info": [{"account_id": 920, "role_name": "管理员"}],
+                         "logo_img": "https://lmcscdn.jzwp.cn/1634092641180.jpg", "business_at": "9:00~4:00"}
+        p = self.worker.post("add_shop", **temp_data)
+        return p
+
+    # 发货 send_goods
+    def send_goods(self, order_sn=None, **kwargs):
+        order_id = self.worker.get_order_id(order_sn)
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"items": [{"id": order_id, "code": "YTO", "sn": "123456789"}]}
+        temp_data_send = {"type": 0}
+        self.worker.post("save_goods", **temp_data)
+        p = self.worker.post('send_goods', **temp_data_send)
+        return p
+
+    # 余额加扣款
+    def add_money(self, uid=None, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"uid": uid, "type": 9, "money": "1000000", "remark": "测试充值", "password": "234890"}
+        p = self.worker.post("add_money", **temp_data)
+        return p
+
 
 if __name__ == '__main__':
-    InterfaceWorker().add_goods()
-    # InterfaceWorker().member_vip_card()
+    # for i in range(100):
+    # uid = "10001550"
+    # for i in range(100):
+    InterfaceWorkerB().get_user_list()
+    # InterfaceWorkerB().updata_shop_money_dec()

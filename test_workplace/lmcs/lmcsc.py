@@ -3,8 +3,10 @@
 # @File lmcsc.PY
 import os
 from test_workplace.lmcs.lmcs_utils import Login
-from test_workplace.lmcs.lmcs_utils import CommonRequest
+from test_workplace.lmcs.lmcs_utils import CommonRequest, ControlMysql
 from common.controlexcel import ExcelUtil
+from faker import Faker
+import random
 
 
 class InterfaceWorkerForC(object):
@@ -13,6 +15,8 @@ class InterfaceWorkerForC(object):
             os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_c_report.xls'))
         self.s = session
         self.worker = CommonRequest("C", session)
+        self.baseWorker = ControlMysql()
+        self.faker = Faker(locale="zh_CN")
 
     # 下单
     def order_submit(self, **kwargs):
@@ -31,8 +35,6 @@ class InterfaceWorkerForC(object):
         if p.json()['data'] == None:
             print("下单不成功" + str(p.json()))
         else:
-            order_sn = p.json()['data']['order_sn']
-            self.pay_order(order_sn)
             return p
 
     # 支付接口
@@ -40,9 +42,10 @@ class InterfaceWorkerForC(object):
         if kwargs:
             temp_data = kwargs
         else:
+            # pay_type 1 余额支付  pay_type 88 会员卡支付
             temp_data = {"pay_type": 1, "order_sn": order_sn, "appName": "榴芒传说", "appVersion": "v0.1.3",
                          "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
-                         "deviceModel": "microsoft"}
+                         "deviceModel": "microsoft", "shopId": "1"}
         p = self.worker.post("pay_order", **temp_data)
         return p
 
@@ -229,12 +232,16 @@ class InterfaceWorkerForC(object):
             kwargs["latitude"] = str(user_address_map['result']['location']['lat'])
             temp_data = kwargs
         else:
-            user_address_map = self.worker.get_map("四川省成都市武侯区环球中心")
-            longitude = str(user_address_map['result']['location']['lng'])
-            latitude = str(user_address_map['result']['location']['lat'])
-            temp_data = {"id": "0", "name": "李杰", "phone": "13980883526", "address": "环球中心s1", "id_card_name": "",
+            name = self.faker.name()
+            phone = self.faker.phone_number()
+            # user_address_map = self.worker.get_map("四川省成都市武侯区环球中心")
+            # longitude = str(user_address_map['result']['location']['lng'])
+            # latitude = str(user_address_map['result']['location']['lat'])
+            longitude = "104.054413"
+            latitude = "30.57555"
+            temp_data = {"id": "0", "name": name, "phone": phone, "address": "环球中心s1", "id_card_name": "",
                          "id_card": "", "is_default": 1, "province": "四川省", "province_id": 510000, "city": "成都市",
-                         "city_id": 510100, "district": "武侯区", "district_id": 510107, "full_address": "四川省成都市武侯区环球中心s1",
+                         "city_id": 510100, "district": "武侯区", "district_id": 510107, "full_address": "四川省成都市武侯区环球中心s2",
                          "longitude": longitude, "latitude": latitude}
         p = self.worker.post("add_address", **temp_data)
         return p
@@ -245,9 +252,14 @@ class InterfaceWorkerForC(object):
             temp_data = kwargs
         else:
             temp_data = {"page": 1, "pageSize": 10}
+
         p = self.worker.post("get_address_list", **temp_data)
-        print(p.json())
-        return p
+        if len(p.json()['data']['items']) == 0:
+            self.add_address()
+            p = self.worker.post("get_address_list", **temp_data)
+            return p
+        else:
+            return p
 
     # 商品管理 shop_goods_edit
     def shop_goods_edit(self, **kwargs):
@@ -255,16 +267,79 @@ class InterfaceWorkerForC(object):
             temp_data = kwargs
         else:
             # stataus 0暂不售卖 10 售卖
-            temp_data = {"goods_id": 100004335, "status": 10,
-                         "sku": [{"sku_id": 100003289, "nums": 100}, {"sku_id": 100003288, "nums": 100},
-                                 {"sku_id": 100003287, "nums": 100}]}
+            temp_data = {"goods_id": 100004345, "status": 10,
+                         "sku": [{"sku_id": 100003305, "nums": 100}, {"sku_id": 100003306, "nums": 100},
+                                 {"sku_id": 100003307, "nums": 100}]}
         p = self.worker.post("shop_goods_edit", **temp_data)
         print(p.json())
         return p
 
+    # 获取用户信息 get_member_info
+    def get_member_info(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {}
+        p = self.worker.get("get_member_info", **temp_data)
+        return p
+
+    # 订单确认收货
+    def confirm_receipt(self, order_id, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"id": order_id, "appName": "榴芒传说", "appVersion": "v1.0.0", "systemType": "mp",
+                         "systemVersion": "Windows 10 x64", "deviceId": "mini app", "deviceModel": "microsoft",
+                         "shopId": "0"}
+        p = self.worker.post("confirm_receipt", **temp_data)
+        return p
+
+    # 查询售后列表 order_id=15390
+    def apply_list(self, order_id, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"order_id": order_id}
+        p = self.worker.get("apply_list", **temp_data)
+        return p
+
+    # 查询售后原因 order_reason
+    def order_reason(self, order_id, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"order_id": order_id, "type": 2}
+        p = self.worker.get("order_reason", **temp_data)
+        return p
+
+    # 申请售后
+    def order_sales(self, order_sn):
+        order_id = str(self.baseWorker.get_order_id(order_sn))
+        p_list = self.apply_list(order_id)
+        p_reason = self.order_reason(order_id)
+        reason = p_reason.json()['data'][random.randrange(0, len(p_reason.json()['data']))]['content']
+        sku_id = str(p_list.json()['data'][0]['sku_id'])
+        # 5 是补偿  6是补发
+        temp_data = {"sale_type": 6, "sale_type_desc": "补发", "reason": reason, "description": "撒旦发",
+                     "imagesArr": ["https://lmcscdn.jzwp.cn/_61693e695a743.jpg",
+                                   "https://lmcscdn.jzwp.cn/_61693e6cb3971.jpg",
+                                   "https://lmcscdn.jzwp.cn/_61693e6faf1c1.jpg"], "order_id": order_id,
+                     "return_sku_list": [{"sku_id": sku_id, "count": 1}],
+                     "imgs": ["https://lmcscdn.jzwp.cn/_61693e695a743.jpg",
+                              "https://lmcscdn.jzwp.cn/_61693e6cb3971.jpg",
+                              "https://lmcscdn.jzwp.cn/_61693e6faf1c1.jpg"], "appName": "榴芒传说", "appVersion": "v1.0.0",
+                     "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+                     "deviceModel": "microsoft", "shopId": "1"}
+        p = self.worker.post("order_sales", **temp_data)
+        return p
+
 
 if __name__ == '__main__':
-    s = Login().login_c("10001530")
-    order_sn = "202110111135237722229"
-    order_id = 14986
-    InterfaceWorkerForC(s).order_submit()
+    s = Login().login_c("10001558")
+    for i in range(100):
+        p = InterfaceWorkerForC(s).confirm_top_up()
+    # print(p.json()['data']['balance'])
+    # order_sn = "202110111135237722229"
+    # order_id = 14986
+    # p = InterfaceWorkerForC(s).get_address_list()
+    # print(p.json()['data']['items'][0]['id'])

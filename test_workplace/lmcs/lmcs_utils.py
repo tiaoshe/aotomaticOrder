@@ -46,7 +46,7 @@ class Login(object):
     # 获取用户列表中的token
     def get_token(self, uid):
         conn, cur = conn_mysql()
-        sql = "SELECT token FROM `dcyg-dev`.`dcyg_member_access_token` WHERE `uid` = %s" % uid
+        sql = "SELECT token FROM `lmcs-dev`.`lmcs_member_access_token` WHERE `uid` = %s" % uid
         try:
             q = cur.execute(sql)  # 执行查询语句
             if q != 0:
@@ -64,7 +64,7 @@ class Login(object):
     def login_c(self, uid):
         token = self.get_token(uid)
         if token:
-            # self.s.headers['auth-key'] = 'Bearer ' + token
+            self.s.headers['auth-key'] = 'Bearer ' + token
             self.s.headers['authorization'] = 'Bearer ' + token
             WriteLog(self.filepath_write_log).write_str(content="用户" + str(uid) + "在C端登录成功")
             return self.s
@@ -135,9 +135,10 @@ class CommonRequest(object):
 
     def get_sku_id(self, goods_id):
         conn, cur = conn_mysql()
-        sql = "SELECT * FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s" % goods_id
+        sql = "SELECT id FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s" % goods_id
         try:
             q = cur.execute(sql)  # 执行查询语句
+            print(q)
             if q != 0:
                 sku_id = cur.fetchone()[0]
                 conn.commit()  # 提交到数据库执行
@@ -150,11 +151,184 @@ class CommonRequest(object):
         conn.close()  # 关闭数据库连接
         return sku_id
 
+    def get_sku_ids(self, goods_id):
+        conn, cur = conn_mysql()
+        sql = "SELECT id FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s" % goods_id
+        sku_ids = []
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                ids = cur.fetchall()
+                for temp in ids:
+                    sku_ids.append(temp[0])
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return sku_ids
+
+    def get_order_id(self, order_sn):
+        conn, cur = conn_mysql()
+        sql = "SELECT id FROM `lmcs-dev`.`lmcs_order` WHERE `order_sn`=%s" % order_sn
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                order_id = cur.fetchone()[0]
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % order_sn)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return order_id
+
+    def delete_user_relations(self, uid):
+        conn, cur = conn_mysql()
+        sql = "DELETE FROM `lmcs-dev`.`lmcs_third` WHERE `uid` =%s" % uid
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="数据已经被删除" % uid)
+            message = "ok"
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="删除数据发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+            message = "None"
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return message
+
+    def get_phone_number(self, phone):
+        conn, cur = conn_mysql()
+        sql = "SELECT captcha FROM lmcs_common_captcha WHERE `account`=%s" % phone
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                number = cur.fetchone()[0]
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % phone)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return number
+
+
+class ControlMysql(object):
+    def __init__(self):
+        self.filepath = os.path.abspath(
+            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'config.ini'))
+        self.filepath_write_log = os.path.abspath(
+            os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'lmcslog.log'))
+
+    def get_sku_id(self, goods_id):
+        conn, cur = conn_mysql()
+        sql = "SELECT id FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s and delflag=0" % goods_id
+        sku_id = None
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                sku_id = cur.fetchone()[0]
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        WriteLog(self.filepath_write_log).write_str(content="sku_id为：" + str(sku_id))
+        return sku_id
+
+    def get_sku_ids(self, goods_id):
+        conn, cur = conn_mysql()
+        sql = "SELECT id FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s" % goods_id
+        sku_ids = []
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                ids = cur.fetchall()
+                for temp in ids:
+                    sku_ids.append(temp[0])
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return sku_ids
+
+    def get_order_id(self, order_sn):
+        conn, cur = conn_mysql()
+        sql = "SELECT id FROM `lmcs-dev`.`lmcs_order` WHERE `order_sn`=%s" % order_sn
+        order_id = None
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                order_id = cur.fetchone()[0]
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % order_sn)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return order_id
+
+    def delete_user_relations(self, uid):
+        conn, cur = conn_mysql()
+        sql = "DELETE FROM `lmcs-dev`.`lmcs_third` WHERE `uid` =%s" % uid
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="数据已经被删除" % uid)
+            message = "ok"
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="删除数据发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+            message = "None"
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return message
+
+    def get_phone_number(self, phone):
+        conn, cur = conn_mysql()
+        sql = "SELECT captcha FROM lmcs_common_captcha WHERE `account`=%s" % phone
+        number = None
+        try:
+            q = cur.execute(sql)  # 执行查询语句
+            if q != 0:
+                number = cur.fetchone()[0]
+                conn.commit()  # 提交到数据库执行
+            else:
+                WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % phone)
+        except:
+            WriteLog(self.filepath_write_log).write_str(content="查询用户sku发生错误")
+            conn.rollback()  # 如果发生错误则回滚
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭数据库连接
+        return number
+
 
 if __name__ == '__main__':
-    uids = 10001535
-    address = "四川省成都市武侯区环球中心"
+    uids = "100004345"
+    # address = "四川省成都市武侯区环球中心"
     # s = Login().login_c(uids)
     # p = CommonRequest("C", s).get_map(address)
     # print(p)
-    print(CommonRequest("B").get_sku_id(100004335))
+    print(CommonRequest("B").get_sku_ids(uids))
