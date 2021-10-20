@@ -10,7 +10,7 @@ import pytest
 
 class TestLC(object):
     def setup_class(self):
-        self.uid = "10001564"
+        self.uid = "10001570"
         self.s = Login().login_c(self.uid)
         self.workerC = InterfaceWorkerForC(self.s)
         self.workerB = InterfaceWorkerB()
@@ -23,18 +23,20 @@ class TestLC(object):
         """
         # 数据处理
         data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100004348",
-                "sku_id": "100003327", "nums": 1, "couponNeedNum": 1, "cart_ids": "", "address_ids": 4921651,
-                "coupon_id": "", "extend": {"100004348": {"buy_insurance": 0, "buyer_message": ""}}, "buy_svip": 0,
+                "sku_id": "100003327", "nums": 3, "couponNeedNum": 1, "cart_ids": "", "address_ids": 4921651,
+                "coupon_id": "", "extend": {"100004348": {"buy_insurance": 0, "buyer_message": "包装给我搞严实点"}},
+                "buy_svip": 0,
                 "scene": "null", "source": "null", "appName": "榴芒传说", "appVersion": "v1.0.0", "systemType": "mp",
                 "systemVersion": "Windows 10 x64", "deviceId": "mini app", "deviceModel": "microsoft", "shopId": "1"}
         # 下单goods_id
-        goods_id = "100004348"
+        goods_id = "100004400"
         # 获取sku_id
         sku_id = self.baseWorker.get_sku_id(goods_id)
         # 获取地址
         p_address_list = self.workerC.get_address_list()
         address_id = p_address_list.json()['data']['items'][0]['id']
         data['goods_id'] = goods_id
+        data['extend'] = {goods_id: {"buy_insurance": 0, "buyer_message": "包装给我搞严实点"}}
         data['sku_id'] = sku_id
         data['address_ids'] = address_id
         # 提交订单
@@ -74,15 +76,15 @@ class TestLC(object):
         """
         order_sn = self.test_submit_pay()
         self.test_send_goods(order_sn)
-        self.test_order_finish(order_sn)
-        self.workerC.order_sales(order_sn)
+        # self.test_order_finish(order_sn)
+        # self.workerC.order_sales(order_sn)
 
     def test_add_money(self):
         """
         余额增加
         :return:
         """
-        uid = "10001557"
+        uid = "10001563"
         p = self.workerB.add_money(uid)
         assert p.json()['message'] == "ok"
 
@@ -90,13 +92,13 @@ class TestLC(object):
 
     def test_delete_user_relations(self):
         # 删除用户关系
-        uid = "10001564"
+        uid = "10001574"
         p = self.baseWorker.delete_user_relations(uid)
         assert p == "ok"
 
     def test_get_phone_number(self):
         # 查询用户密码
-        phone = "18612819013"
+        phone = "18612819025"
         p = self.baseWorker.get_phone_number(phone)
         print(p)
 
@@ -113,14 +115,31 @@ class TestLC(object):
         self.workerC.shop_goods_edit(**data)
 
     @pytest.mark.parametrize("user_id",
-                             ['10001564', '10001563', '10001562', '10001561', '10001560', '10001559', '10001558',
-                              '10001557', '10001556', '10001555', '10001553', '10001552', '10001550', '10001549',
-                              '10001548', '10001547', '10001546', '10001545', '10001544', '10001543'])
-    @pytest.mark.parametrize("store_id", ['10001558'])
+                             ['10001559', '10001558', '10001557', '10001556', '10001555', '10001553', '10001552',
+                              '10001550', '10001549', '10001548'])
+    @pytest.mark.parametrize("store_id", ['10001569'])
     def test_set_super(self, user_id, store_id):
         # 批量绑定上级
         data = {"id": user_id, "store_id": store_id}
         self.workerB.change_store(**data)
+
+    def test_set_link_superuser(self):
+        """
+        设置链式用户关系
+        :return:
+        """
+        user_list = ['10001559', '10001558', '10001557', '10001556', '10001555', '10001553', '10001552',
+                     '10001550', '10001549', '10001569']
+        for user in user_list:
+            if user != user_list[-1]:
+                index = user_list.index(user)
+                data = {"id": user, "store_id": user_list[index + 1]}
+                self.workerB.change_store(**data)
+
+    def test_end(self):
+        order_sn = "202110191547227154766"
+        self.test_send_goods(order_sn)
+        self.test_order_finish(order_sn)
 
 
 if __name__ == '__main__':

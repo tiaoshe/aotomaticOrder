@@ -21,7 +21,7 @@ class InterfaceWorkerB(object):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"page": 1, "pageSize": 20, "type": -1}
+            temp_data = {"page": 2, "pageSize": 10, "type": -1}
         p = self.worker.get("member_list", **temp_data)
         items = p.json()['data']['items']
         userid_list = []
@@ -205,7 +205,7 @@ class InterfaceWorkerB(object):
                      "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
                      "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"}],
                          "sku_imgs": {},
-                         "params": [], "goods_id": 100004348, "supplier_type": 0}
+                         "params": [], "goods_id": 100004500, "supplier_type": 0}
         p = self.worker.post("add_goods", **temp_data)
         return p
 
@@ -288,7 +288,7 @@ class InterfaceWorkerB(object):
             temp_data = kwargs
         else:
             # type=3加款  type=4扣款
-            temp_data = {"uid": 10001545, "type": 4, "money": 12.89, "password": "234890",
+            temp_data = {"uid": 10001570, "type": 4, "money": 10000, "password": "234890",
                          "remark": "测试四道口是否撒旦发附近上来看积分卢卡斯的积分顺利打开附件加款啦"}
         p = self.worker.post("update_vip_card", **temp_data)
         return p
@@ -416,5 +416,5 @@ if __name__ == '__main__':
     # for i in range(100):
     # uid = "10001550"
     # for i in range(100):
-    InterfaceWorkerB().get_user_list()
+    InterfaceWorkerB().update_vip_card
     # InterfaceWorkerB().updata_shop_money_dec()

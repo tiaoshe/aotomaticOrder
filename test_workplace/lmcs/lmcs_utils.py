@@ -238,7 +238,7 @@ class ControlMysql(object):
         try:
             q = cur.execute(sql)  # 执行查询语句
             if q != 0:
-                sku_id = cur.fetchone()[0]
+                sku_id = cur.fetchall()[1][0]
                 conn.commit()  # 提交到数据库执行
             else:
                 WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)

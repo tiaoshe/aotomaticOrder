@@ -312,6 +312,23 @@ class InterfaceWorkerForC(object):
         p = self.worker.get("order_reason", **temp_data)
         return p
 
+    # 查询销售额?referrer_uid=0&referrer_shop_id=0&page=1&pageSize=20&date_from=&date_to=&shopId=248
+    def sales_money(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"referrer_shop_id": 0, "page": 1, "pageSize": 20, "date_from": "", "date_to": 0, "shopId": 248}
+        p = self.worker.get("sales_money", **temp_data)
+        count = p.json()['data']['count']
+        temp_data['pageSize'] = count+10
+        p1 = self.worker.get("sales_money", **temp_data)
+        total_money = 0
+        items = p1.json()['data']['items']
+        for item in items:
+            total_money += item['sale_fee']
+        print(total_money)
+        return p
+
     # 申请售后
     def order_sales(self, order_sn):
         order_id = str(self.baseWorker.get_order_id(order_sn))
@@ -335,9 +352,10 @@ class InterfaceWorkerForC(object):
 
 
 if __name__ == '__main__':
-    s = Login().login_c("10001558")
-    for i in range(100):
-        p = InterfaceWorkerForC(s).confirm_top_up()
+    s = Login().login_c("10001569")
+    # for i in range(100):
+    #     p = InterfaceWorkerForC(s).confirm_top_up()
+    InterfaceWorkerForC(s).sales_money()
     # print(p.json()['data']['balance'])
     # order_sn = "202110111135237722229"
     # order_id = 14986
