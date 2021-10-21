@@ -10,7 +10,7 @@ import pytest
 
 class TestLC(object):
     def setup_class(self):
-        self.uid = "10001570"
+        self.uid = "10001579"
         self.s = Login().login_c(self.uid)
         self.workerC = InterfaceWorkerForC(self.s)
         self.workerB = InterfaceWorkerB()
@@ -23,13 +23,13 @@ class TestLC(object):
         """
         # 数据处理
         data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100004348",
-                "sku_id": "100003327", "nums": 3, "couponNeedNum": 1, "cart_ids": "", "address_ids": 4921651,
+                "sku_id": "100003327", "nums": 1, "couponNeedNum": 1, "cart_ids": "", "address_ids": 4921651,
                 "coupon_id": "", "extend": {"100004348": {"buy_insurance": 0, "buyer_message": "包装给我搞严实点"}},
                 "buy_svip": 0,
                 "scene": "null", "source": "null", "appName": "榴芒传说", "appVersion": "v1.0.0", "systemType": "mp",
                 "systemVersion": "Windows 10 x64", "deviceId": "mini app", "deviceModel": "microsoft", "shopId": "1"}
         # 下单goods_id
-        goods_id = "100004400"
+        goods_id = "100004540"
         # 获取sku_id
         sku_id = self.baseWorker.get_sku_id(goods_id)
         # 获取地址
@@ -76,15 +76,15 @@ class TestLC(object):
         """
         order_sn = self.test_submit_pay()
         self.test_send_goods(order_sn)
-        # self.test_order_finish(order_sn)
-        # self.workerC.order_sales(order_sn)
+        self.test_order_finish(order_sn)
+        self.workerC.order_sales(order_sn)
 
     def test_add_money(self):
         """
         余额增加
         :return:
         """
-        uid = "10001563"
+        uid = "10001580"
         p = self.workerB.add_money(uid)
         assert p.json()['message'] == "ok"
 
@@ -92,13 +92,13 @@ class TestLC(object):
 
     def test_delete_user_relations(self):
         # 删除用户关系
-        uid = "10001574"
+        uid = "10001562"
         p = self.baseWorker.delete_user_relations(uid)
         assert p == "ok"
 
     def test_get_phone_number(self):
         # 查询用户密码
-        phone = "18612819025"
+        phone = "18612819029"
         p = self.baseWorker.get_phone_number(phone)
         print(p)
 

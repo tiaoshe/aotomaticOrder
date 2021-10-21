@@ -337,7 +337,7 @@ class InterfaceWorkerForC(object):
         reason = p_reason.json()['data'][random.randrange(0, len(p_reason.json()['data']))]['content']
         sku_id = str(p_list.json()['data'][0]['sku_id'])
         # 5 是补偿  6是补发
-        temp_data = {"sale_type": 6, "sale_type_desc": "补发", "reason": reason, "description": "撒旦发",
+        temp_data = {"sale_type": 6, "sale_type_desc": "补偿", "reason": reason, "description": "撒旦发",
                      "imagesArr": ["https://lmcscdn.jzwp.cn/_61693e695a743.jpg",
                                    "https://lmcscdn.jzwp.cn/_61693e6cb3971.jpg",
                                    "https://lmcscdn.jzwp.cn/_61693e6faf1c1.jpg"], "order_id": order_id,
@@ -352,10 +352,10 @@ class InterfaceWorkerForC(object):
 
 
 if __name__ == '__main__':
-    s = Login().login_c("10001569")
-    # for i in range(100):
-    #     p = InterfaceWorkerForC(s).confirm_top_up()
-    InterfaceWorkerForC(s).sales_money()
+    s = Login().login_c("10001580")
+    for i in range(100):
+        p = InterfaceWorkerForC(s).confirm_top_up()
+    # InterfaceWorkerForC(s).sales_money()
     # print(p.json()['data']['balance'])
     # order_sn = "202110111135237722229"
     # order_id = 14986
