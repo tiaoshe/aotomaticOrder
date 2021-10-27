@@ -1,0 +1,22 @@
+{
+  "uid" : "b1a8273437954620fa374b796ffaacdd",
+  "name" : "behaviors",
+  "children" : [ {
+    "name" : "下单确认收货售后",
+    "children" : [ {
+      "name" : "test_apply_sale",
+      "uid" : "f268f8f3634cd45c",
+      "parentUid" : "69c99be5135497fa8025c7b45f2c168c",
+      "status" : "passed",
+      "time" : {
+        "start" : 1635232426433,
+        "stop" : 1635232429702,
+        "duration" : 3269
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ ]
+    } ],
+    "uid" : "69c99be5135497fa8025c7b45f2c168c"
+  } ]
+}

@@ -138,9 +138,8 @@ class CommonRequest(object):
         sql = "SELECT id FROM `lmcs-dev`.`lmcs_goods_sku` WHERE `goods_id` = %s" % goods_id
         try:
             q = cur.execute(sql)  # 执行查询语句
-            print(q)
             if q != 0:
-                sku_id = cur.fetchone()[0]
+                sku_id = cur.fetchall()[0][0]
                 conn.commit()  # 提交到数据库执行
             else:
                 WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)
@@ -238,7 +237,7 @@ class ControlMysql(object):
         try:
             q = cur.execute(sql)  # 执行查询语句
             if q != 0:
-                sku_id = cur.fetchall()[1][0]
+                sku_id = cur.fetchall()[0][0]
                 conn.commit()  # 提交到数据库执行
             else:
                 WriteLog(self.filepath_write_log).write_str(content="查询%s返回数据为空" % goods_id)
@@ -326,9 +325,10 @@ class ControlMysql(object):
 
 
 if __name__ == '__main__':
-    uids = "100004345"
+    uids = "10001584"
     # address = "四川省成都市武侯区环球中心"
     # s = Login().login_c(uids)
     # p = CommonRequest("C", s).get_map(address)
     # print(p)
-    print(CommonRequest("B").get_sku_ids(uids))
+    print(Login().get_token(uids))
+    # print(CommonRequest("B").get_sku_id(uids))

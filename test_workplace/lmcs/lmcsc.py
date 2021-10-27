@@ -320,7 +320,7 @@ class InterfaceWorkerForC(object):
             temp_data = {"referrer_shop_id": 0, "page": 1, "pageSize": 20, "date_from": "", "date_to": 0, "shopId": 248}
         p = self.worker.get("sales_money", **temp_data)
         count = p.json()['data']['count']
-        temp_data['pageSize'] = count+10
+        temp_data['pageSize'] = count + 10
         p1 = self.worker.get("sales_money", **temp_data)
         total_money = 0
         items = p1.json()['data']['items']
@@ -328,6 +328,22 @@ class InterfaceWorkerForC(object):
             total_money += item['sale_fee']
         print(total_money)
         return p
+
+    # 用户订单订单发货
+    def get_user_order_list(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"status": 2, "page": 1, "pageSize": 10}
+        p = self.worker.get("user_order_list", **temp_data)
+        count = p.json()['data']['count']
+        temp_data['pageSize'] = count
+        p1 = self.worker.get("user_order_list", **temp_data)
+        total_order_sn = []
+        items = p1.json()['data']['items']
+        for item in items:
+            total_order_sn.append(item['order_sn'])
+        return total_order_sn
 
     # 申请售后
     def order_sales(self, order_sn):
@@ -337,7 +353,7 @@ class InterfaceWorkerForC(object):
         reason = p_reason.json()['data'][random.randrange(0, len(p_reason.json()['data']))]['content']
         sku_id = str(p_list.json()['data'][0]['sku_id'])
         # 5 是补偿  6是补发
-        temp_data = {"sale_type": 6, "sale_type_desc": "补偿", "reason": reason, "description": "撒旦发",
+        temp_data = {"sale_type": 5, "sale_type_desc": "补偿", "reason": reason, "description": "撒旦发",
                      "imagesArr": ["https://lmcscdn.jzwp.cn/_61693e695a743.jpg",
                                    "https://lmcscdn.jzwp.cn/_61693e6cb3971.jpg",
                                    "https://lmcscdn.jzwp.cn/_61693e6faf1c1.jpg"], "order_id": order_id,
@@ -350,11 +366,20 @@ class InterfaceWorkerForC(object):
         p = self.worker.post("order_sales", **temp_data)
         return p
 
+    def cancel_order(self, order_id, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"id": order_id, "cause": "", "appName": "榴芒传说", "appVersion": "v1.0.0", "systemType": "mp",
+                         "systemVersion": "Windows 10 x64", "deviceId": "mini app", "deviceModel": "microsoft",
+                         "shopId": "256"}
+        p = self.worker.post("cancel_order", **temp_data)
+        return p
+
 
 if __name__ == '__main__':
-    s = Login().login_c("10001580")
-    for i in range(100):
-        p = InterfaceWorkerForC(s).confirm_top_up()
+    s = Login().login_c("10001584")
+    p = InterfaceWorkerForC(s).user_order_list()
     # InterfaceWorkerForC(s).sales_money()
     # print(p.json()['data']['balance'])
     # order_sn = "202110111135237722229"

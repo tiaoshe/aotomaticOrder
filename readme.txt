@@ -42,4 +42,12 @@ SHA256:uYhNxq/ALFFJB+tOYLAlaRDvLDhAm+3oRiQwJnaxgM8 tiaoshe
 --通过jinja2完成code生成代码，test.py文件中为试炼场
 13-榴芒传说接口测试lmcsb.py是B端相关调用接口文件，test_b.py是测试相关数据
 14-通过文件管理测试数据，还需要思考下
-15-
+
+15-allure-pytest 安装   准备研究下测试报告生成
+    --安装allure-pytest
+    --运行的时候生成对应的json报告 在edit configurations 里面配置生成文件的路径  其他地方的生成似乎有点问题
+    --安装allure客户端，配置环境变量，通过命令生成对应的html文件
+    --将json文件格式的报告转换成html格式的报告
+        allure generate ./run/ -o ./report/run/ --clean
+16-研究下allure教程，看看如何生成自己想要的报告文件
+

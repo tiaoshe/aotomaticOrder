@@ -1,0 +1,11 @@
+[ {
+  "uid" : "f268f8f3634cd45c",
+  "name" : "test_apply_sale",
+  "time" : {
+    "start" : 1635232426433,
+    "stop" : 1635232429702,
+    "duration" : 3269
+  },
+  "status" : "passed",
+  "severity" : "normal"
+} ]

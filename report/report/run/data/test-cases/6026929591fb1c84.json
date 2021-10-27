@@ -1,0 +1,172 @@
+{
+  "uid" : "6026929591fb1c84",
+  "name" : "test_apply_sale",
+  "fullName" : "test_scene.TestLC#test_apply_sale",
+  "historyId" : "cea7240bf434671e466844bb135d6f98",
+  "time" : {
+    "start" : 1635229833644,
+    "stop" : 1635229837026,
+    "duration" : 3382
+  },
+  "description" : "\n        发起售后\n        :return:\n        ",
+  "descriptionHtml" : "<pre><code>    发起售后\n    :return:\n</code></pre>\n",
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "xunit_setup_class_fixture_TestLC",
+    "time" : {
+      "start" : 1635229831991,
+      "stop" : 1635229833643,
+      "duration" : 1652
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "_session_faker",
+    "time" : {
+      "start" : 1635229831828,
+      "stop" : 1635229831991,
+      "duration" : 163
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "description" : "\n        发起售后\n        :return:\n        ",
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "下单",
+      "time" : {
+        "start" : 1635229833644,
+        "stop" : 1635229834894,
+        "duration" : 1250
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false,
+      "stepsCount" : 0,
+      "hasContent" : false
+    }, {
+      "name" : "发货",
+      "time" : {
+        "start" : 1635229834894,
+        "stop" : 1635229835903,
+        "duration" : 1009
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false,
+      "stepsCount" : 0,
+      "hasContent" : false
+    }, {
+      "name" : "确认收货",
+      "time" : {
+        "start" : 1635229835903,
+        "stop" : 1635229836342,
+        "duration" : 439
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false,
+      "stepsCount" : 0,
+      "hasContent" : false
+    }, {
+      "name" : "申请售后",
+      "time" : {
+        "start" : 1635229836342,
+        "stop" : 1635229837026,
+        "duration" : 684
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false,
+      "stepsCount" : 0,
+      "hasContent" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 4,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "xunit_setup_class_fixture_TestLC::0",
+    "time" : {
+      "start" : 1635229837027,
+      "stop" : 1635229837027,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "feature",
+    "value" : "下单确认收货售后"
+  }, {
+    "name" : "suite",
+    "value" : "test_scene"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestLC"
+  }, {
+    "name" : "host",
+    "value" : "DESKTOP-JG0NH9E"
+  }, {
+    "name" : "thread",
+    "value" : "24288-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_scene"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : true,
+  "retry" : true,
+  "extra" : {
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "6026929591fb1c84.json",
+  "parameterValues" : [ ]
+}
