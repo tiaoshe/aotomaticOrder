@@ -21,7 +21,7 @@ class InterfaceWorkerB(object):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"page": 2, "pageSize": 10, "type": -1}
+            temp_data = {"page": 1, "pageSize": 150, "type": -1}
         p = self.worker.get("member_list", **temp_data)
         items = p.json()['data']['items']
         userid_list = []
@@ -416,10 +416,15 @@ class InterfaceWorkerB(object):
         p = self.worker.post("add_money", **temp_data)
         return p
 
+    # 测试发货  只针对线上商品
+    def send_xianshang_goods(self):
+        temp_data_send = {"type": 0}
+        p = self.worker.post('send_goods', **temp_data_send)
+
 
 if __name__ == '__main__':
     # for i in range(100):
     # uid = "10001550"
     # for i in range(100):
     # InterfaceWorkerB()
-    InterfaceWorkerB().goods_list()
+    InterfaceWorkerB().get_user_list()

@@ -49,12 +49,12 @@ class InterfaceWorkerForC(object):
         p = self.worker.post("pay_order", **temp_data)
         return p
 
-    # confirm_top_up 会员金额确认
+    # confirm_top_up 会员卡充值
     def confirm_top_up(self, **kwargs):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"money": 1000}
+            temp_data = {"money": 2000}
         p = self.worker.post("confirm_top_up", **temp_data)
         order_sn = p.json()['data']['order_sn']
         p1 = self.pay_order(order_sn)
@@ -353,7 +353,7 @@ class InterfaceWorkerForC(object):
         reason = p_reason.json()['data'][random.randrange(0, len(p_reason.json()['data']))]['content']
         sku_id = str(p_list.json()['data'][0]['sku_id'])
         # 5 是补偿  6是补发
-        temp_data = {"sale_type": 5, "sale_type_desc": "补偿", "reason": reason, "description": "撒旦发",
+        temp_data = {"sale_type": 6, "sale_type_desc": "补偿", "reason": reason, "description": "撒旦发",
                      "imagesArr": ["https://lmcscdn.jzwp.cn/_61693e695a743.jpg",
                                    "https://lmcscdn.jzwp.cn/_61693e6cb3971.jpg",
                                    "https://lmcscdn.jzwp.cn/_61693e6faf1c1.jpg"], "order_id": order_id,
@@ -376,10 +376,24 @@ class InterfaceWorkerForC(object):
         p = self.worker.post("cancel_order", **temp_data)
         return p
 
+    def add_shop_user(self, member_id="10001574", **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {"member_id": member_id, "shopId": 256, "appName": "榴芒传说", "appVersion": "v1.0.0",
+                         "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+                         "deviceModel": "microsoft"}
+        p = self.worker.post("add_shop_user", **temp_data)
+        return p
+
 
 if __name__ == '__main__':
-    s = Login().login_c("10001584")
-    p = InterfaceWorkerForC(s).user_order_list()
+    s = Login().login_c("10001594")
+    user_list = ['10001575', '10001574', '10001573', '10001572', '10001571', '10001570', '10001569', '10001568',
+                 '10001567', '10001565', '10001564', '10001563', '10001562', '10001561', '10001560', '10001559',
+                 '10001558', '10001557', '10001556', '10001555']
+
+    p = InterfaceWorkerForC(s).confirm_top_up()
     # InterfaceWorkerForC(s).sales_money()
     # print(p.json()['data']['balance'])
     # order_sn = "202110111135237722229"
