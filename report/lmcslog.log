@@ -6795,3 +6795,9 @@
 2021-12-24 14:37:46  返回结果：{'time': 1640327866.933, 'message': 'ok', 'code': 0, 'status': 200, 'data': True} 
 2021-12-24 14:37:46  接口：v1/member-vip-card/update-money|调用post方法|参数：{'type': 3, 'money': '30', 'password': '234890', 'remark': '测试四道口是否撒旦发附近上来看积分卢卡斯的积分顺利打开附件加款啦', 'uid': '10001606'}
 2021-12-24 14:37:47  返回结果：{'time': 1640327867.305, 'message': 'ok', 'code': 0, 'status': 200, 'data': True} 
+2022-01-11 11:15:56  查询发生错误:unsupported format character '|' (0x7c) at index 1
+2022-01-11 11:16:23  查询发生错误:unsupported format character '|' (0x7c) at index 1
+2022-01-11 11:16:47  查询发生错误:unsupported format character '|' (0x7c) at index 1
+2022-01-11 11:17:30  查询发生错误:unsupported format character '|' (0x7c) at index 1
+2022-01-11 11:18:11  SELECT * FROM `smj-dev`.`smj_goods_attr_item` LIMIT 0, 2|查询数据成功
+2022-01-11 11:19:08  |查询数据成功
