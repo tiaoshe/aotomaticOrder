@@ -21,7 +21,7 @@ class InterfaceWorkerB(object):
         if kwargs:
             temp_data = kwargs
         else:
-            temp_data = {"page": 1, "pageSize": 150, "type": -1}
+            temp_data = {"page": 1, "pageSize": 5, "type": -1}
         p = self.worker.get("member_list", **temp_data)
         items = p.json()['data']['items']
         userid_list = []
@@ -187,30 +187,144 @@ class InterfaceWorkerB(object):
             self.count += 1
         else:
             title = self.faker.sentence()
-            temp_data = {"is_break": 0, "is_receive_way_logistics": 1, "cross_border": 2, "team_angel1": 0,
-                         "team_angel2": 0, "brand_id": 17, "start_type": 1, "end_type": 3, "cat_id": ["303"],
-                         "activity_svip": 0, "activity_star": 0, "title": title, "subtitle": "副标题",
-                         "goods_sn": "商品货号", "supplier_id": 30356, "sort": "9999", "weight": "2", "volume_width": "3",
-                         "content": "<p>图文详情</p>", "buy_notice": "抢购须知", "shop_type": 0, "shop_value": [22, 100],
-                         "long_thumb": "https://lmcscdn.jzwp.cn/1634030440867.jpg", "is_coupon_convert": 0,
-                         "cat_id1": "303", "cat_id2": 0, "cat_id3": 0,
-                         "thumb": "https://lmcscdn.jzwp.cn/1634030433558.jpg",
-                         "imgs": ["https://lmcscdn.jzwp.cn/1634030436805.jpg"], "stock_base": "1000", "type_id": 27,
-                         "type": 27, "attr_datas": [
-                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1035", "incr_stock": "1000",
-                     "market_price": "299",
-                     "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
-                     "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"},
-                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "2062", "incr_stock": "1000",
-                     "market_price": "299",
-                     "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
-                     "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"},
-                    {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "2063", "incr_stock": "1000",
-                     "market_price": "299",
-                     "star_price": "null", "star_fee": "null", "thrift_fee": "19", "storage_cost": "null",
-                     "clear_price": "null", "shop_price": "249", "vip_price": "null", "cost_price": "10"}],
-                         "sku_imgs": {},
-                         "params": [], "goods_id": 100004546, "supplier_type": 0}
+            temp_data = {"is_break": 1, "title": title, "subtitle": "水电费", "weight": "10", "volume_width": "10",
+                         "sort": "9999", "supplier_id": 30357, "is_receive_way_logistics": 1,
+                         "content": "多舒多舒服舒服",
+                         "cross_border": 2, "team_angel1": 0, "team_angel2": 0, "brand_id": 20, "start_type": 1,
+                         "end_type": 3, "cat_id": ["325", "326"],
+                         "buy_notice": "舒服水电费舒服水电费舒服水电费舒服水电费舒服水电费舒服水电费舒服水电费舒服水电费舒服水电费舒服水电费", "shop_type": 0,
+                         "activity_svip": 0, "activity_star": 0, "shop_value": [],
+                         "long_thumb": "https://lmcscdn.jzwp.cn/1640325766328.jpg", "is_coupon_convert": 0,
+                         "cat_id1": "325", "cat_id2": "326", "cat_id3": 0,
+                         "thumb": "https://lmcscdn.jzwp.cn/1640325740725.jpg",
+                         "imgs": ["https://lmcscdn.jzwp.cn/1640325743206.jpg",
+                                  "https://lmcscdn.jzwp.cn/1640325746309.jpg",
+                                  "https://lmcscdn.jzwp.cn/1640325754387.jpg",
+                                  "https://lmcscdn.jzwp.cn/1640325757262.jpg"], "type_id": 30, "type": 30,
+                         "attr_datas": [
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1056,1053,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1056,1053,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1056,1055,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1056,1055,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1057,1053,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1057,1053,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1057,1055,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1057,1055,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1058,1053,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1058,1053,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1058,1055,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1059,1058,1055,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1056,1053,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1056,1053,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1056,1055,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1056,1055,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1057,1053,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1057,1053,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1057,1055,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1057,1055,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1058,1053,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1058,1053,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1058,1055,1049",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"},
+                             {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "1060,1058,1055,1050",
+                              "incr_stock": "100",
+                              "market_price": "300", "star_price": "null", "star_fee": "null", "thrift_fee": "20",
+                              "storage_cost": "null", "clear_price": "null", "shop_price": "200", "vip_price": "null",
+                              "cost_price": "100"}],
+                         "sku_imgs": {"1053": {"thumb": ["https://lmcscdn.jzwp.cn/1640325734880.jpg"]},
+                                      "1055": {"thumb": ["https://lmcscdn.jzwp.cn/1640325737078.jpg"]}}, "params": [],
+                         "goods_id": 100005314, "supplier_type": 0}
         p = self.worker.post("add_goods", **temp_data)
         return p
 
@@ -291,6 +405,7 @@ class InterfaceWorkerB(object):
     def update_vip_card(self, uid=None, **kwargs):
         if kwargs:
             temp_data = kwargs
+            temp_data['uid'] = uid
         else:
             # type=3加款  type=4扣款
             temp_data = {"uid": uid, "type": 3, "money": 10000, "password": "234890",
@@ -411,6 +526,7 @@ class InterfaceWorkerB(object):
     def add_money(self, uid=None, **kwargs):
         if kwargs:
             temp_data = kwargs
+            temp_data['uid'] = uid
         else:
             temp_data = {"uid": uid, "type": 9, "money": "1000000", "remark": "测试充值", "password": "234890"}
         p = self.worker.post("add_money", **temp_data)
@@ -427,4 +543,4 @@ if __name__ == '__main__':
     # uid = "10001550"
     # for i in range(100):
     # InterfaceWorkerB()
-    InterfaceWorkerB().get_user_list()
+    InterfaceWorkerB().add_goods()
