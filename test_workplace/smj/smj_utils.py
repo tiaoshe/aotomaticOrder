@@ -63,7 +63,7 @@ class Login(object):
         data['password'] = "123456"
         response = post(self.s, url, **data)
         try:
-            self.s.headers = {"Authorization": "Bearer " + response.json()['data']['accessToken']}
+            self.s.headers = {"Authorization": "Bearer " + response['data']['accessToken']}
             return self.s
         except KeyError:
             WriteLog(filepath_write_log).write_str(content="登录接口报错")
@@ -74,16 +74,22 @@ def get(*args, **kwargs):
     s = args[0]
     url = args[1]
     p = s.get(url=url, params=kwargs)
-    WriteLog(filepath_write_log).write_str(content="请求%s返回结果：%s " % (url, p.json()))
-    return p
+    t = WriteLog(filepath_write_log)
+    t.write_str(content="请求地址是：%s" % url)
+    t.write_str(content="请求参数是：%s" % str(kwargs))
+    t.write_str(content="请求返回结果：%s " % p.json())
+    return p.json()
 
 
 def post(*args, **kwargs):
     s = args[0]
     url = args[1]
     p = s.post(url=url, json=kwargs)
-    WriteLog(filepath_write_log).write_str(content="请求%s返回结果：%s " % (url, p.json()))
-    return p
+    t = WriteLog(filepath_write_log)
+    t.write_str(content="请求地址是：%s" % url)
+    t.write_str(content="请求参数是：%s" % str(kwargs))
+    t.write_str(content="请求返回结果：%s " % p.json())
+    return p.json()
 
 
 if __name__ == '__main__':

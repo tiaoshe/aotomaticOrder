@@ -46,6 +46,7 @@ SHA256:uYhNxq/ALFFJB+tOYLAlaRDvLDhAm+3oRiQwJnaxgM8 tiaoshe
 15-allure-pytest 安装   准备研究下测试报告生成
     --安装allure-pytest
     --运行的时候生成对应的json报告 在edit configurations 里面配置生成文件的路径  其他地方的生成似乎有点问题
+    pytest --alluredir D:\pythonProject\aotomaticOrder\report\report test_smj_scene.py::TestSmj::test_add_coupon
     --安装allure客户端，配置环境变量，通过命令生成对应的html文件
     --将json文件格式的报告转换成html格式的报告
         allure generate ./run/ -o ./report/run/ --clean

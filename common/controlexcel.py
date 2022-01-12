@@ -11,7 +11,7 @@ import time
 class ExcelUtil(object):
     def __init__(self, excelpath, sheetname="Sheet1"):
         self.excelPath = excelpath
-        self.data = xlrd.open_workbook(excelpath)
+        self.data = xlrd.open_workbook(excelpath, formatting_info=True)
         self.table = self.data.sheet_by_name(sheetname)
         # # 获取第二行作为key值
         # self.keys = self.table.row_values(1)

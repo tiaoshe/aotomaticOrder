@@ -543,4 +543,4 @@ if __name__ == '__main__':
     # uid = "10001550"
     # for i in range(100):
     # InterfaceWorkerB()
-    InterfaceWorkerB().add_goods()
+    InterfaceWorkerB().get_user_list()
