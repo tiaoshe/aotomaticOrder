@@ -136,17 +136,19 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
-    # # 编辑公告
-    # def edit_notice(self, **kwargs):
-    #     url = get_url(self.host, "edit_notice")
-    #     data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-    #             "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-    #             "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-    #             "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
-    #     for key, value in kwargs.items():
-    #         data[key] = value
-    #     response = post(self.s, url, **data)
-    #     return response
+    # 编辑公告
+    def add_shop_offline(self, **kwargs):
+        url = get_url(self.host, "add_shop_offline")
+        data = {"name": "pariatur ut fugiat non minim", "contact_phone": "13980883526", "type": 1,
+                "address": "四川省成都市龙泉驿区", "province_id": "510000", "city_id": "510100",
+                "district_id": "510112", "template_id": 1,
+                "note": "exercitation magna", "status": 1,
+                "latitude": "30.577833", "longitude": "104.240829"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
     #
     # # 编辑公告
     # def edit_notice(self, **kwargs):
@@ -252,4 +254,4 @@ class InterfaceModule(object):
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     datatemp = {}
-    InterfaceModule(s).member_list(**datatemp)
+    InterfaceModule(s).add_shop_offline(**datatemp)

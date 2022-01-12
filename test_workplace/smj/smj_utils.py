@@ -6,6 +6,7 @@ import os
 from common.writelog import WriteLog
 from common.controlconfig import ReadConfig
 import requests
+import json
 
 filepath = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'smjconfig.ini'))
@@ -92,8 +93,23 @@ def post(*args, **kwargs):
     return p.json()
 
 
+# 获取详细地址的经纬度
+def get_map(address):
+    url = r"https://apis.map.qq.com/ws/geocoder/v1/?key=T5OBZ-KJKWI-AFMGR-5GL4Z-6AED6-75BNH&output=jsonp&callback=QQmap"
+    data = {"address": address}
+    p = requests.get(url=url, params=data, verify=True)
+    string_temp = p.text[13:][:-1]
+    try:
+        json_data = json.loads(string_temp)
+        return json_data
+    except BaseException as err:
+        WriteLog(filepath_write_log).write_str(content="发生异常，获取地址返回信息" + p.text)
+
+
 if __name__ == '__main__':
     # sql = "SELECT * FROM `smj-dev`.`smj_goods_attr_item` LIMIT 0, 2"
     # result = QueryData().get_data(sql)
     # print(result)
-    Login().login_b("host_smj_b", "admin_login")
+    # Login().login_b("host_smj_b", "admin_login")
+    s = get_map("龙泉驿区")
+    print(s['result']['location'])
