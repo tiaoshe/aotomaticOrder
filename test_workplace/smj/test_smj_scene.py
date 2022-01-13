@@ -29,6 +29,26 @@ class TestSmj(object):
         data = {"name": name, "description": description, "channel": 2}
         self.WorkerB.add_coupon(**data)
 
+    # @pytest.mark.parametrize("address", ["四川省成都市龙泉驿区", " ", "舒服服点 ", "3"])
+    # @pytest.mark.parametrize("province_id", ["510000", " ", "舒服服点 ", "3"])
+    # @pytest.mark.parametrize("city_id", ["510100", " ", "510112 ", "3"])
+    # @pytest.mark.parametrize("district_id", ["510112", " ", "510100 ", "3"])
+    # @pytest.mark.parametrize("latitude", ["30.577833", " ", "510100 ", "3"])
+    @pytest.mark.parametrize("area_ids", ["500000,500100,500300,510000", " ", "500000", "643"])
+    def test_add_shop_offline(self, area_ids):
+        # {"name": faker.company(), "contact_phone": "13980883526", "type": 1,
+        #  "address": "四川省成都市龙泉驿区", "province_id": "510000", "city_id": "510100",
+        #  "district_id": "510112", "note": "这个是商超", "status": 1,
+        #  "latitude": "30.577833", "longitude": "104.240829", "template_id": 643,
+        #  "area_ids": "500000,500100,500300,510000",}
+        data = {"area_ids": area_ids}
+        self.WorkerB.add_shop_offline(**data)
+
+    @pytest.mark.parametrize("area_ids", ["500000,500100,500300,510000", " ", "500000", "643"])
+    def test_shop_offline_list(self, area_ids):
+        data = {"area_ids": area_ids}
+        self.WorkerB.shop_offline_list(**data)
+
 
 if __name__ == '__main__':
     pytest.main(["--alluredir", "./report/report/result", "test_smj_scene.py::TestSmj::test_add_coupon"])

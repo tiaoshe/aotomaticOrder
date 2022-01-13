@@ -3,6 +3,10 @@
 # @File smjb.PY
 from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
+from faker import Faker
+import random
+
+faker = Faker(locale='zh_CN')
 
 excel_filepath = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
@@ -44,7 +48,7 @@ class InterfaceModule(object):
     # 会员卡加扣款
     def update_vip_card(self, **kwargs):
         url = get_url(self.host, "update_vip_card")
-        data = {"uid": 2, "type": 3, "money": 100, "remark": "加钱", "password": "110114"}
+        data = {"uid": 2, "type": 3, "money": 99.99, "remark": "加钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -136,55 +140,52 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
-    # 编辑公告
+    # 添加超市或服务门店
     def add_shop_offline(self, **kwargs):
         url = get_url(self.host, "add_shop_offline")
-        data = {"name": "pariatur ut fugiat non minim", "contact_phone": "13980883526", "type": 1,
+        data = {"name": faker.company() + str(random.randint(1, 10000)), "contact_phone": "13980883526", "type": 1,
                 "address": "四川省成都市龙泉驿区", "province_id": "510000", "city_id": "510100",
-                "district_id": "510112", "template_id": 1,
-                "note": "exercitation magna", "status": 1,
-                "latitude": "30.577833", "longitude": "104.240829"}
+                "district_id": "510112", "note": "这个是商超", "status": 1,
+                "latitude": "30.577833", "longitude": "104.240829", "template_id": 643, "business_at": "12点到凌晨12点",
+                "area_ids": "500000,500100,500300,510000,510100,510300,510400,510500,510600,510700,510800,510900,511000,511100,511300,511400,511500,511600,511700,511800,511900,512000,513200,513300,513400,520000,520100,520200,520300,520400,520500,520600,522300,522600,522700"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
         return response
 
-    #
-    # # 编辑公告
-    # def edit_notice(self, **kwargs):
-    #     url = get_url(self.host, "edit_notice")
-    #     data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-    #             "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-    #             "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-    #             "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
-    #     for key, value in kwargs.items():
-    #         data[key] = value
-    #     response = post(self.s, url, **data)
-    #     return response
-    #
-    # # 编辑公告
-    # def edit_notice(self, **kwargs):
-    #     url = get_url(self.host, "edit_notice")
-    #     data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-    #             "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-    #             "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-    #             "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
-    #     for key, value in kwargs.items():
-    #         data[key] = value
-    #     response = post(self.s, url, **data)
-    #     return response
-    #
-    # # 编辑公告
-    # def edit_notice(self, **kwargs):
-    #     url = get_url(self.host, "edit_notice")
-    #     data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-    #             "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-    #             "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-    #             "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
-    #     for key, value in kwargs.items():
-    #         data[key] = value
-    #     response = post(self.s, url, **data)
-    #     return response
+    # 积分加扣
+    def update_integral_record(self, **kwargs):
+        url = get_url(self.host, "update_integral_record")
+        data = {"uid": 2, "type": 1, "point": 1000, "password": "123456", "remark": "备注"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 积分设置
+    def integral_set_config(self, **kwargs):
+        url = get_url(self.host, "integral_set_config")
+        data = {"sign_integral": 100, "referer_integral": 100, "online_integral": 100, "offline_integral": 100,
+                "deduction_integral": 100}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 添加供应商
+    def add_supplier(self, **kwargs):
+        url = get_url(self.host, "add_supplier")
+        data = {"name": "好难得", "en_name": "haonande", "brief": "reprehenderit",
+                "return_text": ["mollit anim pariatur", "dolor aute sint", "in ad ex occaecat",
+                                "laboris aliquip dolore est irure", "in aliquip quis sint"],
+                "phone": "13980883526", "status": 10, "link_man": "aliqua in do reprehenderit",
+                "link_id_front": "dolore officia dolore eu voluptate", "link_id_backend": "in",
+                "license": "aliqua laboris irure"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
     #
     # # 编辑公告
     # def edit_notice(self, **kwargs):
@@ -228,13 +229,15 @@ class InterfaceModule(object):
         response = get(self.s, url, **data)
         return response
 
-    # 优惠券列表
+    # 会员卡明细
     def vip_card_list(self, **kwargs):
         url = get_url(self.host, "vip_card_list")
-        data = {"uid": "", "type": "", "start_at": "", "end_at": "", "page": "", "pageSize": "", "up_down": ""}
+        # data = {"uid": "2", "type": "", "start_at": "", "end_at": "", "page": "", "pageSize": "", "up_down": ""}
+        data = {"uid": "2"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
     # 用户列表
@@ -250,8 +253,111 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+    # 超市列表
+    def shop_offline_list(self, **kwargs):
+        url = get_url(self.host, "shop_offline_list")
+        data = {"type": 1, "page": 1, "pageSize": 10, "name": "佳禾网络有限公司8610", "province_id": "", "city_id": "", }
+        # data = {"type": 1, "page": 26}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 仓库列表
+    def warehouse_list(self, **kwargs):
+        url = get_url(self.host, "warehouse_list")
+        # data = {"type": 1, "page": 1, "pageSize": 10, "name": "", "province_id": "", "city_id": "", }
+        data = {"type": 1, "page": 1, "pageSize": 10, "keywords": "黄"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 用户详情-左侧数据
+    def member_info(self, **kwargs):
+        url = get_url(self.host, "member_info")
+        data = {"uid": 3}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 余额明细
+    def balance_record_list(self, **kwargs):
+        url = get_url(self.host, "balance_record_list")
+        data = {"uid": 2}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 积分明细列表
+    def integral_record_list(self, **kwargs):
+        url = get_url(self.host, "integral_record_list")
+        data = {"uid": 2}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 用户优惠券列表
+    def member_coupons_list(self, **kwargs):
+        url = get_url(self.host, "member_coupons_list")
+        data = {"uid": 2, "page": 1, "pageSize": 10, "used_status": 0, "receive_type": 0, "use_type": 4,
+                "receive_time": "", "use_time": "", "coupon_name": "", "order_sn": ""}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # B端查询用户地址
+    def member_address_list(self, **kwargs):
+        url = get_url(self.host, "member_address_list")
+        data = {"uid": 2, "page": 1, "pageSize": 10, "phone": "13980883526", "name": "史莉"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # B端查询用户地址
+    def login_log_list(self, **kwargs):
+        url = get_url(self.host, "login_log_list")
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 晋升管理列表
+    def store_apply_list(self, **kwargs):
+        url = get_url(self.host, "store_apply_list")
+        data = {"status": 0}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 供应商列表
+    def supplier_list(self, **kwargs):
+        url = get_url(self.host, "supplier_list")
+        data = {"status": 10}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     datatemp = {}
-    InterfaceModule(s).add_shop_offline(**datatemp)
+    InterfaceModule(s).supplier_list(**datatemp)

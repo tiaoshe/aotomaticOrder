@@ -70,6 +70,18 @@ class Login(object):
             WriteLog(filepath_write_log).write_str(content="登录接口报错")
             print(response.json())
 
+    def login_c(self, uid):
+        sql = "SELECT token FROM smj_member_access_token WHERE uid = %s" % uid
+        token = QueryData().get_data(sql)[0][0]
+        if token:
+            self.s.headers['auth-key'] = 'Bearer ' + token
+            self.s.headers['authorization'] = 'Bearer ' + token
+            WriteLog(filepath_write_log).write_str(content="用户" + str(uid) + "在C端登录成功")
+            return self.s
+        else:
+            WriteLog(filepath_write_log).write_str(content="登录失败,数据库中没有找到token")
+            return None
+
 
 def get(*args, **kwargs):
     s = args[0]
@@ -110,6 +122,6 @@ if __name__ == '__main__':
     # sql = "SELECT * FROM `smj-dev`.`smj_goods_attr_item` LIMIT 0, 2"
     # result = QueryData().get_data(sql)
     # print(result)
-    # Login().login_b("host_smj_b", "admin_login")
-    s = get_map("龙泉驿区")
-    print(s['result']['location'])
+    Login().login_c(2)
+    # s = get_map("龙泉驿区")
+    # print(s['result']['location'])
