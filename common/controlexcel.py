@@ -10,7 +10,6 @@ import time
 
 class ExcelUtil(object):
     def __init__(self, excelpath, sheetname="Sheet1"):
-        print(excelpath)
         self.excelPath = excelpath
         self.data = xlrd.open_workbook(excelpath, formatting_info=True)
         self.table = self.data.sheet_by_name(sheetname)

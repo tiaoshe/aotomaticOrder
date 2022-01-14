@@ -5,6 +5,8 @@ from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
 from faker import Faker
 import random
+import time
+import datetime
 
 faker = Faker(locale='zh_CN')
 
@@ -20,10 +22,10 @@ class InterfaceModule(object):
     # 添加优惠券
     def add_coupon(self, **kwargs):
         url = get_url(self.host, "add_coupon")
-        data = {"type": 0, "cat_id": "103", "ding_at": 1638892800,
-                "goods_ids": "100000367,100000400,100000405", "day": 7, "name": "打了卡是否接了", "max": "50.00",
-                "money": "10.00", "is_overlay": 0, "num": 67, "user_num": 10, "start_at": 1638892800,
-                "end_at": 1640188800, "created_at": 1639018359, "updated_at": 1641780313, "sort": 0, "delflag": 0,
+        data = {"type": 0, "cat_id": "103", "ding_at": 1638892800, "goods_ids": "100000367,100000400,100000405",
+                "day": 7, "name": "打了卡是否接了", "max": "50.00", "money": "10.00", "is_overlay": 0, "num": 67,
+                "user_num": 10, "start_at": 1638892800,
+                "end_at": 1640188800, "sort": 0, "delflag": 0,
                 "description": "eeeeeee", "member_type": "1,2", "ding_at_end": 1640880000, "category": 1,
                 "grant_type": "giveout,receive", "support_receive": 1, "channel": 1, "use_type": 1, "range": 2}
         for key, value in kwargs.items():
@@ -57,10 +59,10 @@ class InterfaceModule(object):
     # 添加公告
     def add_notice(self, **kwargs):
         url = get_url(self.host, "add_notice")
-        data = {"title": "dolor", "is_enable": 93228930.09150541, "content": "aliquip occaecat pariatur elit dolor",
-                "type_relation": 16874601.815701112, "shop_offline_ids": [-89259424.57724592],
-                "effect_time_begin": "sint nulla culpa incididunt",
-                "effect_time_end": "fugiat occaecat dolore officia incididunt"}
+        data = {"title": "老邓头老邓头日晒不愁下雨不愁", "is_enable": 1, "content": "这个是内容",
+                "type_relation": 1, "shop_offline_ids": [31000, 31001, 31002],
+                "effect_time_begin": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "effect_time_end": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 7200))}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -69,10 +71,10 @@ class InterfaceModule(object):
     # 编辑公告
     def edit_notice(self, **kwargs):
         url = get_url(self.host, "edit_notice")
-        data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-                "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-                "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-                "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
+        data = {"id": 27, "title": "老邓头老邓头日晒不愁下雨不愁", "is_enable": 1, "content": "这个是内容",
+                "type_relation": 1, "shop_offline_ids": [31000, 31001, 31002],
+                "effect_time_begin": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "effect_time_end": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 7200))}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -81,12 +83,11 @@ class InterfaceModule(object):
     # 添加轮播
     def add_banner(self, **kwargs):
         url = get_url(self.host, "add_banner")
-        data = {"sort": -92000625.26075369, "description": "ut cupidatat dolore sunt", "type": "ut",
-                "param": "dolore eiusmod ipsum", "is_enable": -31741505.799358413,
-                "main_color": "labore Ut dolore eu qui", "name": "velit pariatur dolor est dolor",
-                "location": -2241020.391069263, "banner": "sit velit fugiat deserunt aliquip",
-                "type_relation": -53601215.22166206, "area_ids": [-79824109.51455608],
-                "shop_offline_ids": [91536190.30098575, 18229438.652062774]}
+        data = {"sort": "19", "description": "12", "type": "goods_detail", "param": "100010", "is_enable": 1,
+                "main_color": "#D61818", "name": "这个是跳转商品的轮播图", "location": 1, "type_relation": "1",
+                "area_ids": [120114],
+                "shop_offline_ids": [31000, 31001, 31002], "banner": "https://lmcscdn.jzwp.cn/1642127426717.jpg",
+                "goto_url": " "}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -95,13 +96,12 @@ class InterfaceModule(object):
     # 编辑轮播
     def edit_banner(self, **kwargs):
         url = get_url(self.host, "edit_banner")
-        data = {"id": -45342545.973600015, "description": "ullamco Excepteur ut in occaecat",
-                "type": "dolor nostrud eiusmod irure culpa", "param": "reprehenderit non dolore amet irure",
-                "is_enable": 49283112.61302918, "main_color": "in dolor", "name": "proident",
-                "location": 52734751.928685784, "banner": "do Ut consectetur", "type_relation": 49981337.896598846,
-                "field_1": "exercitation ad adipisicing", "field_2": "cillum ut", "field_3": 81313900.33183175,
-                "area_ids": [29707540.5431785],
-                "shop_offline_ids": [-86081051.91612232, -44664002.882979006, -39552209.59002208, -46112102.18630087]}
+        data = {"id": "12", "sort": "19", "description": "12", "type": "goods_detail", "param": "100010",
+                "is_enable": 1,
+                "main_color": "#D61818", "name": "这个是跳转商品的轮播图", "location": 1, "type_relation": "1",
+                "area_ids": [120114],
+                "shop_offline_ids": [31000, 31001, 31002], "banner": "https://lmcscdn.jzwp.cn/1642127426717.jpg",
+                "goto_url": " "}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -119,10 +119,10 @@ class InterfaceModule(object):
     # 添加活动区域
     def add_special_activity(self, **kwargs):
         url = get_url(self.host, "add_special_activity")
-        data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-                "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-                "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-                "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
+        data = {"plate_index": "style_2_2", "plate_type": "2", "num": 2, "contents": [
+            {"type": "goods_detail", "image": "https://lmcscdn.jzwp.cn/1642127936575.jpg", "param": "100010"},
+            {"type": "my_order", "image": "https://lmcscdn.jzwp.cn/1642127945312.jpg"}], "name": "活动区域添加",
+                "shop_offline_id": 31000}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -175,49 +175,93 @@ class InterfaceModule(object):
     # 添加供应商
     def add_supplier(self, **kwargs):
         url = get_url(self.host, "add_supplier")
-        data = {"name": "好难得", "en_name": "haonande", "brief": "reprehenderit",
-                "return_text": ["mollit anim pariatur", "dolor aute sint", "in ad ex occaecat",
+        data = {"name": faker.sentence(), "en_name": "gysjc", "brief": "供应商简介",
+                "return_text": ["1", "dolor 2 sint", "in ad ex occaecat",
                                 "laboris aliquip dolore est irure", "in aliquip quis sint"],
-                "phone": "13980883526", "status": 10, "link_man": "aliqua in do reprehenderit",
-                "link_id_front": "dolore officia dolore eu voluptate", "link_id_backend": "in",
-                "license": "aliqua laboris irure"}
+                "phone": "13980883526", "status": 10, "link_man": faker.name(),
+                "link_id_front": "https://mmtcdn.jzwp.cn/1642153002088.jpg",
+                "link_id_backend": "https://mmtcdn.jzwp.cn/1642153002088.jpg",
+                "license": "https://mmtcdn.jzwp.cn/1642153002088.jpg"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
         return response
 
-    #
-    # # 编辑公告
-    # def edit_notice(self, **kwargs):
-    #     url = get_url(self.host, "edit_notice")
-    #     data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-    #             "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-    #             "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-    #             "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
-    #     for key, value in kwargs.items():
-    #         data[key] = value
-    #     response = post(self.s, url, **data)
-    #     return response
-    #
-    # # 编辑公告
-    # def edit_notice(self, **kwargs):
-    #     url = get_url(self.host, "edit_notice")
-    #     data = {"id": -28723042.60814835, "title": "reprehenderit voluptate culpa cupidatat in",
-    #             "is_enable": -75002766.33752012, "content": "pariatur id velit nostrud tempor",
-    #             "type_relation": -27070548.76755777, "shop_offline_ids": [78357404.2210119],
-    #             "effect_time_begin": "in ex tempor veniam cupidatat", "effect_time_end": "cupidatat enim aliquip"}
-    #     for key, value in kwargs.items():
-    #         data[key] = value
-    #     response = post(self.s, url, **data)
-    #     return response
-    #
+    # 优惠券发放
+    def coupon_send(self, **kwargs):
+        url = get_url(self.host, "coupon_send")
+        data = {"coupon_id": 5274, "coupon_num": "10", "member_ids": "2"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 生成兑换码
+    def coupon_exchange_sn(self, **kwargs):
+        url = get_url(self.host, "coupon_exchange_sn")
+        data = {"num": 20, "expire_time": "2022-01-27 00:00:00", "coupon_id": "5274"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 添加秒杀活动
+    def add_seckill(self, **kwargs):
+        url = get_url(self.host, "add_seckill")
+        data = {"title": "圣美家秒杀活动", "description": "圣美家秒杀",
+                "start_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())),
+                "end_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 7200)),
+                "shop_offline_id": "31000,31001",
+                "goods": ["100005359", "100005360"]}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 添加分类
+    def add_goods_category(self, **kwargs):
+        url = get_url(self.host, "add_goods_category")
+        # type 1 线上商品  type 2 线下商品
+        data = {"name": faker.name(), "delivery": "false", "display": 0, "sort": "100", "display_index": "1",
+                "thumb": ["https://fncdn.jzwp.cn/1642147340710.jpg"], "status": "1",
+                "imgs": ["https://fncdn.jzwp.cn/1642147417352.jpg"], "type": "1", "pid": "246"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 添加规格
+    def add_attr(self, **kwargs):
+        url = get_url(self.host, "add_attr")
+        # type 1 线上商品  type 2 线下商品
+        data = {"type": "1", "name": "今天感觉有点疲倦"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 添加规格
+    def add_attr_item(self, **kwargs):
+        url = get_url(self.host, "add_attr_item")
+        # type 1 线上商品  type 2 线下商品
+        data = {"name": "哈哈哈", "sort": "9",
+                "values": [{"value": "1", "color": "", "id": ""}, {"value": "2", "color": "", "id": ""},
+                           {"value": "3", "color": "", "id": ""}, {"value": "4", "color": "", "id": ""}],
+                "attr_id": "250"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
     # 优惠券列表
     def coupon_list(self, **kwargs):
         url = get_url(self.host, "coupon_list")
-        data = {}
+        data = {"page": 1, "pageSize": 30}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
     # 优惠券列表
@@ -308,7 +352,7 @@ class InterfaceModule(object):
     # 用户优惠券列表
     def member_coupons_list(self, **kwargs):
         url = get_url(self.host, "member_coupons_list")
-        data = {"uid": 2, "page": 1, "pageSize": 10, "used_status": 0, "receive_type": 0, "use_type": 4,
+        data = {"uid": 2, "page": 1, "pageSize": 10, "used_status": 0, "receive_type": 0, "use_type": 0,
                 "receive_time": "", "use_time": "", "coupon_name": "", "order_sn": ""}
         for key, value in kwargs.items():
             data[key] = value
@@ -350,6 +394,46 @@ class InterfaceModule(object):
     def supplier_list(self, **kwargs):
         url = get_url(self.host, "supplier_list")
         data = {"status": 10}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 优惠券记录列表
+    def coupon_record_list(self, **kwargs):
+        url = get_url(self.host, "coupon_record_list")
+        data = {"uid": 2, "page": 1, "pageSize": 10}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 订单列表
+    def order_list(self, **kwargs):
+        url = get_url(self.host, "order_list")
+        data = {"page": 1, "pageSize": 10}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 推广收入
+    def sub_rebate_order(self, **kwargs):
+        url = get_url(self.host, "sub_rebate_order")
+        data = {"uid": 2, "page": 1, "pageSize": 20, "type": "", "start_time": "", "end_time": ""}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 秒杀列表
+    def seckill_list(self, **kwargs):
+        url = get_url(self.host, "seckill_list")
+        data = {"title": "", "page": 1, "pageSize": 20, "type": "", "time_status": ""}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)

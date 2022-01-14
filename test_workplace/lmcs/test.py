@@ -41,14 +41,14 @@ if __name__ == '__main__':
     #     return p
 
     tml_class = """
-    def {{methed}}(self, **kwargs):
-    if kwargs:
-        temp_data = kwargs
-    else:
-        temp_data = {{data}}
-    p = self.worker.post("{{methed}}", **temp_data)
-    return p
-
+        def {{methed}}(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {{data}}
+        p = self.worker.post("{{methed}}", **temp_data)
+        return p
+        
     """
     data = {"pay_type": 1, "appName": "榴芒传说", "appVersion": "v0.1.3",
             "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
