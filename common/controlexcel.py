@@ -3,6 +3,7 @@
 # @File controlexcel.PY
 
 import xlrd
+import xlwt
 from xlutils3.copy import copy
 import os
 import time
@@ -58,7 +59,9 @@ class ExcelUtil(object):
                     if order_for_money[user_list[num2]] == 0:
                         continue
                     self.worksheet.write(self.rowNum + row + 2, num2 + 1, order_for_money[user_list[num2]])
+
                 self.workbook.save(self.excelPath)
+
         else:
             return {'message': '用户列表或返利列表为空'}
 
@@ -77,7 +80,12 @@ class ExcelUtil(object):
                         data = "None"
                     self.worksheet.write(self.rowNum + y + 1, count, data)
                     count += 1
-            self.workbook.save(self.excelPath)
+            try:
+                self.workbook.save(self.excelPath)
+            except Exception as err:
+                print(err)
+                new_path = self.new_work_excel()
+                ExcelUtil(new_path).write_response_data(items)
         else:
             print("传入列表为空,不写入表格")
             return
@@ -86,6 +94,13 @@ class ExcelUtil(object):
         time_now = time.strftime("%Y-%m-%d %H:%M:%S  ", time.localtime())
         self.worksheet.write(self.rowNum + 1, 1, "start:" + str(time_now))
         self.workbook.save(self.excelPath)
+
+    def new_work_excel(self):
+        filepath_new_name = os.path.dirname(self.excelPath) + r"\new_report_" + str(int(time.time())) + ".xls"
+        wb = xlwt.Workbook(encoding="utf-8")
+        wb.add_sheet("Sheet1")
+        wb.save(filepath_new_name)
+        return filepath_new_name
 
 
 if __name__ == '__main__':

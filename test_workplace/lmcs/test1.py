@@ -1,23 +1,22 @@
 # @time 2021/10/21 13:48
 # @Author howell
 # @File test1.PY
-class TestDemo(object):
-    count = 0
-    instance = None
+from jinja2 import *
 
-    def __new__(cls, *args, **kwargs):
-        if cls.instance is None:
-            cls.instance = super().__new__()
-        return cls.instance
-
-    def __init__(self):
-        name = "howell"
-        print(name)
-        TestDemo.count += 1
-
+loader = """
+    
+        def {{methed}}(self, **kwargs):
+        if kwargs:
+            temp_data = kwargs
+        else:
+            temp_data = {{data}}
+        p = self.worker.post("{{methed}}", **temp_data)
+        return p
+        
+    """
+env = Environment(loader=loader, trim_blocks=False, lstrip_blocks=False)
+print(env.loader)
+print(env.block_start_string)
 
 if __name__ == '__main__':
-    T1 = TestDemo()
-    TestDemo()
-
-    print(TestDemo.count)
+    pass

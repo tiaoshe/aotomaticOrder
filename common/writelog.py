@@ -11,8 +11,8 @@ class WriteLog(object):
         if os.path.isfile(filepath):
             fsize = os.path.getsize(filepath)
             fsize = fsize / float(1024 * 1024)
-            # 判断文件是否大于2.4MB 如果大于 则将文件重新命名移动到history文件夹中
-            if fsize < 2.5:
+            # 判断文件是否大于2.3MB 如果大于 则将文件重新命名移动到history文件夹中
+            if fsize < 2.3:
                 self.filepath = filepath
             else:
                 filepath_new_name = os.path.dirname(filepath) + "\old" + str(int(time.time())) + ".log"

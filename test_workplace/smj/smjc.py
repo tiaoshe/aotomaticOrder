@@ -27,7 +27,6 @@ class InterfaceModuleApi(object):
                 "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
                 "deviceModel": "microsoft"}
         response = post(self.s, url, **data)
-        print(response)
         return response
 
 

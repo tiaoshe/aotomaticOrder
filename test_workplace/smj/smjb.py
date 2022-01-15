@@ -14,6 +14,10 @@ excel_filepath = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
 
 
+def get_now_time(secont=0):
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + secont))
+
+
 class InterfaceModule(object):
     def __init__(self, request_session):
         self.s = request_session
@@ -254,6 +258,71 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    # 发货订单 录入快递信息
+    def order_delivery(self, **kwargs):
+        url = get_url(self.host, "order_delivery")
+        data = {"items": [{"id": 11944, "code": "YTO", "sn": "123456789"}]}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 发货订单 录入快递信息
+    def order_delivery_send(self, **kwargs):
+        url = get_url(self.host, "order_delivery_send")
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 接单
+    def order_picking_get(self, **kwargs):
+        url = get_url(self.host, "order_picking_get")
+        data = {"ids": "12312"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 拣货完成
+    def order_picking_compelte(self, **kwargs):
+        url = get_url(self.host, "order_picking_compelte")
+        # deliver_type 1 自提  2 同城
+        data = {"ids": "12312", "deliver_type": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 秒杀商品添加
+    def goods_activity_seckill(self, **kwargs):
+        url = get_url(self.host, "goods_activity_seckill")
+        # deliver_type 1 自提  2 同城
+        data = {"title": faker.sentence(), "description": "cillum mollit nisi", "start_time": get_now_time(),
+                "end_time": get_now_time(72000), "shop_offline_id": 31002, "goods": [
+                {"goods_id": "100005355", "single_max": 1, "single_min": 1,
+                 "day_max": 1, "limit_max": 0,
+                 "virtual_percentavirtual_scores": 10.1, "sort": 1, "sku": [
+                    {"sku_id": "100004483", "inventory_id": 10,
+                     "kill_price": 10, "vip_price": 9, "bonus_second_vip": 1, "stock": 10}, ], }, ], }
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 自提完成；同城完成
+    def order_send_end(self, **kwargs):
+        url = get_url(self.host, "order_send_end")
+        # deliver_type = 1 自提 2 同城
+        # ids  订单ID
+        data = {"ids": 1, "deliver_type": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
     # 优惠券列表
     def coupon_list(self, **kwargs):
         url = get_url(self.host, "coupon_list")
@@ -264,7 +333,7 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
-    # 优惠券列表
+    # 公告列表
     def notice_list(self, **kwargs):
         url = get_url(self.host, "notice_list")
         data = {}
@@ -440,8 +509,57 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+    # 类型变更
+    def member_label_change(self, **kwargs):
+        url = get_url(self.host, "member_label_change")
+        data = {"page": 1, "pageSize": 20}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 自提订单列表
+    def order_pick_list(self, **kwargs):
+        url = get_url(self.host, "order_pick_list")
+        data = {"page": 1, "pageSize": 20, "use_status": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 商品秒杀列表
+    def goods_activity_seckill_list(self, **kwargs):
+        url = get_url(self.host, "goods_activity_seckill_list")
+        data = {"page": 1, "pageSize": 20, "type": "1", "title": "", "time_status": ""}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 秒杀详情
+    def goods_activity_seckill_detail(self, **kwargs):
+        url = get_url(self.host, "goods_activity_seckill_detail")
+        data = {"id": "15"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 获取商品列表
+    def goods_list(self, **kwargs):
+        url = get_url(self.host, "goods_list")
+        data = {"page": "1", "pageSize": "30"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     datatemp = {}
-    InterfaceModule(s).supplier_list(**datatemp)
+    InterfaceModule(s).goods_activity_seckill_list(**datatemp)

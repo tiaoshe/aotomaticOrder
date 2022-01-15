@@ -2,13 +2,12 @@
 # @Author howell
 # @File test.PY
 # 代码生成器
-from jinja2 import Template
+from jinja2 import Template, Environment
 
 
 def render(tmpl, *args, **kwds):
     '''jinja2 render'''
     vars = dict(*args, **kwds)
-    print(vars)
     tmp = Template(tmpl)
     return tmp.render(vars).strip()
 
@@ -40,8 +39,9 @@ if __name__ == '__main__':
     #     p = self.worker.post("pay_order", **temp_data)
     #     return p
 
-    tml_class = """
-        def {{methed}}(self, **kwargs):
+    tml_class = """ 
+       
+    def {{methed}}(self, **kwargs):
         if kwargs:
             temp_data = kwargs
         else:
@@ -59,6 +59,9 @@ if __name__ == '__main__':
 
     def save(data, filename='codes.py'):
         with open(filename, 'a+') as f:
+            f.write("    ")
             f.write(data)
             f.write("\n\n")
+
+
     save(data=result)
