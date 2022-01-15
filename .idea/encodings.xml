@@ -2,5 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/test_workplace/lmcs/codes.py" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/test_workplace/smj/codes.py" charset="GBK" />
   </component>
 </project>

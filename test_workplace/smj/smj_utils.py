@@ -7,9 +7,12 @@ from common.writelog import WriteLog
 from common.controlconfig import ReadConfig
 import requests
 import json
+from jinja2 import Template
 
 filepath = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'smjconfig.ini'))
+filepath_data = os.path.abspath(
+    os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'smjdata.ini'))
 filepath_write_log = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'smj.log'))
 
@@ -118,10 +121,59 @@ def get_map(address):
         WriteLog(filepath_write_log).write_str(content="发生异常，获取地址返回信息" + p.text)
 
 
+def add_code(method="get", methed_name=None):
+    tmp_get_class = """ 
+        
+    def {{methed}}(self, **kwargs):
+        url = get_url(self.host, "{{methed}}")
+        data = {{data}}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    """
+    tmp_post_class = """ 
+        
+    def {{methed}}(self, **kwargs):
+        url = get_url(self.host, "{{methed}}")
+        data = {{data}}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    """
+    result = ""
+    if method == "get" and methed_name is not None:
+        data_temp = ReadConfig(filepath_data).get("request_data", methed_name)
+        result = render(tmp_get_class, methed=methed_name, data=data_temp)
+
+    elif method == "post".strip() and methed_name is not None:
+        data_temp = ReadConfig(filepath_data).get("request_data", methed_name)
+        result = render(tmp_post_class, methed=methed_name, data=data_temp)
+    else:
+        print("传参错误")
+        return
+    with open('smjb.py', 'a+', encoding='utf-8') as f:
+        f.write("    ")
+        f.write(result)
+
+
+def render(tmpl, *args, **kwds):
+    '''jinja2 render'''
+    vars = dict(*args, **kwds)
+    tmp = Template(tmpl)
+    return tmp.render(vars).strip()
+
+
 if __name__ == '__main__':
     # sql = "SELECT * FROM `smj-dev`.`smj_goods_attr_item` LIMIT 0, 2"
     # result = QueryData().get_data(sql)
     # print(result)
-    Login().login_c(2)
+    # Login().login_c(2)
     # s = get_map("龙泉驿区")
     # print(s['result']['location'])
+    add_code("post", "admin_login")
