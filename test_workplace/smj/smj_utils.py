@@ -123,7 +123,7 @@ def get_map(address):
 
 def add_code(method="get", methed_name=None):
     tmp_get_class = """ 
-        
+
     def {{methed}}(self, **kwargs):
         url = get_url(self.host, "{{methed}}")
         data = {{data}}
@@ -133,9 +133,14 @@ def add_code(method="get", methed_name=None):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+if __name__ == '__main__':
+    s = Login().login_b("host_smj_b", "admin_login")
+    data_temp = {}
+    InterfaceModule(s).{{methed}}(**data_temp)
+
     """
     tmp_post_class = """ 
-        
+
     def {{methed}}(self, **kwargs):
         url = get_url(self.host, "{{methed}}")
         data = {{data}}
@@ -145,8 +150,14 @@ def add_code(method="get", methed_name=None):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+if __name__ == '__main__':
+    s = Login().login_b("host_smj_b", "admin_login")
+    data_temp = {}
+    InterfaceModule(s).{{methed}}(**data_temp)
+
     """
     result = ""
+    file_name = "smjb.py"
     if method == "get" and methed_name is not None:
         data_temp = ReadConfig(filepath_data).get("request_data", methed_name)
         result = render(tmp_get_class, methed=methed_name, data=data_temp)
@@ -157,7 +168,13 @@ def add_code(method="get", methed_name=None):
     else:
         print("传参错误")
         return
-    with open('smjb.py', 'a+', encoding='utf-8') as f:
+    readFile = open(file_name, encoding='utf-8')
+    lines = readFile.readlines()
+    readFile.close()
+    w = open(file_name, 'w', encoding='utf-8')
+    w.writelines([item for item in lines[:-4]])
+    w.close()
+    with open(file_name, 'a+', encoding='utf-8') as f:
         f.write("    ")
         f.write(result)
 

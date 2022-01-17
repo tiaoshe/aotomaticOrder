@@ -560,4 +560,6 @@ class InterfaceModule(object):
 
 
 if __name__ == '__main__':
-    Login
+    s = Login().login_b("host_smj_b", "admin_login")
+    data_temp = {}
+    InterfaceModule(s).goods_list(**data_temp)
