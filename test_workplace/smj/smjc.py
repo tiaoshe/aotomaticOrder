@@ -20,7 +20,7 @@ class InterfaceModuleApi(object):
     # 添加用户地址
     def add_address(self):
         url = get_url(self.host, "add_address")
-        data = {"id": "", "name": faker.name(), "phone": "13980883526", "address": "水电费水电费", "id_card_name": "",
+        data = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "水电费水电费", "id_card_name": "",
                 "id_card": "",
                 "is_default": 0, "province": "四川省", "province_id": 510000, "city": "成都市", "city_id": 510100,
                 "district": "金牛区", "district_id": 510106, "full_address": "四川省成都市金牛区水电费水电费", "appName": "超享团",
@@ -29,8 +29,19 @@ class InterfaceModuleApi(object):
         response = post(self.s, url, **data)
         return response
 
+    # 下单
+    def submmit_order(self):
+        url = get_url(self.host, "submmit_order")
+        data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100005401",
+                "sku_id": "100004540", "nums": 2, "couponNeedNum": 1, "cart_ids": "",
+                "address_ids": "122",
+                "coupon_id": "", "extend": {"100005401": {"buy_insurance": 0, "buyer_message": ""}},
+                "scene": "null", "source": "null"}
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_c(2)
     data_temp = {}
-    InterfaceModuleApi(s).add_address(**data_temp)
+    InterfaceModuleApi(s).submmit_order(**data_temp)

@@ -147,7 +147,6 @@ if __name__ == '__main__':
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
-        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
 if __name__ == '__main__':

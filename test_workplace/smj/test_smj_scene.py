@@ -5,6 +5,9 @@ from test_workplace.smj.smjb import InterfaceModule
 from test_workplace.smj.smj_utils import Login
 import pytest
 import allure
+from faker import Faker
+
+faker = Faker(locale='zh_CN')
 
 
 class TestSmj(object):
@@ -48,6 +51,30 @@ class TestSmj(object):
     def test_shop_offline_list(self, area_ids):
         data = {"area_ids": area_ids}
         self.WorkerB.shop_offline_list(**data)
+
+    @pytest.mark.parametrize("time", [x for x in range(2000)])
+    def test_add_channel(self, time):
+        data = {"name": faker.sentence()}
+        self.WorkerB.add_channel(**data)
+
+    @pytest.mark.parametrize("time", [x for x in range(50)])
+    @pytest.mark.parametrize("ty,mark", [(9, "加钱"), (10, "扣钱")])
+    def test_update_money(self, time, ty, mark):
+        data = {"uid": 2, "type": ty, "money": time, "remark": mark}
+        self.WorkerB.update_money(**data)
+
+    @pytest.mark.parametrize("time", [x for x in range(50)])
+    @pytest.mark.parametrize("ty,mark", [(3, "加钱咯"), (4, "扣钱咯")])
+    def test_update_vip_card(self, time, ty, mark):
+        data = {"uid": 2, "type": ty, "money": time, "remark": mark}
+        self.WorkerB.update_vip_card(**data)
+
+    @pytest.mark.parametrize("time", [x for x in range(50)])
+    @pytest.mark.parametrize("ty,mark", [(1, "加钱咯"), (2, "扣钱咯")])
+    def test_update_integral_record(self, time, ty, mark):
+        # {"uid": 2, "type": 1, "point": 1000, "password": "123456", "remark": "备注"}
+        data = {"uid": 2, "type": ty, "point": time, "remark": mark}
+        self.WorkerB.update_integral_record(**data)
 
 
 if __name__ == '__main__':
