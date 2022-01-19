@@ -32,11 +32,11 @@ class InterfaceModuleApi(object):
     # 下单
     def submmit_order(self):
         url = get_url(self.host, "submmit_order")
-        data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100005401",
-                "sku_id": "100004540", "nums": 2, "couponNeedNum": 1, "cart_ids": "",
+        data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100005500",
+                "sku_id": "100004566", "nums": 1, "couponNeedNum": 1, "cart_ids": "",
                 "address_ids": "122",
-                "coupon_id": "", "extend": {"100005401": {"buy_insurance": 0, "buyer_message": ""}},
-                "scene": "null", "source": "null"}
+                "coupon_id": "", "extend": {"100005500": {"buy_insurance": 0, "buyer_message": ""}},
+                "scene": "null", "source": "null", "shopId": "31002"}
         response = post(self.s, url, **data)
         return response
 

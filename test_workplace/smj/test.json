@@ -1,0 +1,28 @@
+{
+  "title": "圣美家秒杀",
+  "description": "圣美家秒杀",
+  "start_time": "get_now_time()",
+  "end_time": "get_now_time(72000)",
+  "shop_offline_id": "31002",
+  "goods": [
+    {
+      "goods_id": "100005500",
+      "single_max": "1",
+      "single_min": "1",
+      "day_max": "1",
+      "limit_max": "10",
+      "virtual_percentavirtual_scores": "99.9",
+      "sort": "1",
+      "sku": [
+        {
+          "sku_id": "100004565",
+          "inventory_id": "85",
+          "kill_price": "9.9",
+          "vip_price": "8.8",
+          "bonus_second_vip": "1",
+          "stock": "1"
+        }
+      ]
+    }
+  ]
+}

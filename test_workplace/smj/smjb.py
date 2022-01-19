@@ -217,11 +217,17 @@ class InterfaceModule(object):
     # 添加秒杀活动
     def add_seckill(self, **kwargs):
         url = get_url(self.host, "add_seckill")
-        data = {"title": "圣美家秒杀活动", "description": "圣美家秒杀",
-                "start_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())),
-                "end_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 7200)),
-                "shop_offline_id": "31000,31001",
-                "goods": ["100005359", "100005360"]}
+        data = {"title": "圣美家秒杀" + faker.sentence(), "description": "圣美家秒杀",
+                "start_time": get_now_time(),
+                "end_time": get_now_time(72000),
+                "shop_offline_id": "31002",
+                "goods": [{"goods_id": "100005501", "single_max": "1", "single_min": "1", "day_max": "1",
+                           "limit_max": "10", "virtual_percentavirtual_scores": "99.9", "sort": "1",
+                           "sku": [
+                               {"sku_id": "100004567", "inventory_id": "87", "kill_price": "9.9", "vip_price": "8.8",
+                                "bonus_second_vip": "1", "stock": "10", "status": "0"},
+                               {"sku_id": "100004568", "inventory_id": "88", "kill_price": "9.9", "vip_price": "8.8",
+                                "bonus_second_vip": "1", "stock": "10", "status": "0"}]}], }
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -506,7 +512,7 @@ class InterfaceModule(object):
     # 秒杀列表
     def seckill_list(self, **kwargs):
         url = get_url(self.host, "seckill_list")
-        data = {"title": "", "page": 1, "pageSize": 20, "type": "", "time_status": ""}
+        data = {"title": "", "page": 1, "pageSize": 20, "type": "", "time_status": "3"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -565,14 +571,13 @@ class InterfaceModule(object):
     # 添加满减活动
     def add_lessen(self, **kwargs):
         url = get_url(self.host, "add_lessen")
-        data = {"title": "do eu esse", "description": "sunt irure aute laboris sint", "start_time": "Lo",
-                "end_time": "minim sed do", "shop_offline_id": 84835669.18877262,
-                "rules": {"type": -12797566.259925157, "full": -85685851.32896827, "full_reduce": -32450443.026262477},
-                "goods": [-92835539.92941803]}
+        data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(72000),
+                "end_time": get_now_time(72120), "shop_offline_id": 31002,
+                "rules": {"type": 2, "full": 10, "full_reduce": 1},
+                "goods": [100005404]}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
-        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
     def detail_lessen(self, **kwargs):
@@ -624,8 +629,8 @@ class InterfaceModule(object):
 
     def edit_rules(self, **kwargs):
         url = get_url(self.host, "edit_rules")
-        data = {"id": -57663629.41387317, "need_integrate": 20940679.188845485, "free_num": 41215406.597702056,
-                "max_num": 69386761.91879383}
+        data = {"id": 10, "need_integrate": 10, "free_num": 100,
+                "max_num": 20}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -642,9 +647,9 @@ class InterfaceModule(object):
 
     def add_raffle(self, **kwargs):
         url = get_url(self.host, "add_raffle")
-        data = {"title": "incididunt ad ullamco irure", "type": 17483081.562553734, "thumb": "ad Lorem sint",
-                "back_color": "in", "description": "in", "start_time": "occaecat voluptate",
-                "end_time": "nostrud non consequat", "status": -48524366.768350236}
+        data = {"title": faker.sentence(), "type": "1", "thumb": "https://cxtcdn.jzwp.cn/1627439302135.png",
+                "back_color": "#ffffff", "description": faker.sentence(), "start_time": get_now_time(),
+                "end_time": get_now_time(300), "status": "1"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -678,7 +683,7 @@ class InterfaceModule(object):
 
     def prize_list(self, **kwargs):
         url = get_url(self.host, "prize_list")
-        data = {"page": "1", "pageSize": "30", "raffle_id": ""}
+        data = {"page": "1", "pageSize": "30", "raffle_id": "10"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -696,14 +701,34 @@ class InterfaceModule(object):
 
     def add_prize(self, **kwargs):
         url = get_url(self.host, "add_prize")
-        data = {"raffle_id": 96270544.0889709, "name": "do dolor in voluptate", "type": -37033045.33982861,
-                "thumb": "qui nisi Lorem in magna", "chance": "eu culpa et aute cillum",
-                "stock": "elit adipisicing laboris", "sort": "sit dolor reprehenderit", "status": 45955918.31263444,
-                "values": "pariatur culpa consequat in ad", "min_balance": "ut aute",
-                "max_balance": "commodo in cillum occaecat Duis"}
+        data_random_money = {"raffle_id": 10, "name": faker.sentence(), "type": 4,
+                             "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "min_balance": "1",
+                             "max_balance": "10",
+                             "chance": "10",
+                             "stock": "1000", "sort": "1", "status": 1}
+        data_money = {"raffle_id": 10, "name": faker.sentence(), "type": 3,
+                      "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "1",
+                      "chance": "10",
+                      "stock": "1000", "sort": "1", "status": 1}
+        data_shiwu = {"raffle_id": 10, "name": faker.sentence(), "type": 1,
+                      "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "1",
+                      "chance": "10",
+                      "stock": "1000", "sort": "1", "status": 1}
+        data_integral = {"raffle_id": 10, "name": faker.sentence(), "type": 2,
+                         "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "10",
+                         "chance": "10",
+                         "stock": "1000", "sort": "1", "status": 1}
+        data_coupon = {"raffle_id": 10, "name": faker.sentence(), "type": 5,
+                       "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "10",
+                       "chance": "10",
+                       "stock": "1000", "sort": "1", "status": 1}
+        data_no = {"raffle_id": 10, "name": faker.sentence(), "type": 6,
+                   "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "0",
+                   "chance": "10",
+                   "stock": "1000", "sort": "1", "status": 1}
         for key, value in kwargs.items():
-            data[key] = value
-        response = post(self.s, url, **data)
+            data_no[key] = value
+        response = post(self.s, url, **data_no)
         return response
 
     def edit_prize(self, **kwargs):
@@ -728,7 +753,7 @@ class InterfaceModule(object):
 
     def record_list(self, **kwargs):
         url = get_url(self.host, "record_list")
-        data = {"page": "1", "pageSize": "30", "raffle_id": ""}
+        data = {"page": "1", "pageSize": "20", "raffle_id": "10"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -749,60 +774,21 @@ class InterfaceModule(object):
         data = {"is_order_award_calc": 0, "is_break": 0, "is_receive_way_logistics": 1, "first_fee": 0,
                 "cross_border": 2, "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0,
                 "is_top": 0, "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0,
-                "team_angel2": 0, "store_ids": [], "store_extend": [], "start_type": 1, "end_type": 3,
-                "cat_id": ["167", "170"], "seckill_type": 1, "title": "撒旦发", "supplier_id": 30303,
-                "content": "<p>1212213123123</p>", "long_thumb": "https://cxtcdn.jzwp.cn/1642501478018.jpg",
-                "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": "167", "cat_id2": "170", "cat_id3": 0,
-                "thumb": "https://cxtcdn.jzwp.cn/1642501470322.jpg",
-                "imgs": ["https://cxtcdn.jzwp.cn/1642501473961.jpg"], "type_id": 5, "type": 5, "attr_datas": [
-                {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "22,19", "incr_stock": "12", "market_price": "12",
-                 "cost_price": "12", "shop_price": "21", "vip_price": "21", "partner_price": "21", "team_price": "21",
-                 "bonus_second_vip": "12", "bonus_second_partner": "12", "bonus_second_team": "12",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"}],
-                "sku_imgs": {"19": {"thumb": ["https://cxtcdn.jzwp.cn/1642501465485.jpg"]}}, "params": [],
-                "goods_id": 100005602, "supplier_type": 0, "is_index": 0}
-        data = {"is_order_award_calc": 0, "is_break": 0, "is_receive_way_logistics": 1, "first_fee": 0,
-                "cross_border": 2, "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0,
-                "is_top": 0, "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0,
                 "team_angel2": 0, "store_extend": [], "start_type": 1, "end_type": 3, "action_type": 1,
-                "goods_id": 100005406, "supplier_type": 1, "stock_type": 1, "cat_id1": 153, "cat_id2": 0,
+                "goods_id": 100005501, "supplier_type": 1, "stock_type": 1, "cat_id1": 153, "cat_id2": 0,
                 "cat_id3": 0, "goods_sn": "SN00000001", "title": "超市商品1辣条", "subtitle": "超响辣条",
-                "imgs": ["https://cxtcdn.jzwp.cn/1641287688249.jpg"],
+                "imgs": ["https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
                 "long_thumb": "https://cxtcdn.jzwp.cn/1641287680460.jpg",
                 "delivery_type": [1, 2], "store_ids": [30997], "attr_datas": [
-                {
-                    "sku_id": 0,
-                    "warehouse_id": 30997,
-                    "stock": 0,
-                    "goods_attr_ids": "256",
-                    "incr_stock": 100,
-                    "market_price": "11",
-                    "cost_price": "22",
-                    "shop_price": "33",
-                    "member_price": "33",
-                    "team_price": "33",
-                    "team_fee": "22",
-                    "sku_sn": "sku_sn00001"
-                },
-                {
-                    "sku_id": 0,
-                    "warehouse_id": 30997,
-                    "stock": 0,
-                    "goods_attr_ids": "1023",
-                    "incr_stock": 100,
-                    "market_price": "11",
-                    "cost_price": "22",
-                    "shop_price": "33",
-                    "member_price": "33",
-                    "team_price": "33",
-                    "team_fee": "22",
-                    "sku_sn": "sku_sn00002"
-                }
+                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "256", "incr_stock": 100,
+                 "market_price": "11", "cost_price": "22", "shop_price": "33", "member_price": "33", "team_price": "33",
+                 "team_fee": "22", "sku_sn": "sku_sn00001"},
+                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1023", "incr_stock": 100,
+                 "market_price": "11",
+                 "cost_price": "22", "shop_price": "33", "member_price": "33", "team_price": "33", "team_fee": "22",
+                 "sku_sn": "sku_sn00002"
+                 }
             ]
-
                 }
         for key, value in kwargs.items():
             data[key] = value
@@ -817,8 +803,124 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    def warehouse_edit_stock(self, **kwargs):
+        url = get_url(self.host, "warehouse_edit_stock")
+        data = {"goods_id": "100005500", "warehouse_id": "30997",
+                "sku_groups": [{"sku_id": "100004566", "incr_stock": "100"},
+                               {"sku_id": "100004565", "incr_stock": "100"}], }
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def content_list(self, **kwargs):
+        url = get_url(self.host, "content_list")
+        data = {"page": "1", "pageSize": "30"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data'])
+        return response
+
+    def content_detail(self, **kwargs):
+        url = get_url(self.host, "content_detail")
+        data = {"id": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    def add_content(self, **kwargs):
+        url = get_url(self.host, "add_content")
+        data = {"author_id": "1", "content": "是独立房间看临时搭建开发拉跨",
+                "images": ["https://mmtcdn.jzwp.cn/1623983004180.png", "https://mmtcdn.jzwp.cn/1623996530710.png"],
+                "video": "", "supplier_type": "0", "goods_id": "100005501",
+                "sort": "1", "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def edit_content(self, **kwargs):
+        url = get_url(self.host, "edit_content")
+        data = {"id": "", "author_id": "", "content": "", "images": "", "video": "", "supplier_type": "",
+                "goods_id": "100005501", "sort": "1", "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def set_content(self, **kwargs):
+        url = get_url(self.host, "set_content")
+        data = {"id": "1", "status": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def del_content(self, **kwargs):
+        url = get_url(self.host, "del_content")
+        data = {"id": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def author_list(self, **kwargs):
+        url = get_url(self.host, "author_list")
+        data = {"page": "1", "pageSize": "10"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data'])
+        return response
+
+    def add_author(self, **kwargs):
+        url = get_url(self.host, "add_author")
+        data = {"name": faker.name(),
+                "head_picture": r"https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKFMZ6K4rdxnGh3XEQAFYQKJlCV5Q2owBicWFaMaGTefO5UsjXfMruib2TgqbibPLyoXjJZ3wBlic47Ew/132",
+                "status": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def edit_author(self, **kwargs):
+        url = get_url(self.host, "edit_author")
+        data = {"id": "", "name": "1", "head_picture": "30", "status": "30"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def set_author(self, **kwargs):
+        url = get_url(self.host, "set_author")
+        data = {"id": "1", "status": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def del_author(self, **kwargs):
+        url = get_url(self.host, "del_author")
+        data = {"id": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def all_open_author(self, **kwargs):
+        url = get_url(self.host, "all_open_author")
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    InterfaceModule(s).add_goods(**data_temp)
+    InterfaceModule(s).content_list(**data_temp)
