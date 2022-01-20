@@ -18,7 +18,7 @@ class InterfaceModuleApi(object):
         self.host = "host_smj_c"
 
     # 添加用户地址
-    def add_address(self):
+    def add_address(self, **kwargs):
         url = get_url(self.host, "add_address")
         data = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "水电费水电费", "id_card_name": "",
                 "id_card": "",
@@ -26,17 +26,32 @@ class InterfaceModuleApi(object):
                 "district": "金牛区", "district_id": 510106, "full_address": "四川省成都市金牛区水电费水电费", "appName": "超享团",
                 "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
                 "deviceModel": "microsoft"}
+        for key, value in kwargs.items():
+            data[key] = value
         response = post(self.s, url, **data)
         return response
 
     # 下单
-    def submmit_order(self):
+    def submmit_order(self, **kwargs):
         url = get_url(self.host, "submmit_order")
         data = {"type": 1, "bargain_id": 0, "buy_insurance": 0, "join_store": 0, "goods_id": "100005500",
                 "sku_id": "100004566", "nums": 1, "couponNeedNum": 1, "cart_ids": "",
                 "address_ids": "122",
                 "coupon_id": "", "extend": {"100005500": {"buy_insurance": 0, "buyer_message": ""}},
                 "scene": "null", "source": "null", "shopId": "31002"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 支付
+    def pay_order(self, **kwargs):
+        url = get_url(self.host, "submmit_order")
+        data = {"pay_type": 1, "order_sn": "12312", "appName": "圣美家", "appVersion": "v0.1.3",
+                "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+                "deviceModel": "microsoft", "shopId": "1"}
+        for key, value in kwargs.items():
+            data[key] = value
         response = post(self.s, url, **data)
         return response
 

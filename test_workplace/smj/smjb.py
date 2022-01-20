@@ -118,7 +118,7 @@ class InterfaceModule(object):
     # 后台余额加扣款
     def update_money(self, **kwargs):
         url = get_url(self.host, "update_money")
-        data = {"uid": 2, "type": 9, "money": 100, "remark": "加钱", "password": "110114"}
+        data = {"uid": 2, "type": 9, "money": 1000000, "remark": "加钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -775,18 +775,19 @@ class InterfaceModule(object):
                 "cross_border": 2, "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0,
                 "is_top": 0, "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0,
                 "team_angel2": 0, "store_extend": [], "start_type": 1, "end_type": 3, "action_type": 1,
-                "goods_id": 100005501, "supplier_type": 1, "stock_type": 1, "cat_id1": 153, "cat_id2": 0,
-                "cat_id3": 0, "goods_sn": "SN00000001", "title": "超市商品1辣条", "subtitle": "超响辣条",
+                "goods_id": get_max_goods_id(), "supplier_type": 1, "stock_type": 1, "cat_id1": 153, "cat_id2": 0,
+                "cat_id3": 0, "goods_sn": "SN00000001", "title": faker.sentence(), "subtitle": faker.sentence(),
                 "imgs": ["https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
                 "long_thumb": "https://cxtcdn.jzwp.cn/1641287680460.jpg",
                 "delivery_type": [1, 2], "store_ids": [30997], "attr_datas": [
                 {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "256", "incr_stock": 100,
-                 "market_price": "11", "cost_price": "22", "shop_price": "33", "member_price": "33", "team_price": "33",
-                 "team_fee": "22", "sku_sn": "sku_sn00001"},
+                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
+                 "team_price": "180",
+                 "team_fee": "10", "sku_sn": "sku_sn00001"},
                 {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1023", "incr_stock": 100,
-                 "market_price": "11",
-                 "cost_price": "22", "shop_price": "33", "member_price": "33", "team_price": "33", "team_fee": "22",
-                 "sku_sn": "sku_sn00002"
+                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
+                 "team_price": "180",
+                 "team_fee": "10", "sku_sn": "sku_sn00002"
                  }
             ]
                 }
@@ -919,8 +920,43 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+    def add_score_goods(self, **kwargs):
+        url = get_url(self.host, "add_score_goods")
+        data = {"supplier_id": "30376", "cat_id1": 153, "title": "积分商品" + faker.sentence(),
+                "action_type": "1", "goods_id": get_max_goods_id(), "attr_datas": [
+                {"sku_id": 0, "stock": 0,
+                 "goods_attr_ids": "256", "incr_stock": 100,
+                 "market_price": "200", "cost_price": "190",
+                 "sku_sn": "sku_sn000a", "ask_amount": 100,
+                 "ask_score": 80}, {"sku_id": 0, "stock": 0,
+                                    "goods_attr_ids": "1023",
+                                    "incr_stock": 100, "market_price": "210",
+                                    "cost_price": "180",
+                                    "sku_sn": "sku_sn223",
+                                    "ask_amount": 60,
+                                    "ask_score": 60}],
+                "params": [{"key": "刷个", "value": "撒旦发"},
+                           {"key": "发撒旦", "value": "撒旦发"}],
+                "supplier_type": 1, "cat_id2": 0, "cat_id3": 0,
+                "goods_sn": "SN00000001", "subtitle": "in sed ut sunt consequat",
+                "imgs": [get_image(1), get_image(2)],
+                "long_thumb": get_image(3)}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def score_goods_list(self, **kwargs):
+        url = get_url(self.host, "score_goods_list")
+        data = {"page": "1", "pageSize": "20"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    InterfaceModule(s).content_list(**data_temp)
+    InterfaceModule(s).add_goods(**data_temp)

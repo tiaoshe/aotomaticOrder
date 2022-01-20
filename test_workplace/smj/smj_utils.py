@@ -17,11 +17,43 @@ filepath_write_log = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'smj.log'))
 
 
+# 获取配置文件中的组合URL
 def get_url(host, api):
     host_temp = ReadConfig(filepath).get("URL", host)
     api_temp = ReadConfig(filepath).get("smj_interface", api)
     url = host_temp + api_temp
     return url
+
+
+# 获取配置文件中的图片
+def get_image(image_num):
+    image_name = "img" + str(image_num)
+    image_url = ReadConfig(filepath_data).get("image_data", image_name)
+    return image_url
+
+
+# 获取数据库中最大的id
+def get_max_goods_id():
+    sql = "SELECT MAX(id) FROM smj_goods;"
+    return QueryData().get_data(sql)[0][0] + 1
+
+
+# 获取sku_id
+def get_sku_id(goods_id):
+    sql = "select id from smj_goods_sku WHERE goods_id=%s;" % goods_id
+    return QueryData().get_data(sql)
+
+
+# 获取用户地址
+def get_user_address_id(uid):
+    sql = "select id from smj_member_address where uid = %s;" % uid
+    return QueryData().get_data(sql)
+
+
+# 获取用户地址
+def get_shop_id(goods_id):
+    sql = "select DISTINCT shop_id from smj_inventory where goods_id = %s;" % goods_id
+    return QueryData().get_data(sql)
 
 
 class QueryData(object):
@@ -121,6 +153,7 @@ def get_map(address):
         WriteLog(filepath_write_log).write_str(content="发生异常，获取地址返回信息" + p.text)
 
 
+# 给B端测试模板生成代码
 def add_code(method="get", methed_name=None):
     tmp_get_class = """ 
 
@@ -192,4 +225,6 @@ if __name__ == '__main__':
     # Login().login_c(2)
     # s = get_map("龙泉驿区")
     # print(s['result']['location'])
-    add_code("post", "admin_login")
+    # add_code("post", "admin_login")
+    # print(get_image(1))
+    print(get_user_address_id("2"))

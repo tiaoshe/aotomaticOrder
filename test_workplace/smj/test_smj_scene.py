@@ -2,7 +2,8 @@
 # @Author howell
 # @File smj_scene.PY
 from test_workplace.smj.smjb import InterfaceModule
-from test_workplace.smj.smj_utils import Login
+from test_workplace.smj.smjc import InterfaceModuleApi
+from test_workplace.smj.smj_utils import *
 import pytest
 import allure
 from faker import Faker
@@ -12,8 +13,11 @@ faker = Faker(locale='zh_CN')
 
 class TestSmj(object):
     def setup_class(self):
+        self.uid = 2
         s = Login().login_b("host_smj_b", "admin_login")
         self.WorkerB = InterfaceModule(s)
+        sc = Login().login_c(self.uid)
+        self.WorkerC = InterfaceModuleApi(sc)
 
     @pytest.mark.parametrize("name", ["这是优惠券名称1", ])
     @pytest.mark.parametrize("description", ["这是优惠券描述", ])
@@ -75,6 +79,18 @@ class TestSmj(object):
         # {"uid": 2, "type": 1, "point": 1000, "password": "123456", "remark": "备注"}
         data = {"uid": 2, "type": ty, "point": time, "remark": mark}
         self.WorkerB.update_integral_record(**data)
+
+    def test_submmit_order_pay(self):
+        goods_id = "100005501"
+        sku_id = get_sku_id(goods_id)[0][0]
+        address_id = get_user_address_id(self.uid)[0][0]
+        shop_id = get_shop_id(goods_id)[0][0]
+        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 1, "address_ids": address_id,
+                          "extend": {goods_id: {"buy_insurance": 0, "buyer_message": ""}}, "shopId": shop_id}
+        response = self.WorkerC.submmit_order(**add_goods_data)
+        order_sn = response['data']['order_sn']
+        data = {"order_sn": order_sn}
+        self.WorkerC.pay_order(**data)
 
 
 if __name__ == '__main__':
