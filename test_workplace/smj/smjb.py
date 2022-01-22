@@ -156,9 +156,15 @@ class InterfaceModule(object):
                 "district_id": "510112", "note": "这个是商超", "status": 1,
                 "latitude": "30.577833", "longitude": "104.240829", "template_id": 643, "business_at": "12点到凌晨12点",
                 "area_ids": "500000,500100,500300,510000,510100,510300,510400,510500,510600,510700,510800,510900,511000,511100,511300,511400,511500,511600,511700,511800,511900,512000,513200,513300,513400,520000,520100,520200,520300,520400,520500,520600,522300,522600,522700"}
+        # 添加服务门店
+        data1 = {"shop_type": "2", "pid": "31018", "name": faker.company() + str(random.randint(1, 10000)),
+                 "contact_phone": "13980883526", "type": 2,
+                 "address": "四川省成都市龙泉驿区", "province_id": "510000", "city_id": "510100",
+                 "district_id": "510112", "status": 1, "template_id": "0",
+                 "latitude": "30.577833", "longitude": "104.240829", "business_at": "12点到凌晨12点"}
         for key, value in kwargs.items():
-            data[key] = value
-        response = post(self.s, url, **data)
+            data1[key] = value
+        response = post(self.s, url, **data1)
         return response
 
     # 积分加扣
@@ -237,9 +243,9 @@ class InterfaceModule(object):
     def add_goods_category(self, **kwargs):
         url = get_url(self.host, "add_goods_category")
         # type 1 线上商品  type 2 线下商品
-        data = {"name": faker.name(), "delivery": "false", "display": 0, "sort": "100", "display_index": "1",
+        data = {"name": "枪械-博睿风体验馆", "delivery": "false", "display": 0, "sort": "100", "display_index": "1",
                 "thumb": ["https://fncdn.jzwp.cn/1642147340710.jpg"], "status": "1",
-                "imgs": ["https://fncdn.jzwp.cn/1642147417352.jpg"], "type": "1", "pid": "246"}
+                "imgs": ["https://fncdn.jzwp.cn/1642147417352.jpg"], "type": "2"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -248,8 +254,8 @@ class InterfaceModule(object):
     # 添加规格
     def add_attr(self, **kwargs):
         url = get_url(self.host, "add_attr")
-        # type 1 线上商品  type 2 线下商品
-        data = {"type": "1", "name": "今天感觉有点疲倦"}
+        # type 1 线上商品  type 2 线下服务
+        data = {"type": "2", "name": "容弹量-线下体验馆"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -259,10 +265,10 @@ class InterfaceModule(object):
     def add_attr_item(self, **kwargs):
         url = get_url(self.host, "add_attr_item")
         # type 1 线上商品  type 2 线下商品
-        data = {"name": "哈哈哈", "sort": "9",
-                "values": [{"value": "1", "color": "", "id": ""}, {"value": "2", "color": "", "id": ""},
-                           {"value": "3", "color": "", "id": ""}, {"value": "4", "color": "", "id": ""}],
-                "attr_id": "250"}
+        data = {"name": "杜鲁门突突-线下体验", "sort": "1",
+                "values": [{"value": "100", "color": "", "id": ""}, {"value": "200", "color": "", "id": ""},
+                           {"value": "300", "color": "", "id": ""}, {"value": "400", "color": "", "id": ""}],
+                "attr_id": "32"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -771,29 +777,52 @@ class InterfaceModule(object):
 
     def add_goods(self, **kwargs):
         url = get_url(self.host, "add_goods")
-        data = {"is_order_award_calc": 0, "is_break": 0, "is_receive_way_logistics": 1, "first_fee": 0,
-                "cross_border": 2, "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0,
-                "is_top": 0, "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0,
-                "team_angel2": 0, "store_extend": [], "start_type": 1, "end_type": 3, "action_type": 1,
-                "goods_id": get_max_goods_id(), "supplier_type": 1, "stock_type": 1, "cat_id1": 153, "cat_id2": 0,
-                "cat_id3": 0, "goods_sn": "SN00000001", "title": faker.sentence(), "subtitle": faker.sentence(),
-                "imgs": ["https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
-                "long_thumb": "https://cxtcdn.jzwp.cn/1641287680460.jpg",
-                "delivery_type": [1, 2], "store_ids": [30997], "attr_datas": [
-                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "256", "incr_stock": 100,
+        # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
+        # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
+        data = {"goods_id": get_max_goods_id(), "stock_type": 1, "cat_id1": 253, "goods_sn": "SN00000001",
+                "title": "线上枪械销售店" + str(get_max_goods_id())[5:], "subtitle": faker.sentence(), "imgs": [
+                "https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
+                "store_ids": [30997], "attr_datas": [
+                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1034", "incr_stock": 100,
                  "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
                  "team_price": "180",
                  "team_fee": "10", "sku_sn": "sku_sn00001"},
-                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1023", "incr_stock": 100,
+                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1035", "incr_stock": 100,
                  "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
                  "team_price": "180",
                  "team_fee": "10", "sku_sn": "sku_sn00002"
-                 }
-            ]
-                }
+                 }], "stock_base": "1000", "sku_imgs": {"1034": {"thumb": ["https://cxtcdn.jzwp.cn/1636686308026.jpg"]},
+                                                        "1035": {
+                                                            "thumb": ["https://cxtcdn.jzwp.cn/1642736305106.jpg"]}, },
+                "content": "<p>毒毒毒毒炉门第三方撒旦发撒旦发</p>",
+                "params": [{"key": "长度", "value": "170mm"}, {"key": "重量", "value": "500g"}], "weight": "1314",
+                "volume_width": "520", "delivery_type": [1, 2, 3], "start_type": 1, "end_type": 3, "use_score": "1",
+                "min_score": "1", "max_score": "10", "is_open_limit": "1", "single_max": "10", "limit_max": "125",
+                "day_max": "100"}
+        data1 = {"goods_id": get_max_goods_id(), "stock_type": 2, "cat_id1": 253, "goods_sn": "SN00000001",
+                 "title": "线上枪械销售店-云仓" + str(get_max_goods_id())[5:], "subtitle": faker.sentence(),
+                 "supplier_id": "", "imgs": [
+                "https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
+                 "store_ids": [30997], "attr_datas": [
+                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1034", "incr_stock": 100,
+                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
+                 "team_price": "180",
+                 "team_fee": "10", "sku_sn": "sku_sn00001"},
+                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1035", "incr_stock": 100,
+                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
+                 "team_price": "180",
+                 "team_fee": "10", "sku_sn": "sku_sn00002"
+                 }], "stock_base": "1000", "sku_imgs": {"1034": {"thumb": ["https://cxtcdn.jzwp.cn/1636686308026.jpg"]},
+                                                        "1035": {
+                                                            "thumb": ["https://cxtcdn.jzwp.cn/1642736305106.jpg"]}, },
+                 "content": "<p>毒毒毒毒炉门第三方撒旦发撒旦发 供应商商品</p>",
+                 "params": [{"key": "长度", "value": "170mm"}, {"key": "重量", "value": "500g"}], "weight": "1314",
+                 "volume_width": "520", "delivery_type": [3], "start_type": 1, "end_type": 3, "use_score": "1",
+                 "min_score": "1", "max_score": "10", "is_open_limit": "1", "single_max": "10", "limit_max": "125",
+                 "day_max": "100"}
         for key, value in kwargs.items():
-            data[key] = value
-        response = post(self.s, url, **data)
+            data1[key] = value
+        response = post(self.s, url, **data1)
         return response
 
     def add_channel(self, **kwargs):
@@ -955,8 +984,43 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+    def attr_list(self, **kwargs):
+        url = get_url(self.host, "attr_list")
+        data = {"type": "1", "page": 1, "pageSize": 30}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    def add_shop_account(self, **kwargs):
+        url = get_url(self.host, "add_shop_account")
+        data = {"shop_offline_id": random.choice(["31023", "31018", "31019", "31020", "31021"]), "name": faker.name(),
+                "phone": faker.phone_number(), "password": "123456",
+                "role": random.choice(["1", "2"])}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # senior场景值（1 新增 2 编辑修改）
+    def add_offline_goods(self, **kwargs):
+        url = get_url(self.host, "add_offline_goods")
+        data = {"senior": "1", "goods_id": get_max_goods_id(), "title": "枪械体验射击馆" + str(get_max_goods_id())[5:],
+                "subtitle": faker.sentence(), "cat_id1": "254", "cat_id2": "", "cat_id3": "",
+                "supplier_type": "31018", "expiration_time_of_consumption": "89", "sort": 9999,
+                "params": [{"key": "长度", "value": "170mm"}, {"key": "重量", "value": "500g"}],
+                "is_store_refund": "", "select_type": "",
+                "use_score": "", "store_extend": "", "goods_sn": "",
+                "": "", "": "", "imgs": "", "store_ids": "", "attr_datas": "", "service_expire_type": "",
+                }
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    InterfaceModule(s).add_goods(**data_temp)
+    InterfaceModule(s).add_shop_account(**data_temp)

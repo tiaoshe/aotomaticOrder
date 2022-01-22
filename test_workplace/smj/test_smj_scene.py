@@ -81,7 +81,7 @@ class TestSmj(object):
         self.WorkerB.update_integral_record(**data)
 
     def test_submmit_order_pay(self):
-        goods_id = "100005501"
+        goods_id = "100005678"
         sku_id = get_sku_id(goods_id)[0][0]
         address_id = get_user_address_id(self.uid)[0][0]
         shop_id = get_shop_id(goods_id)[0][0]

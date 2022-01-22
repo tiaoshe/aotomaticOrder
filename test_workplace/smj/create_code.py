@@ -41,7 +41,10 @@ def create_code():
     # add_code("post", "del_author")
     # add_code("get", "all_open_author")
     # add_code("post", "add_score_goods")
-    add_code("get", "score_goods_list")
+    # add_code("get", "score_goods_list")
+    # add_code("get", "attr_list")
+    # add_code("post", "add_shop_account")
+    add_code("post", "add_offline_goods")
 
 
 if __name__ == '__main__':
