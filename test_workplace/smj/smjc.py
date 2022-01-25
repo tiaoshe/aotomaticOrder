@@ -46,10 +46,19 @@ class InterfaceModuleApi(object):
 
     # 支付
     def pay_order(self, **kwargs):
-        url = get_url(self.host, "submmit_order")
-        data = {"pay_type": 1, "order_sn": "12312", "appName": "圣美家", "appVersion": "v0.1.3",
-                "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
-                "deviceModel": "microsoft", "shopId": "1"}
+        url = get_url(self.host, "pay_order")
+        data = {"order_sn": "21112509570557172", "pay_info": [{"money": 100, "check": 1, "type": "balance"},
+                                                              {"money": 0, "check": 0, "type": "vip_card"},
+                                                              {"money": 0, "check": 0, "type": "wx"}]}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 礼品卡绑定
+    def bind_gift_card(self, **kwargs):
+        url = get_url(self.host, "bind_gift_card")
+        data = {"code": "ad non Duis sint mollit", "password": "ex cillum reprehenderit laborum irure"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)

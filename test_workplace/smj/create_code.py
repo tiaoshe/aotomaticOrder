@@ -44,7 +44,8 @@ def create_code():
     # add_code("get", "score_goods_list")
     # add_code("get", "attr_list")
     # add_code("post", "add_shop_account")
-    add_code("post", "add_offline_goods")
+    # add_code("post", "add_offline_goods")
+    add_code("post", "set_config_gift_card")
 
 
 if __name__ == '__main__':

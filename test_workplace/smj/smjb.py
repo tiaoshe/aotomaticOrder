@@ -163,8 +163,8 @@ class InterfaceModule(object):
                  "district_id": "510112", "status": 1, "template_id": "0",
                  "latitude": "30.577833", "longitude": "104.240829", "business_at": "12点到凌晨12点"}
         for key, value in kwargs.items():
-            data1[key] = value
-        response = post(self.s, url, **data1)
+            data[key] = value
+        response = post(self.s, url, **data)
         return response
 
     # 积分加扣
@@ -1019,8 +1019,26 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    def stock_log(self, **kwargs):
+        url = get_url(self.host, "stock_log")
+        data = {"page": 1, "pageSize": 30}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    def set_config_gift_card(self, **kwargs):
+        url = get_url(self.host, "set_config_gift_card")
+        data = {"cover_imgs": ["https://smjcdn.jzwp.cn/1642642710005.jpg"],
+                "face_values": [100, 200, 300, 400, 500, 1000]}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    InterfaceModule(s).add_shop_account(**data_temp)
+    InterfaceModule(s).set_config_gift_card(**data_temp)

@@ -81,15 +81,17 @@ class TestSmj(object):
         self.WorkerB.update_integral_record(**data)
 
     def test_submmit_order_pay(self):
-        goods_id = "100005678"
+        goods_id = "100005681"
         sku_id = get_sku_id(goods_id)[0][0]
         address_id = get_user_address_id(self.uid)[0][0]
-        shop_id = get_shop_id(goods_id)[0][0]
+        # shop_id = get_shop_id(goods_id)[0][0]
+        shop_id = 31002
         add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 1, "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 0, "buyer_message": ""}}, "shopId": shop_id}
         response = self.WorkerC.submmit_order(**add_goods_data)
         order_sn = response['data']['order_sn']
-        data = {"order_sn": order_sn}
+        money = response['data']["actual_fee"]
+        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
         self.WorkerC.pay_order(**data)
 
 
