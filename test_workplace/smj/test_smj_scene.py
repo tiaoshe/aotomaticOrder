@@ -80,11 +80,32 @@ class TestSmj(object):
         data = {"uid": 2, "type": ty, "point": time, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    def test_submmit_order_pay(self):
-        goods_id = "100005681"
+    def test_submmit_order_pay_supermarket(self):
+        goods_id = "1000059085"
         sku_id = get_sku_id(goods_id)[0][0]
         address_id = get_user_address_id(self.uid)[0][0]
-        # shop_id = get_shop_id(goods_id)[0][0]
+        shop_id = get_shop_id(goods_id)[0][0]
+        # shop_id = 31002
+        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 1, "address_ids": address_id,
+                          "extend": {goods_id: {"buy_insurance": 0, "buyer_message": ""}}, "shopId": shop_id}
+        response = self.WorkerC.submmit_order(**add_goods_data)
+        order_sn = response['data']['order_sn']
+        money = response['data']["actual_fee"]
+        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
+        order_response = self.WorkerC.pay_order(**data)
+        order_id = order_response['data']['id']
+        # 接单数据准备
+        pick_order = {"ids": order_id}
+        # 接单
+        self.WorkerB.order_picking_get(**pick_order)
+        # 拣货完成
+        pick_compelte = {"ids": order_id, "deliver_type": 1}
+        self.WorkerB.order_picking_compelte(**pick_compelte)
+
+    def test_submmit_order_pay_yuncang(self):
+        goods_id = "1000059139"
+        sku_id = get_sku_id(goods_id)[0][0]
+        address_id = get_user_address_id(self.uid)[0][0]
         shop_id = 31002
         add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 1, "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 0, "buyer_message": ""}}, "shopId": shop_id}
@@ -92,7 +113,7 @@ class TestSmj(object):
         order_sn = response['data']['order_sn']
         money = response['data']["actual_fee"]
         data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
-        self.WorkerC.pay_order(**data)
+        order_response = self.WorkerC.pay_order(**data)
 
 
 if __name__ == '__main__':

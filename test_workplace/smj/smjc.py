@@ -38,7 +38,7 @@ class InterfaceModuleApi(object):
                 "sku_id": "100004566", "nums": 1, "couponNeedNum": 1, "cart_ids": "",
                 "address_ids": "122",
                 "coupon_id": "", "extend": {"100005500": {"buy_insurance": 0, "buyer_message": ""}},
-                "scene": "null", "source": "null", "shopId": "31002"}
+                "scene": "null", "source": "null", "shopId": "31002", "deliver_type": "1"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)

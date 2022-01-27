@@ -295,7 +295,7 @@ class InterfaceModule(object):
     # 接单
     def order_picking_get(self, **kwargs):
         url = get_url(self.host, "order_picking_get")
-        data = {"ids": "12312"}
+        data = {"ids": ["20222"]}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -305,7 +305,7 @@ class InterfaceModule(object):
     def order_picking_compelte(self, **kwargs):
         url = get_url(self.host, "order_picking_compelte")
         # deliver_type 1 自提  2 同城
-        data = {"ids": "12312", "deliver_type": 1}
+        data = {"ids": "20222", "deliver_type": 1}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -775,54 +775,54 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
-    def add_goods(self, **kwargs):
+    def add_goods_shop(self, **kwargs):
         url = get_url(self.host, "add_goods")
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
-        data = {"goods_id": get_max_goods_id(), "stock_type": 1, "cat_id1": 253, "goods_sn": "SN00000001",
-                "title": "线上枪械销售店" + str(get_max_goods_id())[5:], "subtitle": faker.sentence(), "imgs": [
-                "https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
-                "store_ids": [30997], "attr_datas": [
-                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1034", "incr_stock": 100,
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
-                 "team_price": "180",
-                 "team_fee": "10", "sku_sn": "sku_sn00001"},
-                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1035", "incr_stock": 100,
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
-                 "team_price": "180",
-                 "team_fee": "10", "sku_sn": "sku_sn00002"
-                 }], "stock_base": "1000", "sku_imgs": {"1034": {"thumb": ["https://cxtcdn.jzwp.cn/1636686308026.jpg"]},
-                                                        "1035": {
-                                                            "thumb": ["https://cxtcdn.jzwp.cn/1642736305106.jpg"]}, },
-                "content": "<p>毒毒毒毒炉门第三方撒旦发撒旦发</p>",
-                "params": [{"key": "长度", "value": "170mm"}, {"key": "重量", "value": "500g"}], "weight": "1314",
-                "volume_width": "520", "delivery_type": [1, 2, 3], "start_type": 1, "end_type": 3, "use_score": "1",
-                "min_score": "1", "max_score": "10", "is_open_limit": "1", "single_max": "10", "limit_max": "125",
-                "day_max": "100"}
-        data1 = {"goods_id": get_max_goods_id(), "stock_type": 2, "cat_id1": 253, "goods_sn": "SN00000001",
-                 "title": "线上枪械销售店-云仓" + str(get_max_goods_id())[5:], "subtitle": faker.sentence(),
-                 "supplier_id": "", "imgs": [
-                "https://cxtcdn.jzwp.cn/1627439346806.png", "https://cxtcdn.jzwp.cn/1627439302135.png"],
-                 "store_ids": [30997], "attr_datas": [
-                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1034", "incr_stock": 100,
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
-                 "team_price": "180",
-                 "team_fee": "10", "sku_sn": "sku_sn00001"},
-                {"sku_id": 0, "warehouse_id": 30997, "stock": 0, "goods_attr_ids": "1035", "incr_stock": 100,
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "member_price": "190",
-                 "team_price": "180",
-                 "team_fee": "10", "sku_sn": "sku_sn00002"
-                 }], "stock_base": "1000", "sku_imgs": {"1034": {"thumb": ["https://cxtcdn.jzwp.cn/1636686308026.jpg"]},
-                                                        "1035": {
-                                                            "thumb": ["https://cxtcdn.jzwp.cn/1642736305106.jpg"]}, },
-                 "content": "<p>毒毒毒毒炉门第三方撒旦发撒旦发 供应商商品</p>",
-                 "params": [{"key": "长度", "value": "170mm"}, {"key": "重量", "value": "500g"}], "weight": "1314",
-                 "volume_width": "520", "delivery_type": [3], "start_type": 1, "end_type": 3, "use_score": "1",
-                 "min_score": "1", "max_score": "10", "is_open_limit": "1", "single_max": "10", "limit_max": "125",
-                 "day_max": "100"}
+        data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
+                "delivery_type": [1, 2], "store_ids": [30997, 30996, 30995], "first_fee": 0, "cross_border": 2,
+                "second_fee": "0", "combination": 0, "zu_num": 0, "video": "https://smjcdn.jzwp.cn/1643188625260.mp4",
+                "stock_double": 1, "is_quick": 0, "is_top": 0,
+                "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
+                "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": ["257", "262", "258"], "seckill_type": 1,
+                "use_score": 1, "min_score": 5, "max_score": 10, "is_open_limit": 1, "single_max": 100,
+                "limit_max": 100, "day_max": 100, "title": "超市-自营仓-弓" + str(get_max_goods_id())[5:], "subtitle": "商品特色",
+                "goods_sn": "sn123123",
+                "sort": "9999", "content": "<p>234</p>", "weight": "10", "volume_width": "410",
+                "long_thumb": "https://smjcdn.jzwp.cn/1643184858440.jpg", "seckill_flag": 0, "is_coupon_convert": 0,
+                "cat_id1": "257", "cat_id2": "262", "cat_id3": "258",
+                "thumb": get_image(random.randint(1, 15)),
+                "imgs": [get_image(random.randint(1, 15))], "stock_base": "10000", "type_id": 33, "type": 33,
+                "attr_datas": [
+                    {"sku_sn": "213123", "sku_id": 0, "goods_attr_ids": "1064,1056,1051", "stock": 0, "incr_stock": 0,
+                     "stocks": [{"warehouse_id": "30997", "incr_stock": 100},
+                                {"warehouse_id": "30996", "incr_stock": 100},
+                                {"warehouse_id": "30995", "incr_stock": 100}], "market_price": "300",
+                     "cost_price": "100", "shop_price": "200", "vip_price": "180", "partner_price": "null",
+                     "team_price": "170", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                     "bonus_second_team": "10", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                     "fee1": "null",
+                     "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                     "fee7": "null",
+                     "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "213123", "sku_id": 0, "goods_attr_ids": "1064,1056,1052", "stock": 0, "incr_stock": 0,
+                     "stocks": [{"warehouse_id": "30997", "incr_stock": 100},
+                                {"warehouse_id": "30996", "incr_stock": 100},
+                                {"warehouse_id": "30995", "incr_stock": 100}], "market_price": "300",
+                     "cost_price": "100", "shop_price": "200", "vip_price": "180", "partner_price": "null",
+                     "team_price": "170", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                     "bonus_second_team": "10", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                     "fee1": "null",
+                     "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                     "fee7": "null",
+                     "fee11": "null",
+                     "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [],
+                "goods_id": get_max_goods_id(),
+                "is_index": 0}
         for key, value in kwargs.items():
-            data1[key] = value
-        response = post(self.s, url, **data1)
+            data[key] = value
+        response = post(self.s, url, **data)
         return response
 
     def add_channel(self, **kwargs):
@@ -995,7 +995,7 @@ class InterfaceModule(object):
 
     def add_shop_account(self, **kwargs):
         url = get_url(self.host, "add_shop_account")
-        data = {"shop_offline_id": random.choice(["31023", "31018", "31019", "31020", "31021"]), "name": faker.name(),
+        data = {"shop_offline_id": random.choice(["31032", "31033", "31034"]), "name": faker.name(),
                 "phone": faker.phone_number(), "password": "123456",
                 "role": random.choice(["1", "2"])}
         for key, value in kwargs.items():
@@ -1037,8 +1037,62 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    def add_goods_yuncang(self, **kwargs):
+        url = get_url(self.host, "add_goods")
+        # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
+        # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
+        data = {"action_type": 1, "stock_type": 2, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
+                "delivery_type": [3], "store_ids": [], "freight_id": 545, "first_fee": 0, "cross_border": 2,
+                "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0,
+                "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
+                "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": ["257", "263", "261"], "seckill_type": 1,
+                "use_score": 1, "min_score": 0, "max_score": 0, "is_open_limit": 1, "single_max": 1, "limit_max": 1,
+                "day_max": 1, "title": "云仓-箭" + str(get_max_goods_id())[5:], "subtitle": "特色test", "goods_sn": "sn342",
+                "sort": "9999",
+                "supplier_id": "30377", "content": "<p>地方锁粉撒旦发撒旦发撒旦发</p>", "weight": "12", "volume_width": "12",
+                "freight_type": 3, "insurance_id": 180, "long_thumb": "https://smjcdn.jzwp.cn/1643190310677.jpg",
+                "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": "257", "cat_id2": "263", "cat_id3": "261",
+                "thumb": get_image(random.randint(1, 15)),
+                "imgs": [get_image(random.randint(1, 15)), "https://smjcdn.jzwp.cn/1643190306757.jpg"],
+                "stock_base": "1000", "type_id": 33, "type": 33, "attr_datas": [
+                {"sku_sn": "1212", "sku_id": 0, "goods_attr_ids": "1062,1056,1051", "stock": 0, "incr_stock": "100",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null",
+                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
+                 "fee13": "null"},
+                {"sku_sn": "1212", "sku_id": 0, "goods_attr_ids": "1062,1056,1052", "stock": 0, "incr_stock": "100",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null",
+                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
+                 "fee13": "null"}],
+                "sku_imgs": {}, "params": [{"key": "1", "value": "2"}, {"key": "3", "value": "4"}],
+                "goods_id": get_max_goods_id(), "is_index": 0}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 服务门店
+    def add_shop_offline_mendian(self, **kwargs):
+        url = get_url(self.host, "add_shop_offline")
+        data = {"type": 2, "name": faker.company() + str(random.randint(1, 10000)), "province_id": 510000, "city_id": 510100, "district_id": 510186,
+                "address": "环球中心w2", "longitude": "104.060835", "latitude": "30.569896", "contact_phone": "13980883526",
+                "business_at": "9:00~18:00", "status": 1, "shop_type": 1,
+                "shop_imgs": ["https://smjcdn.jzwp.cn/1643249620351.jpg"], "pid": 0}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    InterfaceModule(s).set_config_gift_card(**data_temp)
+    for r in range(300):
+        InterfaceModule(s).add_shop_account(**data_temp)
