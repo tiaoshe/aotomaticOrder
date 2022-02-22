@@ -26,3 +26,37 @@ USAGE:
 
 For more information try --help
 
+geckodriver: error: Found argument '--websocket-port' which wasn't expected, or isn't valid in this context
+
+USAGE:
+    geckodriver [FLAGS] [OPTIONS]
+
+For more information try --help
+
+1643362642539	geckodriver	INFO	Listening on 127.0.0.1:1028
+1643362645601	mozrunner::runner	INFO	Running command: "D:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "1029" "-no-remote" "-profile" "C:\\Users\\admin\\AppData\\Local\\Temp\\rust_mozprofileVsjwK4"
+1643362647348	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\admin\\AppData\\Local\\Temp\\rust_mozprofileVsjwK4\\search.json.mozlz4", (void 0)))
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+DevTools listening on ws://localhost:1029/devtools/browser/3134d038-49c4-471d-aaa9-6cac06215047
+1643362650455	Marionette	INFO	Listening on port 1060
+console.error: Region.jsm: "Error fetching region" (new TypeError("NetworkError when attempting to fetch resource.", ""))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 419))
+1643362650959	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1643362665152	Marionette	INFO	Stopped listening on port 1060
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1643362975936	geckodriver	INFO	Listening on 127.0.0.1:1073
+1643362979024	mozrunner::runner	INFO	Running command: "D:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "1074" "-no-remote" "-profile" "C:\\Users\\admin\\AppData\\Local\\Temp\\rust_mozprofileROzvkw"
+1643362980116	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\admin\\AppData\\Local\\Temp\\rust_mozprofileROzvkw\\search.json.mozlz4", (void 0)))
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+DevTools listening on ws://localhost:1074/devtools/browser/6e7dc81f-2ce9-488a-9b8a-c7178ea95a1b
+1643362982294	Marionette	INFO	Listening on port 1082
+console.error: Region.jsm: "Error fetching region" (new TypeError("NetworkError when attempting to fetch resource.", ""))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 419))
+1643362982748	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://map.qq.com/api/gljs?v=1.exp&key=T5OBZ-KJKWI-AFMGR-5GL4Z-6AED6-75BNH, line 11: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript error: http://smj.dev.jzwp.shop/admin/static/js/vendor.e475593756360d7a90e7.js, line 22: Error: Redirected when going from "/login" to "/" via a navigation guard.
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://smj.dev.jzwp.shop"
+JavaScript error: resource://gre/modules/LoginManagerParent.jsm, line 136: TypeError: gRecipeManager is null
+1643363474483	Marionette	INFO	Stopped listening on port 1082

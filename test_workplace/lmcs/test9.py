@@ -19,4 +19,5 @@
 from selenium import webdriver
 
 browser = webdriver.Firefox()
-browser.get('http://www.baidu.com/')
+browser.get('http://smj.dev.jzwp.shop/admin/?#/offline/offlineProductList')
+browser.maximize_window()

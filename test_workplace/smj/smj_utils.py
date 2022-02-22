@@ -5,7 +5,7 @@ import pymysql
 import os
 from common.writelog import WriteLog
 from common.controlconfig import ReadConfig
-import requests
+import requests, random, time
 import json
 from jinja2 import Template
 
@@ -15,6 +15,14 @@ filepath_data = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'conf', 'smjdata.ini'))
 filepath_write_log = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'smj.log'))
+
+
+def get_now_time(secont=0):
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + secont))
+
+
+def get_now_time_cuo(secont_c=0):
+    return int(time.time() + secont_c)
 
 
 # 获取配置文件中的组合URL
@@ -32,6 +40,22 @@ def get_image(image_num):
     return image_url
 
 
+def get_images(num):
+    img_list = list()
+    for i in range(num):
+        image_name = "img" + str(random.randint(1, 15))
+        image_url = ReadConfig(filepath_data).get("image_data", image_name)
+        img_list.append(image_url)
+    return img_list
+
+
+# 获取配置文件中的图片
+def get_video():
+    video_name = "video" + str(random.randint(1, 7))
+    video_url = ReadConfig(filepath_data).get("video_data", video_name)
+    return video_url
+
+
 # 获取数据库中最大的id
 def get_max_goods_id():
     sql = "SELECT MAX(id) FROM smj_goods;"
@@ -40,13 +64,25 @@ def get_max_goods_id():
 
 # 获取sku_id
 def get_sku_id(goods_id):
-    sql = "select id from smj_goods_sku WHERE goods_id=%s;" % goods_id
+    sql = "select id from smj_goods_sku WHERE goods_id=%s AND delflag=0;" % goods_id
+    return QueryData().get_data(sql)
+
+
+# 获取服务code_id
+def get_fuwu_code_id(order_id):
+    sql = "SELECT * FROM `smj-dev`.`smj_order_goods_code` WHERE `order_id` = %s " % order_id
+    return QueryData().get_data(sql)
+
+
+# 获取订单扩展ID
+def get_fuwu_extend_id(order_id):
+    sql = "SELECT * FROM `smj-dev`.`smj_order_extend` WHERE `order_id` = %s" % order_id
     return QueryData().get_data(sql)
 
 
 # 获取用户地址
 def get_user_address_id(uid):
-    sql = "select id from smj_member_address where uid = %s;" % uid
+    sql = "select id from smj_member_address where uid = %s and is_default=1;" % uid
     return QueryData().get_data(sql)
 
 
@@ -54,6 +90,12 @@ def get_user_address_id(uid):
 def get_shop_id(goods_id):
     sql = "select DISTINCT shop_id from smj_inventory where goods_id = %s;" % goods_id
     return QueryData().get_data(sql)
+
+
+# 修改订单状态
+def change_order_status(use_status, order_id):
+    sql = "UPDATE `smj-dev`.`smj_order` SET `use_status` = %d WHERE `id` = %s" % (use_status, order_id)
+    return QueryData().update_data(sql)
 
 
 class QueryData(object):
@@ -81,6 +123,10 @@ class QueryData(object):
             WriteLog(filepath_write_log).write_str(content="查询发生错误:%s" % err)
             results = "查询发生了异常|%s" % err
         return results
+
+    def update_data(self, str_sql):
+        self.cur.execute(str_sql)
+        self.conn.commit()
 
     def __del__(self):
         self.cur.close()
@@ -117,15 +163,29 @@ class Login(object):
             WriteLog(filepath_write_log).write_str(content="登录失败,数据库中没有找到token")
             return None
 
+    def login_md_c(self, host_url, login_api):
+        url = get_url(host_url, login_api)
+        data = dict()
+        user = "13320874616"
+        data['phone'] = user
+        data['password'] = "123456"
+        response = post(self.s, url, **data)
+        try:
+            self.s.headers = {"Authorization": "Bearer " + response['data']['access_token']}
+            return self.s
+        except KeyError:
+            WriteLog(filepath_write_log).write_str(content="登录接口报错")
+            print(response)
+
 
 def get(*args, **kwargs):
     s = args[0]
     url = args[1]
     p = s.get(url=url, params=kwargs)
     t = WriteLog(filepath_write_log)
-    t.write_str(content="请求地址是：%s" % url)
-    t.write_str(content="请求参数是：%s" % str(kwargs))
-    t.write_str(content="请求返回结果：%s " % p.json())
+    t.write_str(content="地址：%s | get" % url)
+    t.write_str(content="参数：%s" % str(kwargs).replace("'", '"'))
+    t.write_str(content="返回：%s " % str(p.json()).replace("'", '"'))
     return p.json()
 
 
@@ -134,9 +194,9 @@ def post(*args, **kwargs):
     url = args[1]
     p = s.post(url=url, json=kwargs)
     t = WriteLog(filepath_write_log)
-    t.write_str(content="请求地址是：%s" % url)
-    t.write_str(content="请求参数是：%s" % str(kwargs))
-    t.write_str(content="请求返回结果：%s " % p.json())
+    t.write_str(content="地址：%s | post" % url)
+    t.write_str(content="参数：%s" % str(kwargs).replace("'", '"'))
+    t.write_str(content="返回：%s " % str(p.json()).replace("'", '"'))
     return p.json()
 
 
@@ -189,7 +249,7 @@ if __name__ == '__main__':
 
     """
     result = ""
-    file_name = "smjb.py"
+    file_name = "smjmdc.py"
     if method == "get" and methed_name is not None:
         data_temp = ReadConfig(filepath_data).get("request_data", methed_name)
         result = render(tmp_get_class, methed=methed_name, data=data_temp)

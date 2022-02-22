@@ -14,14 +14,6 @@ excel_filepath = os.path.abspath(
     os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
 
 
-def get_now_time(secont=0):
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + secont))
-
-
-def get_now_time_cuo(secont_c=0):
-    return int(time.time() + secont_c)
-
-
 class InterfaceModule(object):
     def __init__(self, request_session):
         self.s = request_session
@@ -30,15 +22,18 @@ class InterfaceModule(object):
     # 添加优惠券
     def add_coupon(self, **kwargs):
         url = get_url(self.host, "add_coupon")
-        data = {"type": 0, "cat_id": "103", "ding_at": get_now_time_cuo(), "goods_ids": "100000367,100000400,100000405",
-                "day": 7, "name": faker.sentence(), "max": "50.00", "money": "10.00", "is_overlay": 0, "num": 67,
-                "user_num": 10, "start_at": get_now_time_cuo(),
-                "end_at": get_now_time_cuo(72000), "sort": 0, "delflag": 0,
-                "description": "这个是描述", "member_type": "1,2", "ding_at_end": get_now_time_cuo(72000), "category": 1,
-                "grant_type": "giveout,receive", "support_receive": 1, "channel": 1, "use_type": 1, "range": 2}
+        data_xs_sp = {"type": 0, "cat_id": "103", "ding_at": get_now_time_cuo(),
+                      "goods_ids": "100000367,100000400,100000405",
+                      "day": 10, "name": "优惠券" + faker.sentence()[:-1], "max": "50.00", "money": "10.00",
+                      "is_overlay": 0,
+                      "num": 10000, "user_num": 2, "start_at": get_now_time_cuo(),
+                      "end_at": get_now_time_cuo(60 * 60 * 24 * 7), "sort": 0, "delflag": 0,
+                      "description": "这个是描述", "member_type": "1,2", "ding_at_end": get_now_time_cuo(60 * 60 * 24 * 7),
+                      "category": 1, "grant_type": "giveout,receive", "support_receive": 1, "channel": 1, "use_type": 2,
+                      "range": 3, "shop_ids": "31343,31242"}
         for key, value in kwargs.items():
-            data[key] = value
-        response = post(self.s, url, **data)
+            data_xs_sp[key] = value
+        response = post(self.s, url, **data_xs_sp)
         return response
 
     # 优惠券编辑
@@ -58,7 +53,7 @@ class InterfaceModule(object):
     # 会员卡加扣款
     def update_vip_card(self, **kwargs):
         url = get_url(self.host, "update_vip_card")
-        data = {"uid": 2, "type": 3, "money": 99.99, "remark": "加钱", "password": "110114"}
+        data = {"uid": 13, "type": 3, "money": 10000, "remark": "加钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -67,8 +62,9 @@ class InterfaceModule(object):
     # 添加公告
     def add_notice(self, **kwargs):
         url = get_url(self.host, "add_notice")
-        data = {"title": "老邓头老邓头日晒不愁下雨不愁", "is_enable": 1, "content": "这个是内容",
-                "type_relation": 1, "shop_offline_ids": [31000, 31001, 31002],
+        data = {"title": faker.sentence()[:-1], "is_enable": random.choice([1, 2]), "content": faker.sentence()[:-1],
+                "type_relation": random.choice([1, 2, 3]),
+                "shop_offline_ids": [31343, 31242, 31241, 31240, 31002, 31001],
                 "effect_time_begin": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "effect_time_end": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 7200))}
         for key, value in kwargs.items():
@@ -80,7 +76,8 @@ class InterfaceModule(object):
     def edit_notice(self, **kwargs):
         url = get_url(self.host, "edit_notice")
         data = {"id": 27, "title": "老邓头老邓头日晒不愁下雨不愁", "is_enable": 1, "content": "这个是内容",
-                "type_relation": 1, "shop_offline_ids": [31000, 31001, 31002],
+                "type_relation": random.choice([1, 2, 3]),
+                "shop_offline_ids": [31343, 31242, 31241, 31240, 31002, 31001],
                 "effect_time_begin": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "effect_time_end": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time() + 7200))}
         for key, value in kwargs.items():
@@ -118,7 +115,7 @@ class InterfaceModule(object):
     # 后台余额加扣款
     def update_money(self, **kwargs):
         url = get_url(self.host, "update_money")
-        data = {"uid": 2, "type": 9, "money": 1000000, "remark": "加钱", "password": "110114"}
+        data = {"uid": 13, "type": 9, "money": 2000000, "remark": "加钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -151,11 +148,10 @@ class InterfaceModule(object):
     # 添加超市或服务门店
     def add_shop_offline(self, **kwargs):
         url = get_url(self.host, "add_shop_offline")
-        data = {"name": faker.company() + str(random.randint(1, 10000)), "contact_phone": "13980883526", "type": 1,
-                "address": "四川省成都市龙泉驿区", "province_id": "510000", "city_id": "510100",
-                "district_id": "510112", "note": "这个是商超", "status": 1,
-                "latitude": "30.577833", "longitude": "104.240829", "template_id": 643, "business_at": "12点到凌晨12点",
-                "area_ids": "500000,500100,500300,510000,510100,510300,510400,510500,510600,510700,510800,510900,511000,511100,511300,511400,511500,511600,511700,511800,511900,512000,513200,513300,513400,520000,520100,520200,520300,520400,520500,520600,522300,522600,522700"}
+        data = {"type": 1, "name": "圣美家" + str(random.randint(1, 10000)), "province_id": 540000, "city_id": 540100,
+                "district_id": 540102,
+                "address": "娘热北路70号", "longitude": "91.12354", "latitude": "29.6808", "contact_phone": "13980883526",
+                "note": "圣美家欧耶", "template_id": "653", "business_at": "09:00-22:00", "status": 1}
         # 添加服务门店
         data1 = {"shop_type": "2", "pid": "31018", "name": faker.company() + str(random.randint(1, 10000)),
                  "contact_phone": "13980883526", "type": 2,
@@ -204,7 +200,7 @@ class InterfaceModule(object):
     # 优惠券发放
     def coupon_send(self, **kwargs):
         url = get_url(self.host, "coupon_send")
-        data = {"coupon_id": 5278, "coupon_num": "5", "member_ids": "2"}
+        data = {"coupon_id": 5315, "coupon_num": "10", "member_ids": "16"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -225,15 +221,15 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_seckill")
         data = {"title": "圣美家秒杀" + faker.sentence(), "description": "圣美家秒杀",
                 "start_time": get_now_time(),
-                "end_time": get_now_time(72000),
-                "shop_offline_id": "31002",
-                "goods": [{"goods_id": "100005501", "single_max": "1", "single_min": "1", "day_max": "1",
+                "end_time": get_now_time(24 * 60 * 60),
+                "shop_offline_id": "31343",
+                "goods": [{"goods_id": "1000060213", "single_max": "1", "single_min": "1", "day_max": "1",
                            "limit_max": "10", "virtual_percentavirtual_scores": "99.9", "sort": "1",
                            "sku": [
-                               {"sku_id": "100004567", "inventory_id": "87", "kill_price": "9.9", "vip_price": "8.8",
-                                "bonus_second_vip": "1", "stock": "10", "status": "0"},
-                               {"sku_id": "100004568", "inventory_id": "88", "kill_price": "9.9", "vip_price": "8.8",
-                                "bonus_second_vip": "1", "stock": "10", "status": "0"}]}], }
+                               {"sku_id": "100006729", "inventory_id": "18157", "kill_price": "9.9", "vip_price": "8.8",
+                                "bonus_second_vip": "1", "stock": "100", "status": "0"},
+                               {"sku_id": "100006730", "inventory_id": "18158", "kill_price": "9.9", "vip_price": "8.8",
+                                "bonus_second_vip": "1", "stock": "100", "status": "0"}]}], }
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -277,7 +273,7 @@ class InterfaceModule(object):
     # 发货订单 录入快递信息
     def order_delivery(self, **kwargs):
         url = get_url(self.host, "order_delivery")
-        data = {"items": [{"id": 11944, "code": "YTO", "sn": "123456789"}]}
+        data = {"items": [{"id": 20244, "code": "YTO", "sn": "123456789"}]}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -336,7 +332,6 @@ class InterfaceModule(object):
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
-        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
     # 优惠券列表
@@ -577,10 +572,10 @@ class InterfaceModule(object):
     # 添加满减活动
     def add_lessen(self, **kwargs):
         url = get_url(self.host, "add_lessen")
-        data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(72000),
-                "end_time": get_now_time(72120), "shop_offline_id": 31002,
-                "rules": {"type": 2, "full": 10, "full_reduce": 1},
-                "goods": [100005404]}
+        data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(),
+                "end_time": get_now_time(72120), "shop_offline_id": 31343,
+                "rules": {"type": random.choice([1, 2]), "full": 10, "full_reduce": 1},
+                "goods": ["1000060325", "1000060326", "1000060324"]}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -635,8 +630,8 @@ class InterfaceModule(object):
 
     def edit_rules(self, **kwargs):
         url = get_url(self.host, "edit_rules")
-        data = {"id": 10, "need_integrate": 10, "free_num": 100,
-                "max_num": 20}
+        data = {"id": 10, "need_integrate": 10, "free_num": 1000,
+                "max_num": 2000}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -655,7 +650,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_raffle")
         data = {"title": faker.sentence(), "type": "1", "thumb": "https://cxtcdn.jzwp.cn/1627439302135.png",
                 "back_color": "#ffffff", "description": faker.sentence(), "start_time": get_now_time(),
-                "end_time": get_now_time(300), "status": "1"}
+                "end_time": get_now_time(3600 * 12), "status": "1"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -689,7 +684,7 @@ class InterfaceModule(object):
 
     def prize_list(self, **kwargs):
         url = get_url(self.host, "prize_list")
-        data = {"page": "1", "pageSize": "30", "raffle_id": "10"}
+        data = {"page": "1", "pageSize": "30", "raffle_id": "120"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -707,34 +702,34 @@ class InterfaceModule(object):
 
     def add_prize(self, **kwargs):
         url = get_url(self.host, "add_prize")
-        data_random_money = {"raffle_id": 10, "name": faker.sentence(), "type": 4,
+        data_random_money = {"raffle_id": 105, "name": faker.sentence(), "type": 4,
                              "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "min_balance": "1",
                              "max_balance": "10",
                              "chance": "10",
                              "stock": "1000", "sort": "1", "status": 1}
-        data_money = {"raffle_id": 10, "name": faker.sentence(), "type": 3,
+        data_money = {"raffle_id": 105, "name": faker.sentence(), "type": 3,
                       "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "1",
                       "chance": "10",
                       "stock": "1000", "sort": "1", "status": 1}
-        data_shiwu = {"raffle_id": 10, "name": faker.sentence(), "type": 1,
+        data_shiwu = {"raffle_id": 105, "name": faker.sentence(), "type": 1,
                       "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "1",
-                      "chance": "10",
+                      "chance": "100",
                       "stock": "1000", "sort": "1", "status": 1}
-        data_integral = {"raffle_id": 10, "name": faker.sentence(), "type": 2,
+        data_integral = {"raffle_id": 105, "name": faker.sentence(), "type": 2,
                          "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "10",
                          "chance": "10",
                          "stock": "1000", "sort": "1", "status": 1}
-        data_coupon = {"raffle_id": 10, "name": faker.sentence(), "type": 5,
+        data_coupon = {"raffle_id": 105, "name": faker.sentence(), "type": 5,
                        "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "10",
                        "chance": "10",
                        "stock": "1000", "sort": "1", "status": 1}
-        data_no = {"raffle_id": 10, "name": faker.sentence(), "type": 6,
+        data_no = {"raffle_id": 105, "name": faker.sentence(), "type": 6,
                    "thumb": "https://llycdn.jzwp.cn/1617014556171.jpg", "values": "0",
                    "chance": "10",
                    "stock": "1000", "sort": "1", "status": 1}
         for key, value in kwargs.items():
-            data_no[key] = value
-        response = post(self.s, url, **data_no)
+            data_shiwu[key] = value
+        response = post(self.s, url, **data_shiwu)
         return response
 
     def edit_prize(self, **kwargs):
@@ -759,7 +754,7 @@ class InterfaceModule(object):
 
     def record_list(self, **kwargs):
         url = get_url(self.host, "record_list")
-        data = {"page": "1", "pageSize": "20", "raffle_id": "10"}
+        data = {"page": "1", "pageSize": "9999", "raffle_id": "120"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -780,46 +775,68 @@ class InterfaceModule(object):
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
         data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
-                "delivery_type": [1, 2], "store_ids": [30997, 30996, 30995], "first_fee": 0, "cross_border": 2,
-                "second_fee": "0", "combination": 0, "zu_num": 0, "video": "https://smjcdn.jzwp.cn/1643188625260.mp4",
-                "stock_double": 1, "is_quick": 0, "is_top": 0,
-                "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
-                "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": ["257", "262", "258"], "seckill_type": 1,
-                "use_score": 1, "min_score": 5, "max_score": 10, "is_open_limit": 1, "single_max": 100,
-                "limit_max": 100, "day_max": 100, "title": "超市-自营仓-弓" + str(get_max_goods_id())[5:], "subtitle": "商品特色",
-                "goods_sn": "sn123123",
-                "sort": "9999", "content": "<p>234</p>", "weight": "10", "volume_width": "410",
-                "long_thumb": "https://smjcdn.jzwp.cn/1643184858440.jpg", "seckill_flag": 0, "is_coupon_convert": 0,
-                "cat_id1": "257", "cat_id2": "262", "cat_id3": "258",
-                "thumb": get_image(random.randint(1, 15)),
-                "imgs": [get_image(random.randint(1, 15))], "stock_base": "10000", "type_id": 33, "type": 33,
-                "attr_datas": [
-                    {"sku_sn": "213123", "sku_id": 0, "goods_attr_ids": "1064,1056,1051", "stock": 0, "incr_stock": 0,
-                     "stocks": [{"warehouse_id": "30997", "incr_stock": 100},
-                                {"warehouse_id": "30996", "incr_stock": 100},
-                                {"warehouse_id": "30995", "incr_stock": 100}], "market_price": "300",
-                     "cost_price": "100", "shop_price": "200", "vip_price": "180", "partner_price": "null",
-                     "team_price": "170", "bonus_second_vip": "null", "bonus_second_partner": "null",
-                     "bonus_second_team": "10", "storage_cost": "null", "clear_price": "null", "price2": "null",
-                     "fee1": "null",
-                     "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
-                     "fee7": "null",
-                     "fee11": "null",
-                     "fee12": "null", "fee13": "null"},
-                    {"sku_sn": "213123", "sku_id": 0, "goods_attr_ids": "1064,1056,1052", "stock": 0, "incr_stock": 0,
-                     "stocks": [{"warehouse_id": "30997", "incr_stock": 100},
-                                {"warehouse_id": "30996", "incr_stock": 100},
-                                {"warehouse_id": "30995", "incr_stock": 100}], "market_price": "300",
-                     "cost_price": "100", "shop_price": "200", "vip_price": "180", "partner_price": "null",
-                     "team_price": "170", "bonus_second_vip": "null", "bonus_second_partner": "null",
-                     "bonus_second_team": "10", "storage_cost": "null", "clear_price": "null", "price2": "null",
-                     "fee1": "null",
-                     "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
-                     "fee7": "null",
-                     "fee11": "null",
-                     "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [],
-                "goods_id": get_max_goods_id(),
-                "is_index": 0}
+                "deliver_type": [1, 2], "store_ids": [31347], "first_fee": 0, "cross_border": 2, "second_fee": "0",
+                "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
+                "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
+                "start_type": 1, "end_type": 3, "cat_id": [257, 262, 258], "seckill_type": 1, "use_score": 1,
+                "min_score": 1,
+                "max_score": 1000, "is_open_limit": 0, "single_max": 127, "limit_max": 127, "day_max": 127,
+                "title": "自营仓商品-测试库存商品-" + str(random.randint(1, 10000)), "subtitle": "这个是商品特色", "goods_sn": "sn123",
+                "sort": "9999",
+                "content": "<p>水电费</p>", "weight": "1", "volume_width": "100",
+                "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
+                "cat_id1": 257, "cat_id2": 262, "cat_id3": 258, "thumb": get_image(random.randint(1, 15)),
+                "imgs": get_images(5), "video": get_video(),
+                "stock_base": "1000", "type_id": 33, "type": 33, "attr_datas": [
+                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1061,1059,1051", "stock": 0, "incr_stock": 0,
+                 "stocks": [{"warehouse_id": "31347", "incr_stock": "100"}], "market_price": "31000",
+                 "cost_price": "15001",
+                 "shop_price": "20001", "vip_price": "19001", "partner_price": "null", "team_price": "18001",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "1001",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"},
+                {"sku_sn": "2", "sku_id": 0, "goods_attr_ids": "1061,1059,1052", "stock": 0, "incr_stock": 0,
+                 "stocks": [{"warehouse_id": "31347", "incr_stock": "100"}], "market_price": "32000",
+                 "cost_price": "15002",
+                 "shop_price": "20002", "vip_price": "19002", "partner_price": "null", "team_price": "18002",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "1002",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"},
+                {"sku_sn": "3", "sku_id": 0, "goods_attr_ids": "1066,1059,1051", "stock": 0, "incr_stock": 0,
+                 "stocks": [{"warehouse_id": "31347", "incr_stock": "100"}], "market_price": "33000",
+                 "cost_price": "15003",
+                 "shop_price": "20003", "vip_price": "19003", "partner_price": "null", "team_price": "18003",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "1003",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"},
+                {"sku_sn": "4", "sku_id": 0, "goods_attr_ids": "1066,1059,1052", "stock": 0, "incr_stock": 0,
+                 "stocks": [{"warehouse_id": "31347", "incr_stock": "100"}], "market_price": "34000",
+                 "cost_price": "15004",
+                 "shop_price": "20004", "vip_price": "19004", "partner_price": "null", "team_price": "18004",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "1004",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"},
+                {"sku_sn": "5", "sku_id": 0, "goods_attr_ids": "1067,1059,1051", "stock": 0, "incr_stock": 0,
+                 "stocks": [{"warehouse_id": "31347", "incr_stock": "100"}], "market_price": "35000",
+                 "cost_price": "15005",
+                 "shop_price": "20005", "vip_price": "19005", "partner_price": "null", "team_price": "18005",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "1005",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"},
+                {"sku_sn": "6", "sku_id": 0, "goods_attr_ids": "1067,1059,1052", "stock": 0, "incr_stock": 0,
+                 "stocks": [{"warehouse_id": "31347", "incr_stock": "100"}], "market_price": "36000",
+                 "cost_price": "15006",
+                 "shop_price": "20006", "vip_price": "19006", "partner_price": "null", "team_price": "18006",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "1006",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [{"key": "参数1", "value": "参数1"}],
+                "goods_id": get_max_goods_id(), "is_index": 0}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -863,9 +880,9 @@ class InterfaceModule(object):
 
     def add_content(self, **kwargs):
         url = get_url(self.host, "add_content")
-        data = {"author_id": "1", "content": "是独立房间看临时搭建开发拉跨",
-                "images": ["https://mmtcdn.jzwp.cn/1623983004180.png", "https://mmtcdn.jzwp.cn/1623996530710.png"],
-                "video": "", "supplier_type": "0", "goods_id": "100005501",
+        data = {"author_id": random.randint(1, 1000), "content": faker.text(max_nb_chars=4000),
+                "images": get_images(9),
+                "video": "", "supplier_type": "0", "goods_id": "1000060494",
                 "sort": "1", "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
         for key, value in kwargs.items():
             data[key] = value
@@ -909,7 +926,7 @@ class InterfaceModule(object):
     def add_author(self, **kwargs):
         url = get_url(self.host, "add_author")
         data = {"name": faker.name(),
-                "head_picture": r"https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKFMZ6K4rdxnGh3XEQAFYQKJlCV5Q2owBicWFaMaGTefO5UsjXfMruib2TgqbibPLyoXjJZ3wBlic47Ew/132",
+                "head_picture": get_image(random.randint(1, 15)),
                 "status": "1"}
         for key, value in kwargs.items():
             data[key] = value
@@ -949,6 +966,7 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
+    # 添加积分商品
     def add_score_goods(self, **kwargs):
         url = get_url(self.host, "add_score_goods")
         data = {"supplier_id": "30376", "cat_id1": 153, "title": "积分商品" + faker.sentence(),
@@ -995,7 +1013,7 @@ class InterfaceModule(object):
 
     def add_shop_account(self, **kwargs):
         url = get_url(self.host, "add_shop_account")
-        data = {"shop_offline_id": random.choice(["31032", "31033", "31034"]), "name": faker.name(),
+        data = {"shop_offline_id": random.choice(["31347", "31341", "31340"]), "name": faker.name(),
                 "phone": faker.phone_number(), "password": "123456",
                 "role": random.choice(["1", "2"])}
         for key, value in kwargs.items():
@@ -1006,82 +1024,74 @@ class InterfaceModule(object):
     # senior场景值（1 新增 2 编辑修改）
     def add_offline_goods(self, **kwargs):
         url = get_url(self.host, "add_offline_goods")
-        data = {"action_type": 1, "supplier_type": 1, "stock_type": 1, "is_break": 1, "first_fee": 0, "cross_border": 2,
-                "service_expire_type": 2, "expiration_time_of_consumption": "60", "second_fee": "0", "combination": 0,
+        data = {"action_type": 1, "supplier_type": 1, "stock_type": 1, "is_break": 0, "first_fee": 0, "cross_border": 2,
+                "service_expire_type": 2, "expiration_time_of_consumption": "90", "second_fee": "0", "combination": 0,
                 "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0, "team_strategy1": 0,
                 "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_ids": [], "store_extend": ["username"],
-                "start_type": 1, "end_type": 3, "cat_id": ["254", "269", "276"], "seckill_type": 1, "use_score": 1,
-                "min_score": 5, "max_score": 10, "is_store_refund": 1, "goods_sn": "服务货号", "select_type": 1,
-                "master_shop_id": 31135, "title": faker.sentence(), "subtitle": "服务特色", "sort": "9999",
-                "content": "<p>水电费水电费</p>", "long_thumb": "https://smjcdn.jzwp.cn/1643349874641.jpg", "seckill_flag": 0,
-                "is_coupon_convert": 0, "cat_id1": "254", "cat_id2": "269", "cat_id3": "276",
-                "thumb": get_image(random.randint(1, 15)),
-                "imgs": [get_image(random.randint(1, 15)), ], "type_id": 36, "type": 36, "attr_datas": [
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1087,1080,1073", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1087,1080,1072", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1087,1081,1073", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1087,1081,1072", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1088,1080,1073", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1088,1080,1072", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1088,1081,1073", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1088,1081,1072", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"}],
-                "sku_imgs": {}, "params": [{"key": "11", "value": "22"}, {"key": "334444", "value": "44"}],
+                "start_type": 1, "end_type": 3, "cat_id": [254, 269, 276], "seckill_type": 1, "use_score": 0,
+                "min_score": 0, "max_score": 0, "is_store_refund": 0, "goods_sn": "服务货号", "select_type": 1,
+                "master_shop_id": 31347, "title": "服务-返利测试" + faker.sentence(), "subtitle": "服务特色", "sort": "9999",
+                "content": "<p>大法师</p>",
+                "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
+                "cat_id1": 254, "cat_id2": 269, "cat_id3": 276, "thumb": get_image(random.randint(1, 15)),
+                "imgs": get_images(4), "stock_base": "1000", "type_id": 36, "type": 36,
+                "attr_datas": [
+                    {"sku_sn": "sn1", "sku_id": 0, "goods_attr_ids": "1087,1080,1072", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "301", "cost_price": "101",
+                     "shop_price": "201", "vip_price": "181", "partner_price": "null", "team_price": "171",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn2", "sku_id": 0, "goods_attr_ids": "1087,1080,1073", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "302", "cost_price": "102",
+                     "shop_price": "202", "vip_price": "182", "partner_price": "null", "team_price": "172",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "12",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn3", "sku_id": 0, "goods_attr_ids": "1087,1081,1072", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "303", "cost_price": "103",
+                     "shop_price": "203", "vip_price": "183", "partner_price": "null", "team_price": "173",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "13",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn4", "sku_id": 0, "goods_attr_ids": "1087,1081,1073", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "304", "cost_price": "104",
+                     "shop_price": "204", "vip_price": "184", "partner_price": "null", "team_price": "174",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "14",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn5", "sku_id": 0, "goods_attr_ids": "1088,1080,1072", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "305", "cost_price": "105",
+                     "shop_price": "205", "vip_price": "185", "partner_price": "null", "team_price": "175",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "15",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn6", "sku_id": 0, "goods_attr_ids": "1088,1080,1073", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "306", "cost_price": "106",
+                     "shop_price": "206", "vip_price": "186", "partner_price": "null", "team_price": "176",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "16",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn7", "sku_id": 0, "goods_attr_ids": "1088,1081,1072", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "307", "cost_price": "107",
+                     "shop_price": "207", "vip_price": "187", "partner_price": "null", "team_price": "177",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "17",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn8", "sku_id": 0, "goods_attr_ids": "1088,1081,1073", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "308", "cost_price": "108",
+                     "shop_price": "208", "vip_price": "188", "partner_price": "null", "team_price": "178",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "18",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [{"key": "参数1", "value": "参数1"}],
                 "goods_id": get_max_goods_id()}
         for key, value in kwargs.items():
             data[key] = value
@@ -1111,36 +1121,47 @@ class InterfaceModule(object):
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
         data = {"action_type": 1, "stock_type": 2, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
-                "delivery_type": [3], "store_ids": [], "freight_id": 545, "first_fee": 0, "cross_border": 2,
-                "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0,
-                "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
-                "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": ["257", "263", "261"], "seckill_type": 1,
-                "use_score": 1, "min_score": 0, "max_score": 0, "is_open_limit": 1, "single_max": 1, "limit_max": 1,
-                "day_max": 1, "title": "云仓-箭" + str(get_max_goods_id())[5:], "subtitle": "特色test", "goods_sn": "sn342",
-                "sort": "9999",
-                "supplier_id": "30377", "content": "<p>地方锁粉撒旦发撒旦发撒旦发</p>", "weight": "12", "volume_width": "12",
-                "freight_type": 3, "insurance_id": 180, "long_thumb": "https://smjcdn.jzwp.cn/1643190310677.jpg",
-                "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": "257", "cat_id2": "263", "cat_id3": "261",
+                "deliver_type": [3], "store_ids": [], "first_fee": 0, "cross_border": 2, "second_fee": "0",
+                "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
+                "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
+                "start_type": 1, "end_type": 3, "cat_id": [257, 264, 260], "seckill_type": 1, "use_score": 0,
+                "min_score": 0, "max_score": 0, "is_open_limit": 0, "single_max": 0, "limit_max": 0, "day_max": 0,
+                "title": "云仓商品-测试返利" + faker.sentence(), "sort": "9999", "subtitle": "商品特色", "goods_sn": "商品货号",
+                "supplier_id": 30377,
+                "content": "<p>水电费水电费</p>", "weight": "5", "volume_width": "5", "freight_type": 2, "freight_fee": "5",
+                "insurance_id": 133, "long_thumb": "https://smjcdn.jzwp.cn/1644829632175.jpg", "seckill_flag": 0,
+                "is_coupon_convert": 0, "cat_id1": 257, "cat_id2": 264, "cat_id3": 260,
                 "thumb": get_image(random.randint(1, 15)),
-                "imgs": [get_image(random.randint(1, 15)), "https://smjcdn.jzwp.cn/1643190306757.jpg"],
-                "stock_base": "1000", "type_id": 33, "type": 33, "attr_datas": [
-                {"sku_sn": "1212", "sku_id": 0, "goods_attr_ids": "1062,1056,1051", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "1212", "sku_id": 0, "goods_attr_ids": "1062,1056,1052", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"}],
-                "sku_imgs": {}, "params": [{"key": "1", "value": "2"}, {"key": "3", "value": "4"}],
+                "imgs": get_images(4), "stock_base": "1000", "type_id": 33, "type": 33,
+                "attr_datas": [
+                    {"sku_sn": "sn", "sku_id": 0, "goods_attr_ids": "1061,1056,1051", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                     "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn", "sku_id": 0, "goods_attr_ids": "1061,1056,1052", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                     "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn", "sku_id": 0, "goods_attr_ids": "1061,1057,1051", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                     "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"},
+                    {"sku_sn": "sn", "sku_id": 0, "goods_attr_ids": "1061,1057,1052", "stock": 0, "incr_stock": "100",
+                     "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                     "shop_price": "200", "vip_price": "180", "partner_price": "null", "team_price": "170",
+                     "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "10",
+                     "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                     "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                     "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [{"key": "参数1", "value": "参数1"}],
                 "goods_id": get_max_goods_id(), "is_index": 0}
         for key, value in kwargs.items():
             data[key] = value
@@ -1169,6 +1190,34 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    # 线下订单列表
+    def offline_list(self, **kwargs):
+        url = get_url(self.host, "offline_list")
+        data = {"status": -1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        return response
+
+    # 订单核销
+    def order_use(self, **kwargs):
+        url = get_url(self.host, "order_use")
+        data = {"goods_code_id": 116374, "shop_id": 30883}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 入驻审核
+    def store_apply(self, **kwargs):
+        url = get_url(self.host, "store_apply")
+        data = {"id": 77, "status": 2, "remark": ""}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
@@ -1178,5 +1227,6 @@ if __name__ == '__main__':
     #     content['value'] = str(i)
     #     values_list.append(content)
     data_temp = {}
-    for i in range(100):
-        InterfaceModule(s).add_shop_offline_mendian(**data_temp)
+    # InterfaceModule(s).add_prize(**data_temp)
+    # InterfaceModule(s).del_prize(**data_temp)
+    InterfaceModule(s).add_coupon(**data_temp)

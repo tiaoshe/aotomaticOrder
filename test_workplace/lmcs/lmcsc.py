@@ -393,7 +393,7 @@ if __name__ == '__main__':
                  '10001567', '10001565', '10001564', '10001563', '10001562', '10001561', '10001560', '10001559',
                  '10001558', '10001557', '10001556', '10001555']
 
-    p = InterfaceWorkerForC(s).confirm_top_up()
+    p = InterfaceWorkerForC(s).order_reason()
     # InterfaceWorkerForC(s).sales_money()
     # print(p.json()['data']['balance'])
     # order_sn = "202110111135237722229"
