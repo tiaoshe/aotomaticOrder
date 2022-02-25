@@ -259,10 +259,10 @@ class InterfaceModuleApi(object):
 
 
 if __name__ == '__main__':
-    s = Login().login_c(13)
+    s = Login().login_c(19)
     data_temp = {}
     # for i in ['173', '172', '171', '170', '161']:
     #     data_temp = {"shopId": "31343", "cart_id": i}
     #     InterfaceModuleApi(s).remove_cart(**data_temp)
-    for i in range(2):
-        InterfaceModuleApi(s).add_address(**data_temp)
+    # for i in range(2):
+    InterfaceModuleApi(s).apply_team(**data_temp)
