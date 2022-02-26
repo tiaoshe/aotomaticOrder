@@ -21,7 +21,8 @@ class InterfaceModuleApi(object):
     def add_address(self, **kwargs):
         url = get_url(self.host, "add_address")
         full_address = "西藏自治区拉萨市城关区曲米路公园"
-        map_a = get_map(full_address)
+        full_address_a = "四川省成都市高新南区天府大道北段1700号"
+        map_a = get_map(full_address_a)
         longitude = map_a['result']['location']['lng']
         latitude = map_a['result']['location']['lat']
         data = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "曲米路公园", "id_card_name": "",
@@ -30,9 +31,16 @@ class InterfaceModuleApi(object):
                 "district": "城关区", "district_id": 540102, "full_address": full_address, "appName": "圣美家",
                 "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
                 "deviceModel": "microsoft", "longitude": longitude, "latitude": latitude, }
+        data1 = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "环球中心-n5",
+                 "id_card_name": "",
+                 "id_card": "", "is_default": 1, "province": "四川省", "province_id": 510000, "city": "成都市",
+                 "city_id": 510100, "district": "高新区", "district_id": 510191, "full_address": full_address_a,
+                 "appName": "嘛嘛团", "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64",
+                 "deviceId": "mini app", "deviceModel": "microsoft", "longitude": "104.061304",
+                 "latitude": "30.570965", }
         for key, value in kwargs.items():
             data[key] = value
-        response = post(self.s, url, **data)
+        response = post(self.s, url, **data1)
         return response
 
     # 下单

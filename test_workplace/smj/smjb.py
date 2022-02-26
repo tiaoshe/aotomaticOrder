@@ -576,7 +576,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_lessen")
         data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(),
                 "end_time": get_now_time(72120), "shop_offline_id": 31343,
-                "rules": {"type": random.choice([1, 2]), "full": 10, "full_reduce": 1},
+                "rules": {"type": random.choice([2]), "full": 10, "full_reduce": 1},
                 "goods": ["1000060325", "1000060326", "1000060324"]}
         for key, value in kwargs.items():
             data[key] = value
@@ -1283,10 +1283,10 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
-    # 修改用户类型
+    # 修改同城运费模板
     def add_city_wide(self, **kwargs):
         url = get_url(self.host, "add_city_wide")
-        data = {"id": 701, "name": "奥克斯广场-永辉超市 同城配送模板", "distance": 10, "start_time_slot": "08:00:00",
+        data = {"name": "A奥克斯广场-永辉超市 同城配送模板", "distance": 10, "start_time_slot": "08:00:00",
                 "end_time_slot": "08:00:00", "distribution": "30", "interval": "30",
                 "distance_config": {"overweight": 1.5, "base_weight": 1.5, "base_freight": 1.5, "base_distance": 1.5,
                                     "over_distance": 1.5, "overweight_freight": 1.5, "over_distance_freight": 1.5},
@@ -1349,4 +1349,4 @@ if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
     # for i in range(10000):
-    InterfaceModule(s).order_sale_detail(**data_temp)
+    InterfaceModule(s).add_goods_yuncang(**data_temp)

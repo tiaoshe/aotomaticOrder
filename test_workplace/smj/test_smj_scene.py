@@ -80,9 +80,9 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(1)])
+    @pytest.mark.parametrize("time", [x for x in range(5)])
     def test_submmit_order_pay_supermarket(self, time):
-        goods_id = "1000060525"
+        goods_id = "1000060664"
         sku_id = get_sku_id(goods_id)[1][0]
         address_id = get_user_address_id(self.uid)[0][0]
         shop_id = get_shop_id(goods_id)[0][0]
@@ -100,7 +100,7 @@ class TestSmj(object):
         add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 1, "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 0, "buyer_message": "杜鲁门啊 杜鲁门"}}, "shopId": shop_id,
                           "deliver_type": deliver_type, "expect_to_time": get_now_time(24 * 60 * 60),
-                          "coupon_id": coupon_id,
+                          "coupon_id": "",
                           "systemType": random.choice(["wechat", "mp", "ios", "android", "wap"])}
         response = self.WorkerC.submmit_order(**add_goods_data)
         order_sn = response['data']['order_sn']
@@ -111,32 +111,32 @@ class TestSmj(object):
         # cancel_order = {"id": order_id}
         # # 取消订单
         # self.WorkerC.cancel_order(**cancel_order)
-        # 接单数据准备
-        pick_order = {"ids": order_id}
-        # 接单
-        self.WorkerB.order_picking_get(**pick_order)
-        # 拣货完成
-        pick_compelte = {"ids": order_id, "deliver_type": deliver_type}
-        self.WorkerB.order_picking_compelte(**pick_compelte)
-        if deliver_type == 3:
-            # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
-            change_order_status(2, order_id)
+        # # 接单数据准备
+        # pick_order = {"ids": order_id}
+        # # 接单
+        # self.WorkerB.order_picking_get(**pick_order)
+        # # 拣货完成
+        # pick_compelte = {"ids": order_id, "deliver_type": deliver_type}
+        # self.WorkerB.order_picking_compelte(**pick_compelte)
+        # if deliver_type == 3:
+        #     # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
+        #     change_order_status(6, order_id)
         # # 订单完成
         # data_end = {"ids": order_id, "deliver_type": deliver_type}
         # self.WorkerB.order_send_end(**data_end)
 
     @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_submmit_order_pay_yuncang(self, i):
-        goods_id = "1000060538"
+        goods_id = "1000060706"
         sku_id = get_sku_id(goods_id)[0][0]
         address_id = get_user_address_id(self.uid)[0][0]
-        shop_id = 31343
+        shop_id = 31365
         # 优惠券ID查询 以及使用
         sql = "select id FROM smj_coupon_record where uid=%s and cid=5315 and is_used=0;" % self.uid
         coupon_id = QueryData().get_data(sql)[0][0]
         add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 2, "address_ids": address_id,
-                          "extend": {goods_id: {"buy_insurance": 1, "buyer_message": "这个也没有什么问题"}}, "shopId": shop_id,
-                          "deliver_type": "1", "coupon_id": "", "integral_fee": 211,
+                          "extend": {goods_id: {"buy_insurance": 1, "buyer_message": "这个备注信息应该能看到"}}, "shopId": shop_id,
+                          "deliver_type": "1", "coupon_id": coupon_id, "integral_fee": 0,
                           "from": random.choice([1, 2, 3])}
         response = self.WorkerC.submmit_order(**add_goods_data)
         # 支付
@@ -172,13 +172,16 @@ class TestSmj(object):
                          "content": faker.text(max_nb_chars=400), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
+        # # 申请售后
+        # self.test_apply_sale(sku_id, order_id, shop_id)
 
+    def test_apply_sale(self, sku_id, order_id, shop_id):
         # 申请售后 5 是补偿  6是补发
-        sales_data = {"sale_type": 5, "description": faker.sentence(), "order_id": order_id,
+        sales_data = {"sale_type": 1, "description": faker.sentence(), "order_id": order_id,
                       "return_sku_list": [{"sku_id": sku_id, "count": 1}], "shopId": shop_id}
         self.WorkerC.order_sales(**sales_data)
         # 同意售后 1.查询售后信息
-        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = '21324'"
+        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
         sale_id = QueryData().get_data(sql)[0][0]
         sale_data = {"id": sale_id}
         sale_response = self.WorkerB.order_sale_detail(**sale_data)
@@ -246,11 +249,11 @@ class TestSmj(object):
         self.WorkerC.add_evaluate(**evaluate_data)
 
     # 加入购物车
-    def test_join_cart(self):
-        goods_id = "1000060464"
+    def test_join_cart(self, goods_id):
+        goods_id = goods_id
         for sku in get_sku_id(goods_id):
             sku_id = sku[0]
-            data = {"shopId": "31343", "cart_id": 0, "sku_id": sku_id, "num": 1}
+            data = {"shopId": "31365", "cart_id": 0, "sku_id": sku_id, "num": 1}
             self.WorkerC.join_cart(**data)
 
     # 获取购物车列表
@@ -260,24 +263,29 @@ class TestSmj(object):
 
     # 购物车下单-云仓
     def test_cart_submit(self):
+        # goods_list = ["1000060675", "1000060673", "1000060671"]
+        goods_list = ["1000060706"]
+        for good_id in goods_list:
+            self.test_join_cart(good_id)
         address_id = get_user_address_id(self.uid)[0][0]
-        shop_id = 31347
+        shop_id = 31365
         # 准备购物车数据
-        cart_data = {"shopId": "31343"}
+        cart_data = {"shopId": "31365"}
         cart_response = self.WorkerC.cart_list(**cart_data)
         items_data = cart_response['data']['cloud']['common']['items']
+        print(items_data)
         extend = dict()
         cart_ids = ""
         goods_id = ""
         for item in items_data:
-            cart_ids = cart_ids + item['id'] + ","
-            sku_id = item['sku_id']
-            if item['goods_id'] not in goods_id:
-                goods_id = goods_id + item['goods_id'] + ","
-            extend[sku_id] = {"buy_insurance": 1, "buyer_message": "霸气"}
+            cart_ids = cart_ids + str(item['id']) + ","
+            if str(item['goods_id']) not in goods_id:
+                goods_id = str(goods_id) + str(item['goods_id']) + ","
+        for good_id in goods_list:
+            extend[good_id] = {"buy_insurance": 1, "buyer_message": "霸气侧漏"}
         submit_data = {"type": 2, "goods_id": goods_id[:-1], "shopId": shop_id, "sku_id": "", "latitude": "0",
                        "longitude": "0", "num": 1,
-                       "address_id": address_id, "deliver_type": 1, "integral_fee": 4, "gift_fee": 0,
+                       "address_ids": address_id, "deliver_type": 1, "integral_fee": 0, "gift_fee": 0,
                        "cart_ids": cart_ids[:-1], "extend": extend}
         response = self.WorkerC.submmit_order(**submit_data)
         order_id = response['data']['order_id']
@@ -293,26 +301,31 @@ class TestSmj(object):
 
     # 购物车下单-自提订单
     def test_cart_submit_self(self):
+        # goods_list = ["1000060675", "1000060673", "1000060671"]
+        goods_list = ["1000060674","1000060672"]
+        for good_id in goods_list:
+            self.test_join_cart(good_id)
+            self.test_join_cart(good_id)
         address_id = get_user_address_id(self.uid)[0][0]
-        shop_id = 31347
+        shop_id = 31365
         # 准备购物车数据
-        cart_data = {"shopId": "31343"}
+        cart_data = {"shopId": "31365"}
         cart_response = self.WorkerC.cart_list(**cart_data)
-        items_data = cart_response['data']['self']['66']['items']
+        items_data = cart_response['data']['self']['common']['items']
         extend = dict()
         cart_ids = ""
         goods_id = ""
-        deliver_type = 2
+        deliver_type = 3
         for item in items_data:
-            cart_ids = cart_ids + item['id'] + ","
-            sku_id = item['sku_id']
-            if item['goods_id'] not in goods_id:
-                goods_id = goods_id + item['goods_id'] + ","
-            extend[sku_id] = {"buy_insurance": 1, "buyer_message": "霸气"}
+            cart_ids = cart_ids + str(item['id']) + ","
+            if str(item['goods_id']) not in goods_id:
+                goods_id = goods_id + str(item['goods_id']) + ","
+        for good_id in goods_list:
+            extend[good_id] = {"buy_insurance": 1, "buyer_message": "霸气侧漏"}
         submit_data = {"type": 2, "goods_id": goods_id[:-1], "shopId": shop_id, "sku_id": "", "latitude": "0",
                        "longitude": "0", "num": 1,
-                       "address_id": address_id, "deliver_type": deliver_type,
-                       "expect_to_time": get_now_time(1800), "integral_fee": 4, "gift_fee": 0,
+                       "address_ids": address_id, "deliver_type": deliver_type,
+                       "expect_to_time": get_now_time(1800), "integral_fee": 0, "gift_fee": 0,
                        "cart_ids": cart_ids[:-1], "extend": extend}
         response = self.WorkerC.submmit_order(**submit_data)
         order_id = response['data']['order_id']
@@ -324,7 +337,24 @@ class TestSmj(object):
         # 准备支付数据
         data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
         # 支付
-        self.WorkerC.pay_order(**data)
+        order_response = self.WorkerC.pay_order(**data)
+        order_id = order_response['data']['id']
+        # cancel_order = {"id": order_id}
+        # # 取消订单
+        # self.WorkerC.cancel_order(**cancel_order)
+        # # 接单数据准备
+        # pick_order = {"ids": order_id}
+        # # 接单
+        # self.WorkerB.order_picking_get(**pick_order)
+        # # 拣货完成
+        # pick_compelte = {"ids": order_id, "deliver_type": deliver_type}
+        # self.WorkerB.order_picking_compelte(**pick_compelte)
+        # if deliver_type == 3:
+        #     # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
+        #     change_order_status(6, order_id)
+        # # 订单完成
+        # data_end = {"ids": order_id, "deliver_type": deliver_type}
+        # self.WorkerB.order_send_end(**data_end)
 
     # 购买礼品卡
     @pytest.mark.parametrize("money", [700, 600, 300, 400, 500, 1000])
@@ -413,17 +443,19 @@ class TestSmj(object):
 
     def test_add_goods(self):
         goods_id_list = list()
-        for i in range(1):
-            data = {"title": "云仓-成都-" + faker.sentence()}
-            # self.WorkerB.add_goods_shop(**data)
+        for i in range(4):
+            data = {"title": "云仓-测试购物车下单-" + faker.sentence()}
+            data1 = {"title": "自营仓-测试购物车下单-" + faker.sentence()}
+            self.WorkerB.add_goods_shop(**data1)
             self.WorkerB.add_goods_yuncang(**data)
             goods_id_list.append(str(get_max_goods_id() - 1))
+            goods_id_list.append(str(get_max_goods_id() - 2))
         return goods_id_list
 
     # 添加秒杀活动
     @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_add_seckill(self, i):
-        shop_offline_id = "31343"
+        shop_offline_id = "31365"
         goods_list = self.test_add_goods()
         # goods_list = ["1000060510"]
         time.sleep(5)
@@ -450,7 +482,7 @@ class TestSmj(object):
         self.WorkerB.add_seckill(**data)
 
     # 添加满减活动
-    @pytest.mark.parametrize("i", [i for i in range(50)])
+    @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_add_lessen(self, i):
         # 新增满减活动商品
         goods_list = self.test_add_goods()
@@ -468,7 +500,7 @@ class TestSmj(object):
         self.WorkerB.add_content()
 
     def test_new_user(self):
-        user_id = 15
+        user_id = 14
         # 加余额
         data1 = {"uid": user_id}
         self.WorkerB.update_money(**data1)
