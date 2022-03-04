@@ -24,16 +24,22 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_coupon")
         data_xs_sp = {"type": 0, "cat_id": "103", "ding_at": get_now_time_cuo(),
                       "goods_ids": "100000367,100000400,100000405",
-                      "day": 10, "name": "优惠券" + faker.sentence()[:-1], "max": "50.00", "money": "10.00",
+                      "day": 10, "name": "优惠券-测试商品详情-" + faker.sentence()[:-1], "max": "50.00", "money": "10.00",
                       "is_overlay": 0,
                       "num": 10000, "user_num": 2, "start_at": get_now_time_cuo(),
                       "end_at": get_now_time_cuo(60 * 60 * 24 * 7), "sort": 0, "delflag": 0,
                       "description": "这个是描述", "member_type": "1,2", "ding_at_end": get_now_time_cuo(60 * 60 * 24 * 7),
-                      "category": 1, "grant_type": "giveout,receive", "support_receive": 1, "channel": 1, "use_type": 2,
+                      "category": 1, "grant_type": "giveout,receive", "support_receive": 1, "channel": 1, "use_type": 1,
                       "range": 3, "shop_ids": "31343,31242"}
+        data_all_sp = {"range": 1, "channel": 1, "day": 10, "use_type": 1,
+                       "name": "测试优惠券" + str(random.randint(1, 10000)), "num": "1000",
+                       "money": "66.66", "user_num": "10", "max": "100", "member_type": "1,2",
+                       "grant_type": "giveout,receive", "start_at": get_now_time_cuo(),
+                       "end_at": get_now_time_cuo(60 * 60 * 24 * 7),
+                       "description": faker.sentence()}
         for key, value in kwargs.items():
             data_xs_sp[key] = value
-        response = post(self.s, url, **data_xs_sp)
+        response = post(self.s, url, **data_all_sp)
         return response
 
     # 优惠券编辑
@@ -149,10 +155,15 @@ class InterfaceModule(object):
     # 添加超市或服务门店
     def add_shop_offline(self, **kwargs):
         url = get_url(self.host, "add_shop_offline")
-        data = {"type": 1, "name": "圣美家" + str(random.randint(1, 10000)), "province_id": 540000, "city_id": 540100,
-                "district_id": 540102,
-                "address": "娘热北路70号", "longitude": "91.12354", "latitude": "29.6808", "contact_phone": "13980883526",
-                "note": "圣美家欧耶", "template_id": "653", "business_at": "09:00-22:00", "status": 1}
+        # data = {"type": 1, "name": "圣美家" + str(random.randint(1, 10000)), "province_id": 540000, "city_id": 540100,
+        #         "district_id": 540102,
+        #         "address": "娘热北路70号", "longitude": "91.12354", "latitude": "29.6808", "contact_phone": "13980883526",
+        #         "note": "圣美家欧耶", "template_id": "653", "business_at": "09:00-22:00", "status": 1}
+        data = {"type": 1, "name": "吾悦广场-龙泉店" + str(random.randint(1, 10000)), "province_id": 510000,
+                "city_id": 510100, "district_id": 510112,
+                "address": "吾悦广场", "longitude": "104.240829", "latitude": "30.577833",
+                "contact_phone": faker.phone_number(),
+                "note": "自提描述" + faker.sentence(), "template_id": 705, "business_at": "8:00~22:00", "status": 1}
         # 添加服务门店
         data1 = {"shop_type": "2", "pid": "31018", "name": faker.company() + str(random.randint(1, 10000)),
                  "contact_phone": "13980883526", "type": 2,
@@ -221,8 +232,8 @@ class InterfaceModule(object):
     # 添加秒杀活动
     def add_seckill(self, **kwargs):
         url = get_url(self.host, "add_seckill")
-        data = {"title": "圣美家秒杀" + faker.sentence(), "description": "圣美家秒杀",
-                "start_time": get_now_time(),
+        data = {"title": "奥克斯秒杀" + faker.sentence(), "description": "圣美家秒杀",
+                "start_time": get_now_time(60 * 60 * 1),
                 "end_time": get_now_time(24 * 60 * 60),
                 "shop_offline_id": "31343",
                 "goods": [{"goods_id": "1000060213", "single_max": "1", "single_min": "1", "day_max": "1",
@@ -243,10 +254,15 @@ class InterfaceModule(object):
         # type 1 线上商品  type 2 线下商品
         data = {"name": "枪械-博睿风体验馆", "delivery": "false", "display": 0, "sort": "100", "display_index": "1",
                 "thumb": ["https://fncdn.jzwp.cn/1642147340710.jpg"], "status": "1",
-                "imgs": ["https://fncdn.jzwp.cn/1642147417352.jpg"], "type": "2"}
+                "imgs": ["https://fncdn.jzwp.cn/1642147417352.jpg"], "type": "1"}
+
+        data1 = {"pid": 257, "name": faker.name(), "thumb": get_images(1),
+                 "level": 1, "sort": "9", "num": 0, "position": "257", "display": 0, "display_index": 0, "delflag": 0,
+                 "created_at": get_now_time_cuo(), "updated_at": get_now_time_cuo(), "imgs": [""], "type": 1,
+                 "pname": "顶级"}
         for key, value in kwargs.items():
             data[key] = value
-        response = post(self.s, url, **data)
+        response = post(self.s, url, **data1)
         return response
 
     # 添加规格
@@ -575,8 +591,8 @@ class InterfaceModule(object):
     def add_lessen(self, **kwargs):
         url = get_url(self.host, "add_lessen")
         data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(),
-                "end_time": get_now_time(72120), "shop_offline_id": 31343,
-                "rules": {"type": random.choice([2]), "full": 10, "full_reduce": 1},
+                "end_time": get_now_time(72120), "shop_offline_id": 31365,
+                "rules": {"type": random.choice([1]), "full": 300, "full_reduce": 50},
                 "goods": ["1000060325", "1000060326", "1000060324"]}
         for key, value in kwargs.items():
             data[key] = value
@@ -782,13 +798,14 @@ class InterfaceModule(object):
                 "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
                 "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": [257, 264, 260, 289, 290],
                 "seckill_type": 1, "use_score": 1, "min_score": 0, "max_score": 50, "is_open_limit": 1,
-                "single_max": 100, "limit_max": 100, "day_max": 100, "title": "自营仓" + faker.sentence(),
+                "single_max": 100, "limit_max": 100, "day_max": 100,
+                "title": "自营仓-测试购物车排序-" + str(random.randint(1, 1000)),
                 "subtitle": "商品特色",
                 "goods_sn": "HHdd", "sort": "9999", "content": "<p>" + faker.text(max_nb_chars=2000) + "</p>",
                 "weight": "5", "volume_width": "50",
                 "long_thumb": "https://smjcdn.jzwp.cn/1645761789620.jpg", "seckill_flag": 0, "is_coupon_convert": 0,
-                "cat_id1": 257, "cat_id2": 264, "cat_id3": 260, "thumb": get_image(random.randint(1, 15)),
-                "imgs": get_images(4), "stock_base": "10000", "type_id": 33, "type": 33,
+                "cat_id1": 257, "cat_id2": 262, "cat_id3": 0, "thumb": get_image(random.randint(1, 15)),
+                "imgs": get_images(4), "stock_base": "9999", "type_id": 33, "type": 33,
                 "attr_datas": [
                     {"sku_sn": "1", "sku_id": 0, "goods_attr_ids": "1065,1058,1051", "stock": 0, "incr_stock": 0,
                      "stocks": [{"warehouse_id": "31372", "incr_stock": 100},
@@ -994,26 +1011,82 @@ class InterfaceModule(object):
 
     # 添加积分商品
     def add_score_goods(self, **kwargs):
-        url = get_url(self.host, "add_score_goods")
-        data = {"supplier_id": "30376", "cat_id1": 153, "title": "积分商品" + faker.sentence(),
-                "action_type": "1", "goods_id": get_max_goods_id(), "attr_datas": [
-                {"sku_id": 0, "stock": 0,
-                 "goods_attr_ids": "256", "incr_stock": 100,
-                 "market_price": "200", "cost_price": "190",
-                 "sku_sn": "sku_sn000a", "ask_amount": 100,
-                 "ask_score": 80}, {"sku_id": 0, "stock": 0,
-                                    "goods_attr_ids": "1023",
-                                    "incr_stock": 100, "market_price": "210",
-                                    "cost_price": "180",
-                                    "sku_sn": "sku_sn223",
-                                    "ask_amount": 60,
-                                    "ask_score": 60}],
-                "params": [{"key": "刷个", "value": "撒旦发"},
-                           {"key": "发撒旦", "value": "撒旦发"}],
-                "supplier_type": 1, "cat_id2": 0, "cat_id3": 0,
-                "goods_sn": "SN00000001", "subtitle": "in sed ut sunt consequat",
-                "imgs": [get_image(1), get_image(2)],
-                "long_thumb": get_image(3)}
+        url = get_url(self.host, "add_goods")
+        data = {"action_type": 1, "stock_type": 2, "supplier_type": 2, "is_order_award_calc": 1, "is_break": 1,
+                "deliver_type": [3], "store_ids": [], "freight_id": 544, "first_fee": 0, "cross_border": 2,
+                "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0,
+                "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
+                "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": [257, 262, 258], "seckill_type": 1,
+                "use_score": 1, "min_score": 2, "max_score": 100, "is_open_limit": 1, "single_max": 100,
+                "limit_max": 100, "day_max": 100, "title": "积分商品-" + faker.sentence(), "subtitle": "商品特色",
+                "goods_sn": "上得分",
+                "sort": "9999", "supplier_id": 30377, "content": "<p>" + faker.text(max_nb_chars=500) + "</p>",
+                "weight": "100",
+                "volume_width": "150", "freight_type": 2, "freight_fee": "100", "insurance_id": 200,
+                "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
+                "cat_id1": 257, "cat_id2": 262, "cat_id3": 258, "thumb": get_image(random.randint(1, 15)),
+                "imgs": get_images(4),
+                "stock_base": "1000", "type_id": 31, "type": 31, "attr_datas": [
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1042,1038,1034", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "ask_amount": "200", "ask_score": "200", "vip_price": "190",
+                 "partner_price": "null",
+                 "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1042,1038,1035", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1042,1039,1034", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1042,1039,1035", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1043,1038,1034", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1043,1038,1035", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1043,1039,1034", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"},
+                {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1043,1039,1035", "stock": 0, "incr_stock": "1000",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1000"}], "market_price": "300", "cost_price": "100",
+                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
+                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "11.11",
+                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
+                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
+                 "fee12": "null", "fee13": "null", "ask_amount": "200", "ask_score": "200"}], "sku_imgs": {},
+                "params": [{"key": "1", "value": "1"}, {"key": "2", "value": "2"}], "goods_id": get_max_goods_id(),
+                "is_index": 0}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1050,16 +1123,18 @@ class InterfaceModule(object):
     # senior场景值（1 新增 2 编辑修改）
     def add_goods_fuwu(self, **kwargs):
         url = get_url(self.host, "add_offline_goods")
+        #  [31347, 31364],[31347],
         # 消费有效期 expiration_time_of_consumption=2022-02-28 00:00:00~2022-02-28 23:00:00 service_expire_type=1
         data = {"action_type": 1, "supplier_type": 1, "stock_type": 1, "is_break": 1, "first_fee": 0, "cross_border": 2,
                 "service_expire_type": 1,
-                "expiration_time_of_consumption": str(get_now_time()) + "~" + str(get_now_time(10000)), "second_fee": "0",
+                "expiration_time_of_consumption": str(get_now_time()) + "~" + str(get_now_time(10000)),
+                "second_fee": "0",
                 "combination": 0,
                 "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0, "team_strategy1": 0,
-                "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_ids": [31369, 31364],
+                "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_ids": [31347, 31364],
                 "store_extend": ["username"], "start_type": 1, "end_type": 3, "cat_id": [254, 270], "seckill_type": 1,
                 "use_score": 1, "min_score": 0, "max_score": 1000, "is_store_refund": 0, "goods_sn": "服务货号",
-                "select_type": 2, "master_shop_id": 31347, "title": "服务-" + faker.sentence(), "subtitle": "服务test",
+                "select_type": 2, "master_shop_id": 31347, "title": "服务-西藏服务-" + faker.sentence(), "subtitle": "服务test",
                 "sort": "9999",
                 "content": "<p>舒服</p>", "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0,
                 "is_coupon_convert": 0, "cat_id1": 254, "cat_id2": 270, "cat_id3": 0,
@@ -1196,13 +1271,13 @@ class InterfaceModule(object):
                 "is_welfare": 0, "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
                 "store_extend": [], "start_type": 1, "end_type": 3, "cat_id": [257, 262, 258], "seckill_type": 1,
                 "use_score": 1, "min_score": 2, "max_score": 100, "is_open_limit": 1, "single_max": 100,
-                "limit_max": 100, "day_max": 100, "title": "云仓商品" + faker.sentence(), "subtitle": "商品特色",
+                "limit_max": 100, "day_max": 100, "title": "云仓-测试评价-" + faker.sentence(), "subtitle": "商品特色",
                 "goods_sn": "上得分",
                 "sort": "9999", "supplier_id": 30377, "content": "<p>" + faker.text(max_nb_chars=2000) + "</p>",
                 "weight": "100",
                 "volume_width": "150", "freight_type": 2, "freight_fee": "100", "insurance_id": 200,
                 "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
-                "cat_id1": 257, "cat_id2": 262, "cat_id3": 258, "thumb": get_image(random.randint(1, 15)),
+                "cat_id1": 257, "cat_id2": 262, "cat_id3": 0, "thumb": get_image(random.randint(1, 15)),
                 "imgs": get_images(4),
                 "stock_base": "1000", "type_id": 31, "type": 31, "attr_datas": [
                 {"sku_sn": "s23", "sku_id": 0, "goods_attr_ids": "1042,1038,1034", "stock": 0, "incr_stock": "1000",
@@ -1392,5 +1467,7 @@ class InterfaceModule(object):
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    # for i in range(10000):
-    InterfaceModule(s).add_goods_fuwu(**data_temp)
+    for i in range(1):
+        #     InterfaceModule(s).add_shop_offline(**data_temp)
+        InterfaceModule(s).add_goods_shop(**data_temp)
+        # InterfaceModule(s).add_goods_yuncang(**data_temp)
