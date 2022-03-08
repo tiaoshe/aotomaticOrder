@@ -60,7 +60,7 @@ class InterfaceModule(object):
     def update_vip_card(self, **kwargs):
         url = get_url(self.host, "update_vip_card")
         # 3 加款  4  扣钱
-        data = {"uid": 19, "type": 4, "money": 10.01, "remark": "扣钱", "password": "110114"}
+        data = {"uid": 16, "type": 3, "money": 1000, "remark": "扣钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -666,8 +666,8 @@ class InterfaceModule(object):
 
     def add_raffle(self, **kwargs):
         url = get_url(self.host, "add_raffle")
-        data = {"title": faker.sentence(), "type": "1", "thumb": "https://cxtcdn.jzwp.cn/1627439302135.png",
-                "back_color": "#ffffff", "description": faker.sentence(), "start_time": get_now_time(),
+        data = {"id": 137, "title": faker.sentence(), "type": "1", "thumb": "https://cxtcdn.jzwp.cn/1627439302135.png",
+                "back_color": "#A30E10", "description": faker.sentence(), "start_time": get_now_time(),
                 "end_time": get_now_time(3600 * 12), "status": "1"}
         for key, value in kwargs.items():
             data[key] = value
@@ -676,9 +676,9 @@ class InterfaceModule(object):
 
     def edit_raffle(self, **kwargs):
         url = get_url(self.host, "edit_raffle")
-        data = {"id": 69197859.0914366, "title": "proident enim dolore in consectetur", "type": 71558876.7851448,
-                "thumb": "dolore quis eu mollit dolor", "back_color": "tempor enim", "description": "Duis Excepteur",
-                "start_time": "sit sed nisi ut incididunt", "end_time": "ut", "status": 15039441.587011024}
+        data = {"id": 137, "title": faker.sentence(), "type": "1", "thumb": "https://cxtcdn.jzwp.cn/1627439302135.png",
+                "back_color": "#A30E10", "description": faker.sentence(), "start_time": get_now_time(),
+                "end_time": get_now_time(3600 * 12 * 2), "status": "1"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -792,6 +792,13 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_goods")
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
+        params = []
+        for i in range(100):
+            p_dic = dict()
+            p_dic["key"] = faker.sentence()
+            p_dic["value"] = faker.sentence()
+            params.append(p_dic)
+        print(params)
         data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
                 "deliver_type": [1, 2], "store_ids": [31372, 31347], "first_fee": 0, "cross_border": 2,
                 "second_fee": "0", "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0,
@@ -878,7 +885,8 @@ class InterfaceModule(object):
                      "team_price": "180.09", "bonus_second_vip": "null", "bonus_second_partner": "null",
                      "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
                      "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
-                     "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [],
+                     "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"}], "sku_imgs": {},
+                "params": params,
                 "goods_id": get_max_goods_id(), "is_index": 0}
         for key, value in kwargs.items():
             data[key] = value
@@ -1125,6 +1133,12 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_offline_goods")
         #  [31347, 31364],[31347],
         # 消费有效期 expiration_time_of_consumption=2022-02-28 00:00:00~2022-02-28 23:00:00 service_expire_type=1
+        params = []
+        for i in range(5):
+            p_dic = dict()
+            p_dic["key"] = faker.sentence()
+            p_dic["value"] = faker.sentence()
+            params.append(p_dic)
         data = {"action_type": 1, "supplier_type": 1, "stock_type": 1, "is_break": 1, "first_fee": 0, "cross_border": 2,
                 "service_expire_type": 1,
                 "expiration_time_of_consumption": str(get_now_time()) + "~" + str(get_now_time(10000)),
@@ -1237,7 +1251,7 @@ class InterfaceModule(object):
                                 "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null", "fee3": "null",
                                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
                                 "fee12": "null", "fee13": "null"}], "sku_imgs": {},
-                "params": [{"key": "1", "value": "1"}], "goods_id": get_max_goods_id()}
+                "params": params, "goods_id": get_max_goods_id()}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1469,5 +1483,5 @@ if __name__ == '__main__':
     data_temp = {}
     for i in range(1):
         #     InterfaceModule(s).add_shop_offline(**data_temp)
-        InterfaceModule(s).add_goods_shop(**data_temp)
-        # InterfaceModule(s).add_goods_yuncang(**data_temp)
+        # InterfaceModule(s).add_goods_shop(**data_temp)
+        InterfaceModule(s).edit_raffle(**data_temp)
