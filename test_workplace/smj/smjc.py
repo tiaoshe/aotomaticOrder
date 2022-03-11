@@ -265,12 +265,39 @@ class InterfaceModuleApi(object):
         response = post(self.s, url, **data)
         return response
 
+    # 回寄物流
+    def send_back(self, **kwargs):
+        url = get_url(self.host, "send_back")
+        data = {"express_code": "YTO", "logistics_sn": "YT6345970536613", "id": "27"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 回寄物流
+    def confire_integral(self, **kwargs):
+        url = get_url(self.host, "confire_integral")
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 会员卡充值
+    def confirm_vip(self, **kwargs):
+        url = get_url(self.host, "confirm_vip")
+        data = {"money": 2000}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
-    s = Login().login_c(19)
+    s = Login().login_c(100013)
     data_temp = {}
     # for i in ['173', '172', '171', '170', '161']:
     #     data_temp = {"shopId": "31343", "cart_id": i}
     #     InterfaceModuleApi(s).remove_cart(**data_temp)
     # for i in range(2):
-    InterfaceModuleApi(s).apply_team(**data_temp)
+    print(InterfaceModuleApi(s).confirm_vip(**data_temp))
