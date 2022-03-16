@@ -1028,10 +1028,13 @@ class InterfaceModule(object):
 
     def add_content(self, **kwargs):
         url = get_url(self.host, "add_content")
-        data = {"author_id": random.randint(1, 1000), "content": faker.text(max_nb_chars=4000),
-                "images": get_images(9),
-                "video": "", "supplier_type": "0", "goods_id": "1000060494",
-                "sort": "1", "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
+        # data = {"author_id": random.randint(2371, 2391), "content": faker.text(max_nb_chars=4000),
+        #         "images": get_images(9),
+        #         "video": "", "supplier_type": "0", "goods_id": "1000060494",
+        #         "sort": random.randint(1, 100), "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
+        data = {"supplier_type": 0, "author_id": random.randint(2371, 2391), "content": faker.text(max_nb_chars=1000),
+                "images": [], "goods_id": 1000062115, "sort": 5, "video": get_video(),
+                "virtual_like": 9999, "virtual_share": 9999, "status": 1, "title": faker.text(max_nb_chars=30)}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1321,7 +1324,7 @@ class InterfaceModule(object):
                  "store_extend": [{"key": 1, "name": "姓名"}, {"key": 2, "name": "电话"}], "start_type": 1, "end_type": 3,
                  "cat_id": [455], "seckill_type": 1, "use_score": 0, "min_score": 0, "max_score": 0,
                  "is_store_refund": 0, "goods_sn": faker.sentence(), "select_type": 2, "master_shop_id": 31480,
-                 "title": "服务-成都-" + faker.sentence(),
+                 "title": "服务-成都2-" + faker.sentence(),
                  "subtitle": faker.sentence(), "sort": "11",
                  "content": "<p>&nbsp;</p>\n<p>jj fisfj</p>\n<p>sd</p>\n<p>&nbsp;i</p>\n<p>jf</p>\n<p>s</p>\n<p>j</p>\n<p>fsd</p>\n<p>&nbsp;</p>\n<p>jf</p>\n<p>sdi isd</p>\n<p>nis</p>\n<p>&nbsp;ss'ds'dl'k'jlll'k'sff'ls'ds'ds'ds'ds'dss'd</p>\n<p>s'd'f水电费s'l'd'ks'dfl'ks'd水电费sss'ds'dss'ds'd'f速度f水电费f'l'k'd's'js'd'f水电费s'd'f'k</p>",
                  "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
@@ -1355,7 +1358,8 @@ class InterfaceModule(object):
                  "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "9",
                  "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
                  "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
-                 "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [], "goods_id": get_max_goods_id()}
+                 "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [], "goods_id": get_max_goods_id(),
+                 "params": params}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data1)
@@ -1417,7 +1421,7 @@ class InterfaceModule(object):
                 "city_id": 510100, "district_id": 510186,
                 "address": "环球中心w2", "longitude": "104.060835", "latitude": "30.569896", "contact_phone": "13980883526",
                 "business_at": "9:00~18:00", "status": 1, "shop_type": 2,
-                "shop_imgs": ["https://smjcdn.jzwp.cn/1643249620351.jpg"], "pid": "31135"}
+                "shop_imgs": ["https://smjcdn.jzwp.cn/1643249620351.jpg"], "pid": "31480"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1543,7 +1547,8 @@ class InterfaceModule(object):
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    for i in range(1):
+    for i in range(60):
         #     InterfaceModule(s).add_shop_offline(**data_temp)
-        InterfaceModule(s).add_goods_yuncang(**data_temp)
+        # InterfaceModule(s).add_author(**data_temp)
+        InterfaceModule(s).add_shop_offline_mendian(**data_temp)
         # InterfaceModule(s).add_goods_shop(**data_temp)

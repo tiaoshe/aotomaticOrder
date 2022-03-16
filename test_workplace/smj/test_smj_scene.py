@@ -83,7 +83,7 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(10)])
+    @pytest.mark.parametrize("time", [x for x in range(20)])
     def test_submmit_order_pay_supermarket(self, time):
         goods_id = "1000061616"
         sku_id = get_sku_id(goods_id)[3][0]
@@ -492,9 +492,9 @@ class TestSmj(object):
 
     def test_add_goods(self, time):
         goods_id_list = list()
-        for i in range(30):
-            data = {"title": "云仓-2满减商品列表-" + str(time) + faker.sentence()}
-            data1 = {"title": "自营仓-2满减商品列表-" + str(time) + faker.sentence()}
+        for i in range(10):
+            data = {"title": "云仓-3满减-" + str(time) + faker.sentence()}
+            data1 = {"title": "自营仓-3满减-" + str(time) + faker.sentence()}
             self.WorkerB.add_goods_shop(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
@@ -506,7 +506,7 @@ class TestSmj(object):
     def test_add_seckill(self, i):
         shop_offline_id = "31475"
         # goods_list = self.test_add_goods(i)
-        goods_list = ["1000061616"]
+        goods_list = ["1000062176","1000062174","1000062173"]
         time.sleep(10)
         Q = QueryData()
         goods = list()
