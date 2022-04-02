@@ -88,7 +88,7 @@ def get_user_address_id(uid):
 
 # 获取用户地址
 def get_shop_id(goods_id):
-    sql = "select DISTINCT shop_id from smj_inventory where goods_id = %s;" % goods_id
+    sql = "select DISTINCT shop_id from smj_inventory where goods_id = %s and delflag=0;" % goods_id
     return QueryData().get_data(sql)
 
 

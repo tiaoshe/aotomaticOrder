@@ -46,7 +46,7 @@ class InterfaceModule(object):
     def update_vip_card(self, **kwargs):
         url = get_url(self.host, "update_vip_card")
         # 3 加款  4  扣钱
-        data = {"uid": 29, "type": 3, "money": 10000, "remark": "测试自动加钱", "password": "110114"}
+        data = {"uid": 100029, "type": 4, "money": 19.9, "remark": "测试自动加钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -108,7 +108,8 @@ class InterfaceModule(object):
     # 后台余额加扣款
     def update_money(self, **kwargs):
         url = get_url(self.host, "update_money")
-        data = {"uid": 13, "type": 9, "money": 2000000, "remark": "加钱", "password": "110114"}
+        # 加款 9 扣款 22
+        data = {"uid": 100029, "type": 22, "money": 35398.42, "remark": "加钱", "password": "110114"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -165,7 +166,7 @@ class InterfaceModule(object):
     def update_integral_record(self, **kwargs):
         url = get_url(self.host, "update_integral_record")
         # 加积分 1 扣积分 11
-        data = {"uid": 19, "type": random.choice([1, 11]), "point": 1000, "password": "123456", "remark": "备注备注"}
+        data = {"uid": 100029, "type": 11, "point": 1815, "password": "123456", "remark": "备注备注"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -652,7 +653,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_raffle")
         data = {"id": 137, "title": faker.sentence(), "type": "1", "thumb": "https://smjcdn.jzwp.cn/1646994566197.png",
                 "back_color": "#A30E10", "description": faker.sentence(), "start_time": get_now_time(),
-                "end_time": get_now_time(3600 * 70), "status": "1"}
+                "end_time": get_now_time(3600 * 24 * 10), "status": "1"}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -777,7 +778,7 @@ class InterfaceModule(object):
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
         params = []
-        for i in range(5):
+        for i in range(50):
             p_dic = dict()
             p_dic["key"] = faker.sentence()
             p_dic["value"] = faker.sentence()
@@ -788,8 +789,8 @@ class InterfaceModule(object):
                 "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
                 "start_type": 1, "end_type": 3, "cat_id": [433], "seckill_type": 1, "use_score": 0, "min_score": 0,
                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "limit_max": 0, "day_max": 0,
-                "title": "自营仓-这个商品属于多个超市-" + faker.sentence(),
-                "subtitle": faker.sentence(), "goods_sn": "商品货号", "sort": "17", "content": "<p>舒服水电费</p>",
+                "title": "自营仓-不同超市-" + faker.sentence(),
+                "subtitle": faker.sentence(), "goods_sn": "商品货号", "sort": "50", "content": "<p>舒服水电费</p>",
                 "weight": "3",
                 "volume_width": "23", "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0,
                 "is_coupon_convert": 0, "cat_id1": 433, "cat_id2": 527, "cat_id3": 0,
@@ -1126,39 +1127,20 @@ class InterfaceModule(object):
                 "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
                 "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
                 "start_type": 1, "end_type": 3, "cat_id": [434], "seckill_type": 1, "use_score": 0, "min_score": 0,
-                "max_score": 0, "is_open_limit": 0, "single_max": 0, "limit_max": 0, "day_max": 0, "title": "积分商品-卫生纸",
+                "max_score": 0, "is_open_limit": 0, "single_max": 0, "limit_max": 0, "day_max": 0,
+                "title": "积分商品-卫生纸" + faker.sentence(),
                 "supplier_id": 30383, "sort": "1", "content": "<p>付水电费舒服</p>", "freight_type": 1,
-                "long_thumb": "https://smjcdn.jzwp.cn/1646893522452.jpg", "seckill_flag": 0, "is_coupon_convert": 0,
-                "cat_id1": 434, "cat_id2": 0, "cat_id3": 0, "thumb": "https://smjcdn.jzwp.cn/1646893516441.jpg",
-                "imgs": ["https://smjcdn.jzwp.cn/1646893519169.jpg"], "type_id": 185, "type": 185, "attr_datas": [
-                {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "11133,11127", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
+                "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
+                "cat_id1": 434, "cat_id2": 0, "cat_id3": 0, "thumb": get_image(random.randint(1, 15)),
+                "imgs": get_images(random.randint(1, 4)), "type_id": 185, "type": 185, "attr_datas": [
+                {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "11134,11127", "stock": 0, "incr_stock": "1",
+                 "stocks": [{"warehouse_id": 0, "incr_stock": "1"}], "market_price": "300", "cost_price": "100",
                  "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
                  "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "5",
                  "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
                  "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
                  "fee12": "null", "fee13": "null", "ask_score": "200", "ask_amount": "100.01"},
-                {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "11133,11128", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "5",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
-                 "fee12": "null", "fee13": "null", "ask_score": "200", "ask_amount": "100.01"},
-                {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "11134,11127", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "5",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
-                 "fee12": "null", "fee13": "null", "ask_score": "200", "ask_amount": "100.01"},
-                {"sku_sn": "null", "sku_id": 0, "goods_attr_ids": "11134,11128", "stock": 0, "incr_stock": "100",
-                 "stocks": [{"warehouse_id": 0, "incr_stock": "100"}], "market_price": "300", "cost_price": "100",
-                 "shop_price": "200", "vip_price": "190", "partner_price": "null", "team_price": "180",
-                 "bonus_second_vip": "null", "bonus_second_partner": "null", "bonus_second_team": "5",
-                 "storage_cost": "null", "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null",
-                 "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null",
-                 "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "params": [], "goods_id": get_max_goods_id(),
+            ], "sku_imgs": {}, "params": [], "goods_id": get_max_goods_id(),
                 "is_index": 0, "ask_score": "200", "ask_amount": "100.01"}
         for key, value in kwargs.items():
             data[key] = value
@@ -1213,7 +1195,8 @@ class InterfaceModule(object):
                 "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_ids": [31347, 31364],
                 "store_extend": ["username"], "start_type": 1, "end_type": 3, "cat_id": [254, 270], "seckill_type": 1,
                 "use_score": 1, "min_score": 0, "max_score": 1000, "is_store_refund": 0, "goods_sn": "服务货号",
-                "select_type": 2, "master_shop_id": 31347, "title": "服务-西藏服务-" + faker.sentence(), "subtitle": "服务test",
+                "select_type": 2, "master_shop_id": 31347, "title": "服务-测试门店端-" + faker.sentence(),
+                "subtitle": "服务test",
                 "sort": "9999",
                 "content": "<p>舒服</p>", "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0,
                 "is_coupon_convert": 0, "cat_id1": 254, "cat_id2": 270, "cat_id3": 0,
@@ -1324,7 +1307,7 @@ class InterfaceModule(object):
                  "store_extend": [{"key": 1, "name": "姓名"}, {"key": 2, "name": "电话"}], "start_type": 1, "end_type": 3,
                  "cat_id": [455], "seckill_type": 1, "use_score": 0, "min_score": 0, "max_score": 0,
                  "is_store_refund": 0, "goods_sn": faker.sentence(), "select_type": 2, "master_shop_id": 31480,
-                 "title": "服务-成都2-" + faker.sentence(),
+                 "title": "服务-测试门店端-" + faker.sentence(),
                  "subtitle": faker.sentence(), "sort": "11",
                  "content": "<p>&nbsp;</p>\n<p>jj fisfj</p>\n<p>sd</p>\n<p>&nbsp;i</p>\n<p>jf</p>\n<p>s</p>\n<p>j</p>\n<p>fsd</p>\n<p>&nbsp;</p>\n<p>jf</p>\n<p>sdi isd</p>\n<p>nis</p>\n<p>&nbsp;ss'ds'dl'k'jlll'k'sff'ls'ds'ds'ds'ds'dss'd</p>\n<p>s'd'f水电费s'l'd'ks'dfl'ks'd水电费sss'ds'dss'ds'd'f速度f水电费f'l'k'd's'js'd'f水电费s'd'f'k</p>",
                  "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
@@ -1387,7 +1370,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_goods")
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
-        data = {"sort": "18", "action_type": 1, "stock_type": 2, "supplier_type": 0, "is_order_award_calc": 1,
+        data = {"sort": "111", "action_type": 1, "stock_type": 2, "supplier_type": 0, "is_order_award_calc": 1,
                 "is_break": 0,
                 "deliver_type": [3], "store_ids": [], "first_fee": 0, "cross_border": 2, "second_fee": "0",
                 "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
@@ -1395,7 +1378,7 @@ class InterfaceModule(object):
                 "start_type": 1, "end_type": 3, "cat_id1": 433, "cat_id2": 526, "cat_id3": 0, "seckill_type": 1,
                 "use_score": 0, "min_score": 0,
                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "limit_max": 0, "day_max": 0,
-                "title": "云仓-测试限购-" + faker.sentence(),
+                "title": "云仓-制裁他的电脑-" + faker.sentence(),
                 "subtitle": "商品特色", "goods_sn": "商品货号", "supplier_id": 30383, "content": "<p>水电费</p>", "weight": "4",
                 "volume_width": "4", "freight_type": 1, "insurance_id": 216,
                 "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0, "is_coupon_convert": 0,
@@ -1543,12 +1526,23 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    # 同意退款
+    def add_rider(self, **kwargs):
+        url = get_url(self.host, "add_rider")
+        # 540100 510100
+        data = {"username": faker.name(), "phone": faker.phone_number(), "city_id": "510100",
+                "avatar": get_image(random.randint(1, 15))}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     data_temp = {}
-    for i in range(60):
+    for i in range(1):
         #     InterfaceModule(s).add_shop_offline(**data_temp)
         # InterfaceModule(s).add_author(**data_temp)
-        InterfaceModule(s).add_shop_offline_mendian(**data_temp)
+        InterfaceModule(s).add_goods_yuncang(**data_temp)
         # InterfaceModule(s).add_goods_shop(**data_temp)

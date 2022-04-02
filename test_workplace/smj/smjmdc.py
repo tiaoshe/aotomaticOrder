@@ -1,6 +1,7 @@
 # @time 2022/2/21 11:57
 # @Author howell
 # @File smjmdc.PY
+# 门店端
 from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
 from faker import Faker
