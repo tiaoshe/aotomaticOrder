@@ -20,27 +20,24 @@ class InterfaceModuleApi(object):
     # 添加用户地址
     def add_address(self, **kwargs):
         url = get_url(self.host, "add_address")
-        full_address = "西藏自治区拉萨市城关区曲米路公园"
-        full_address_a = "四川省成都市武侯区天府大道北段1700号"
-        map_a = get_map(full_address_a)
-        longitude = map_a['result']['location']['lng']
-        latitude = map_a['result']['location']['lat']
-        data = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "曲米路公园", "id_card_name": "",
-                "id_card": "",
-                "is_default": 1, "province": "西藏自治区", "province_id": 540000, "city": "拉萨市", "city_id": 540100,
-                "district": "城关区", "district_id": 540102, "full_address": full_address, "appName": "圣美家",
-                "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
-                "deviceModel": "microsoft", "longitude": longitude, "latitude": latitude, }
-        data1 = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "环球中心-n5",
-                 "id_card_name": "",
-                 "id_card": "", "is_default": 1, "province": "四川省", "province_id": 510000, "city": "成都市",
-                 "city_id": 510100, "district": "高新区", "district_id": 510107, "full_address": full_address_a,
-                 "appName": "嘛嘛团", "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64",
-                 "deviceId": "mini app", "deviceModel": "microsoft", "longitude": "104.061304",
-                 "latitude": "30.570965", }
+        # full_address = "西藏自治区拉萨市城关区曲米路公园"
+        # full_address_a = "四川省成都市武侯区天府大道北段1700号"
+        # map_a = get_map(full_address_a)
+        # longitude = map_a['result']['location']['lng']
+        # latitude = map_a['result']['location']['lat']
+        # data = {"id": "", "name": faker.name(), "phone": faker.phone_number(), "address": "曲米路公园", "id_card_name": "",
+        #         "id_card": "",
+        #         "is_default": 1, "province": "西藏自治区", "province_id": 540000, "city": "拉萨市", "city_id": 540100,
+        #         "district": "城关区", "district_id": 540102, "full_address": full_address, "appName": "圣美家",
+        #         "appVersion": "v1.0.0", "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+        #         "deviceModel": "microsoft", "longitude": longitude, "latitude": latitude, }
+        data = {"id": 0, "phone": faker.phone_number(), "is_default": 1, "name": faker.name(), "province_id": "510000",
+                "city_id": "510100", "district_id": "510107", "province": "四川省", "city": "成都市", "district": "武侯区",
+                "address": "2栋2单元1021", "full_address": "", "longitude": 104.04931, "latitude": 30.63895,
+                "street": "西南民族大学", "id_card": "", "id_card_name": ""}
         for key, value in kwargs.items():
             data[key] = value
-        response = post(self.s, url, **data1)
+        response = post(self.s, url, **data)
         return response
 
     # 下单
@@ -119,7 +116,7 @@ class InterfaceModuleApi(object):
     # 获取评价列表
     def evaluate_list(self, **kwargs):
         url = get_url(self.host, "evaluate_list")
-        data = {}
+        data = {"status": "0"}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -137,14 +134,7 @@ class InterfaceModuleApi(object):
     # 申请售后 # 5 是补偿  6是补发
     def order_sales(self, **kwargs):
         url = get_url(self.host, "order_sales")
-        p_reason = self.order_reason()
-        reason = p_reason['data'][random.randrange(0, len(p_reason['data']))]['content']
-        data = {"sale_type": 6, "sale_type_desc": "补偿", "reason": reason, "description": "撒旦发",
-                "imagesArr": get_images(3), "order_id": 0,
-                "return_sku_list": [{"sku_id": 0, "count": 1}],
-                "imgs": get_images(3), "appName": "圣美家", "appVersion": "v1.0.0",
-                "systemType": "mp", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
-                "deviceModel": "microsoft", "shopId": "1"}
+        data = {}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -294,10 +284,10 @@ class InterfaceModuleApi(object):
 
 
 if __name__ == '__main__':
-    s = Login().login_c(100013)
+    s = Login().login_c(100041)
     data_temp = {}
     # for i in ['173', '172', '171', '170', '161']:
     #     data_temp = {"shopId": "31343", "cart_id": i}
     #     InterfaceModuleApi(s).remove_cart(**data_temp)
-    # for i in range(2):
-    print(InterfaceModuleApi(s).confirm_vip(**data_temp))
+    for i in range(5):
+        InterfaceModuleApi(s).add_address(**data_temp)

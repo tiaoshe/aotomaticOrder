@@ -577,7 +577,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_lessen")
         data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(),
                 "end_time": get_now_time(721200), "shop_offline_id": 31475,
-                "rules": {"type": random.choice([2]), "full": 400, "full_reduce": 100},
+                "rules": {"type": random.choice([2]), "full": 300, "full_reduce": 100},
                 "goods": ["1000062028", "1000062027", "1000062026"]}
         for key, value in kwargs.items():
             data[key] = value
@@ -790,7 +790,7 @@ class InterfaceModule(object):
                 "start_type": 1, "end_type": 3, "cat_id": [433], "seckill_type": 1, "use_score": 0, "min_score": 0,
                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "limit_max": 0, "day_max": 0,
                 "title": "自营仓-不同超市-" + faker.sentence(),
-                "subtitle": faker.sentence(), "goods_sn": "商品货号", "sort": "50", "content": "<p>舒服水电费</p>",
+                "subtitle": faker.sentence(), "goods_sn": "商品货号", "sort": "160", "content": "<p>舒服水电费</p>",
                 "weight": "3",
                 "volume_width": "23", "long_thumb": get_image(random.randint(1, 15)), "seckill_flag": 0,
                 "is_coupon_convert": 0, "cat_id1": 433, "cat_id2": 527, "cat_id3": 0,
@@ -1370,7 +1370,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_goods")
         # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
         # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
-        data = {"sort": "111", "action_type": 1, "stock_type": 2, "supplier_type": 0, "is_order_award_calc": 1,
+        data = {"sort": "160", "action_type": 1, "stock_type": 2, "supplier_type": 0, "is_order_award_calc": 1,
                 "is_break": 0,
                 "deliver_type": [3], "store_ids": [], "first_fee": 0, "cross_border": 2, "second_fee": "0",
                 "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
@@ -1535,6 +1535,15 @@ class InterfaceModule(object):
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
+        return response
+
+    # 同意售后
+    def order_clearing(self, **kwargs):
+        url = get_url(self.host, "order_clearing")
+        data = {"pageSize": 10, "page": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
         return response
 
 
