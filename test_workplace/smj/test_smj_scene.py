@@ -13,7 +13,7 @@ faker = Faker(locale='zh_CN')
 
 class TestSmj(object):
     def setup_class(self):
-        self.uid = 100052
+        self.uid = 100053
         s = Login().login_b("host_smj_b", "admin_login")
         self.WorkerB = InterfaceModule(s)
         sc = Login().login_c(self.uid)
@@ -208,8 +208,21 @@ class TestSmj(object):
                          "content": "视频-" + faker.text(max_nb_chars=120), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
-        # 申请售后
-        self.test_apply_sale(sku_id, order_id, shop_id)
+        flag = 4
+        if flag == 0:
+            # 申请售后退货
+            self.test_apply_sale(sku_id, order_id, shop_id)
+        elif flag == 1:
+            # 换货
+            self.test_apply_sale1(sku_id, order_id, shop_id)
+        elif flag == 2:
+            # 补偿
+            self.test_apply_sale2(sku_id, order_id, shop_id)
+        elif flag == 3:
+            # 补发
+            self.test_apply_sale3(sku_id, order_id, shop_id)
+        elif flag == 4:
+            return
 
     # 积分兑换
     def test_score_change(self):
@@ -229,14 +242,16 @@ class TestSmj(object):
         confirm_data = {"id": order_id, "shopId": shop_id}
         self.WorkerC.confirm_receipt(**confirm_data)
 
+    # 申请退货
     def test_apply_sale(self, sku_id, order_id, shop_id):
-        # 申请售后 5 是补偿  6是补发  1 退货
-        sales_data = {"sale_type": 1, "sale_type_desc": "退货", "reason": 55, "description": faker.sentence(),
+        # 申请售后 5 是补偿坏损  6是补发  1 退货 2换货
+        sales_data = {"sale_type": 1, "sale_type_desc": "退货", "reason": "7天无理由退货", "description": faker.sentence(),
                       "imagesArr": [],
                       "order_id": order_id, "return_sku_list": [{"sku_id": sku_id, "count": 1}],
                       "imgs": get_images(random.randint(1, 8)),
                       "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4"]}
         self.WorkerC.order_sales(**sales_data)
+        return
         # 同意售后 1.查询售后信息
         sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
         sale_id = QueryData().get_data(sql)[0][0]
@@ -257,13 +272,98 @@ class TestSmj(object):
         # 编辑售后单物流,B端编辑物流
         # self.WorkerB.edit_sale_order(**sale_d)
         self.WorkerC.send_back(**sale_c)
-        return
         # 确认收货
         sale_data_id = {"sale_id": sale_id, "remark": faker.sentence()}
         self.WorkerB.order_take(**sale_data_id)
         # 同意退款
         sale_data_agree = {"sale_id": sale_id, "remark": faker.sentence()}
         self.WorkerB.agree_refund_money(**sale_data_agree)
+
+    # 换货
+    def test_apply_sale1(self, sku_id, order_id, shop_id):
+        # 申请售后 5 是补偿坏损  6是补发  1 退货 2换货
+        sales_data = {"sale_type": 2, "sale_type_desc": "退货", "reason": "7天无理由退货", "description": faker.sentence(),
+                      "imagesArr": [],
+                      "order_id": order_id, "return_sku_list": [{"sku_id": sku_id, "count": 1}],
+                      "imgs": get_images(random.randint(1, 8)),
+                      "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4"]}
+        self.WorkerC.order_sales(**sales_data)
+        # 同意售后 1.查询售后信息
+        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
+        sale_id = QueryData().get_data(sql)[0][0]
+        sale_data = {"id": sale_id}
+        sale_response = self.WorkerB.order_sale_detail(**sale_data)
+        goods_fee = sale_response['data']['detail']['goods_fee']
+        apply_data = {"add_fee": "0.00", "is_quality": "0", "deduct_freight_fee": "0.00", "freight_type": "0",
+                      "remark": faker.sentence(), "freight_fee": 0, "is_rebate": "1", "goods_fee": goods_fee,
+                      "compensate": "32.01",
+                      "receiver_address": faker.name() + "," + faker.phone_number() + "," + faker.address(),
+                      "sale_id": sale_id,
+                      "type": "2",
+                      "return_sku_list": [{"sku_id": sku_id, "count": 1}]}
+        self.WorkerB.order_sale(**apply_data)
+        sale_c = {"id": sale_id}
+        # 编辑售后单物流,B端编辑物流
+        self.WorkerC.send_back(**sale_c)
+        # 确认收货
+        sale_data_id = {"sale_id": sale_id, "remark": faker.sentence()}
+        self.WorkerB.order_take(**sale_data_id)
+        # 同意退货
+        sale_data_agree = {"sale_id": sale_id}
+        self.WorkerB.order_send(**sale_data_agree)
+
+    # 坏损 补偿
+    def test_apply_sale2(self, sku_id, order_id, shop_id):
+        # 申请售后 5 是补偿  6是补发  1 退货
+        sales_data = {"sale_type": 5, "sale_type_desc": "退货", "reason": "7天无理由退货", "description": faker.sentence(),
+                      "imagesArr": [],
+                      "order_id": order_id, "return_sku_list": [{"sku_id": sku_id, "count": 1}],
+                      "imgs": get_images(random.randint(1, 8)),
+                      "video": [get_video()]}
+        self.WorkerC.order_sales(**sales_data)
+        # 同意售后 1.查询售后信息
+        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
+        sale_id = QueryData().get_data(sql)[0][0]
+        sale_data = {"id": sale_id}
+        sale_response = self.WorkerB.order_sale_detail(**sale_data)
+        goods_fee = sale_response['data']['detail']['goods_fee']
+        apply_data = {"add_fee": random.randint(1, 100), "is_quality": "0", "deduct_freight_fee": "0.00",
+                      "freight_type": "0",
+                      "remark": faker.sentence(), "freight_fee": 0, "is_rebate": "0", "goods_fee": goods_fee,
+                      "compensate": "0.00",
+                      "sale_id": sale_id,
+                      "type": "5",
+                      "return_sku_list": [{"sku_id": sku_id, "count": 1}]}
+        self.WorkerB.order_sale(**apply_data)
+        # 同意退款
+        sale_data_agree = {"sale_id": sale_id, "remark": faker.sentence()}
+        self.WorkerB.agree_refund_money(**sale_data_agree)
+
+    #   补发
+    def test_apply_sale3(self, sku_id, order_id, shop_id):
+        # 申请售后 5 是补偿  6是补发  1 退货
+        sales_data = {"sale_type": 6, "sale_type_desc": "退货", "reason": "7天无理由退货", "description": faker.sentence(),
+                      "imagesArr": [],
+                      "order_id": order_id, "return_sku_list": [{"sku_id": sku_id, "count": 1}],
+                      "imgs": get_images(random.randint(1, 8)),
+                      "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4"]}
+        self.WorkerC.order_sales(**sales_data)
+        # 同意售后 1.查询售后信息
+        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
+        sale_id = QueryData().get_data(sql)[0][0]
+        sale_data = {"id": sale_id}
+        sale_response = self.WorkerB.order_sale_detail(**sale_data)
+        goods_fee = sale_response['data']['detail']['goods_fee']
+        apply_data = {"add_fee": "0.00", "is_quality": "0", "deduct_freight_fee": "0.00", "freight_type": "0",
+                      "remark": faker.sentence(), "freight_fee": 0, "is_rebate": "0", "goods_fee": goods_fee,
+                      "compensate": "0.00",
+                      "sale_id": sale_id,
+                      "type": "6",
+                      "return_sku_list": [{"sku_id": sku_id, "count": 1}]}
+        self.WorkerB.order_sale(**apply_data)
+        # 同意退货
+        sale_data_agree = {"sale_id": sale_id}
+        self.WorkerB.order_send(**sale_data_agree)
 
     def test_sale_shenhe(self):
         sku_id = "100014937"
@@ -645,7 +745,7 @@ class TestSmj(object):
 
     # @pytest.mark.parametrize("i", [i for i in range(100012, 100013)])
     def test_set_money(self):
-        user_id = "100061"
+        user_id = "100053"
         add_or_jian = 2
         # 1为扣减 2 不兑换 3 要兑换
         if add_or_jian == 1:
@@ -698,6 +798,14 @@ class TestSmj(object):
                     money += float(item['actual_fee'])
         print(money)
         print(money1)
+
+    # 关闭所有售后
+    def test_close_all_sales(self):
+        p = self.WorkerB.sales_list()
+        for order_obj in p['data']['items']:
+            id = order_obj['id']
+            data = {"sale_id": id}
+            self.WorkerB.order_deny(**data)
 
 
 if __name__ == '__main__':

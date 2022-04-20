@@ -1546,6 +1546,35 @@ class InterfaceModule(object):
         response = get(self.s, url, **data)
         return response
 
+    # 关闭售后
+    def order_deny(self, **kwargs):
+        url = get_url(self.host, "order_deny")
+        data = {"sale_id": 211, "is_quality": "0", "remark": faker.sentence()}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 售后列表
+    def sales_list(self, **kwargs):
+        url = get_url(self.host, "sales_list")
+        # status 1 status 10
+        data = {"pageSize": 999, "page": 1, "status": 10}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 售后发货
+    def order_send(self, **kwargs):
+        url = get_url(self.host, "order_send")
+        data = {"sale_id": 234, "logistics_sn": "YT6345970536613", "logistics_code": "YTO",
+                "remark": faker.sentence()}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")

@@ -92,7 +92,7 @@ class TestLC(object):
 
     @allure.feature('下单确认收货售后')
     @pytest.mark.parametrize("times", [times + 1 for times in range(5)])
-    def test_apply_sale(self, times):
+    def test_apply_sale_allure(self, times):
         """
         发起售后
         :return:
