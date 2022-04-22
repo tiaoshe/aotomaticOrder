@@ -13,7 +13,7 @@ faker = Faker(locale='zh_CN')
 
 class TestSmj(object):
     def setup_class(self):
-        self.uid = 100053
+        self.uid = 100029
         s = Login().login_b("host_smj_b", "admin_login")
         self.WorkerB = InterfaceModule(s)
         sc = Login().login_c(self.uid)
@@ -90,8 +90,8 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(1)])
-    @pytest.mark.parametrize("goods_id", [1000062781])
+    @pytest.mark.parametrize("time", [x for x in range(5)])
+    @pytest.mark.parametrize("goods_id", [1000063141])
     def test_submmit_order_pay_supermarket(self, time, goods_id):
         goods_id = goods_id
         sku_id = get_sku_id(goods_id)[1][0]
@@ -100,11 +100,11 @@ class TestSmj(object):
         if self.uid == 100036:
             shop_id = 31478
         else:
-            shop_id = get_shop_id(goods_id)[1][0]
+            shop_id = get_shop_id(goods_id)[random.randint(10, 11)][0]
             print(get_shop_id(goods_id))
         # shop_id = 31002
         # 1、快递，2、自提，3、同城
-        deliver_type = 3
+        deliver_type = random.randint(2, 3)
         # 优惠券ID查询 以及使用
         # 1 = > '微信',
         # 2 = > '小程序',
@@ -128,6 +128,7 @@ class TestSmj(object):
         # cancel_order = {"id": order_id}
         # # 取消订单
         # self.WorkerC.cancel_order(**cancel_order)
+        # return
         # 接单数据准备
         pick_order = {"ids": order_id}
         # 接单
@@ -135,16 +136,13 @@ class TestSmj(object):
         # 拣货完成
         pick_compelte = {"ids": order_id, "deliver_type": deliver_type}
         self.WorkerB.order_picking_compelte(**pick_compelte)
-        return
 
         if deliver_type == 3:
             # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
-            change_order_status(6, order_id)
-
+            change_order_status(random.randint(3, 6), order_id)
         # 订单完成
         data_end = {"ids": order_id, "deliver_type": deliver_type}
         self.WorkerB.order_send_end(**data_end)
-        return
         # 评价数据准备
         data_evalu = {"status": 0, "page": 1, "pageSize": 20}
         order_end_list = self.WorkerC.evaluate_list(**data_evalu)
@@ -161,9 +159,8 @@ class TestSmj(object):
 
     @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_submmit_order_pay_yuncang(self, i):
-        goods_id = "1000063042"
+        goods_id = "1000063139"
         sku_id = get_sku_id(goods_id)[0][0]
-        print(get_sku_id(goods_id))
         address_id = get_user_address_id(self.uid)[0][0]
         shop_id = 31475
         # 优惠券ID查询 以及使用
@@ -187,16 +184,15 @@ class TestSmj(object):
         # cancel_order = {"id": order_id}
         # # 取消订单
         # self.WorkerC.cancel_order(**cancel_order)
-        #
         data_order = {"items": [{"id": order_id, "code": "YTO", "sn": "YT6345970536613"}]}
         # 写入快递单号
         self.WorkerB.order_delivery(**data_order)
         # 一件发货
         self.WorkerB.order_delivery_send()
+
         # 确认收货
         confirm_data = {"id": order_id, "shopId": shop_id}
         self.WorkerC.confirm_receipt(**confirm_data)
-
         # 评价数据准备
         order_end_list = self.WorkerC.evaluate_list()
         order_extent_id = order_end_list['data']['items'][0]['id']
@@ -208,7 +204,7 @@ class TestSmj(object):
                          "content": "视频-" + faker.text(max_nb_chars=120), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
-        flag = 4
+        flag = 0
         if flag == 0:
             # 申请售后退货
             self.test_apply_sale(sku_id, order_id, shop_id)
@@ -249,7 +245,7 @@ class TestSmj(object):
                       "imagesArr": [],
                       "order_id": order_id, "return_sku_list": [{"sku_id": sku_id, "count": 1}],
                       "imgs": get_images(random.randint(1, 8)),
-                      "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4"]}
+                      "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4", get_video(), get_video(), get_video()]}
         self.WorkerC.order_sales(**sales_data)
         return
         # 同意售后 1.查询售后信息
@@ -374,7 +370,7 @@ class TestSmj(object):
     # 服务下单
     @pytest.mark.parametrize("x", [x for x in range(1)])
     def test_submit_order_pay_fuwu(self, x):
-        goods_id = "1000063075"
+        goods_id = "1000063135"
         sku_id = get_sku_id(goods_id)[0][0]
         address_id = get_user_address_id(self.uid)[0][0]
         shop_id = 31547
@@ -382,7 +378,7 @@ class TestSmj(object):
         sql = "select id FROM smj_coupon_record where uid=%s and cid=5317 and is_used=0;" % self.uid
         coupon_id = QueryData().get_data(sql)[0][0]
         submit_data = {"goods_id": goods_id, "shopId": shop_id, "sku_id": sku_id, "latitude": "0", "longitude": "0",
-                       "num": 3,
+                       "num": 4,
                        "address_id": address_id, "deliver_type": 2, "integral_fee": 0, "gift_fee": 0,
                        "coupon_id": "", "name": "howell",
                        "systemType": random.choice(["wechat", "mp", "ios", "android", "wap"])}
@@ -405,14 +401,18 @@ class TestSmj(object):
                                                    {"money": 0, "check": 0, "type": "wx"}]}
         # 支付
         self.WorkerC.pay_order(**data)
+        return
         # 查询服务订单列表，方便查看
         self.WorkerB.offline_list()
         for i in range(0, len(get_fuwu_code_id(order_id))):
+            if i == 1:
+                return
             fuwu_code_id = get_fuwu_code_id(order_id)[i][0]
             # 订单核销
             use_data = {"goods_code_id": fuwu_code_id, "shop_id": random.choice([31547, 31548, 31549]),
                         "order_id": order_id}
             self.WorkerB.order_use(**use_data)
+
         # # 评价数据准备
         # order_extent_id = get_fuwu_extend_id(order_id)[0][0]
         # # 发布评价
@@ -531,8 +531,8 @@ class TestSmj(object):
         # self.WorkerB.order_send_end(**data_end)
 
     # 购买礼品卡
-    @pytest.mark.parametrize("money", [100])
-    @pytest.mark.parametrize("s", [s for s in range(50)])
+    @pytest.mark.parametrize("money", [200])
+    @pytest.mark.parametrize("s", [s for s in range(1)])
     @pytest.mark.parametrize("i",
                              ["https://smjcdn.jzwp.cn/1646821811269.png",
                               "https://smjcdn.jzwp.cn/1646821883417.png",
@@ -745,7 +745,7 @@ class TestSmj(object):
 
     # @pytest.mark.parametrize("i", [i for i in range(100012, 100013)])
     def test_set_money(self):
-        user_id = "100053"
+        user_id = "100029"
         add_or_jian = 2
         # 1为扣减 2 不兑换 3 要兑换
         if add_or_jian == 1:
@@ -757,13 +757,13 @@ class TestSmj(object):
             type2 = 3
             type3 = 9
         # 加积分
-        data2 = {"uid": user_id, "type": type1, "point": 20000, "remark": "加扣积分"}
+        data2 = {"uid": user_id, "type": type1, "point": 1000, "remark": "加扣积分"}
         self.WorkerB.update_integral_record(**data2)
         # 会员卡加钱
-        data3 = {"uid": user_id, "type": type2, "money": 10000}
+        data3 = {"uid": user_id, "type": type2, "money": 50}
         self.WorkerB.update_vip_card(**data3)
         # 加余额
-        data1 = {"uid": user_id, "type": type3, "money": 10000}
+        data1 = {"uid": user_id, "type": type3, "money": 4009.99}
         self.WorkerB.update_money(**data1)
         if add_or_jian == 3:
             # 查询礼品卡
