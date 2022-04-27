@@ -35,6 +35,10 @@ class InterfaceModuleApi(object):
                 "city_id": "510100", "district_id": "510107", "province": "四川省", "city": "成都市", "district": "武侯区",
                 "address": "2栋2单元1021", "full_address": "", "longitude": 104.04931, "latitude": 30.63895,
                 "street": "西南民族大学", "id_card": "", "id_card_name": ""}
+        data = {"id": 0, "phone": faker.phone_number(), "is_default": 1, "name": faker.name(), "province_id": "510000",
+                "city_id": "510100", "district_id": "510116", "province": "四川省", "city": "成都市", "district": "双流区",
+                "address": "10懂5单元1207", "full_address": "", "longitude": 104.049223, "latitude": 30.521765,
+                "street": "枫渡莱茵", "id_card": "", "id_card_name": ""}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
