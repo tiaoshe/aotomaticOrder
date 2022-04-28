@@ -102,6 +102,37 @@ class ExcelUtil(object):
         wb.save(filepath_new_name)
         return filepath_new_name
 
+    def write_smj_reback(self, user_list, reback_list):
+        print(reback_list)
+        print(user_list)
+        if len(user_list) != 0 and len(reback_list) != 0:
+            self.worksheet.write(self.rowNum + 1, 1, "订单号")
+            run_col = 2
+            run_row = 1
+            user_list_id = []
+            for w in user_list:
+                user_list_id.append(w['user_id'])
+            for i in user_list:
+                self.worksheet.write(self.rowNum + 1, run_col, str(i['user_id']) + "-" + i['user_role'])
+                run_col += 1
+            for x in reback_list:
+                self.worksheet.write(self.rowNum + 1 + run_row, 1, x['order_sn'])
+                try:
+                    run_col_xd = user_list_id.index(x['user_xd'])
+                except:
+                    run_col_xd = len(user_list)
+                self.worksheet.write(self.rowNum + 1 + run_row, run_col_xd + 2, "下单")
+                count_order_info = 0
+                for y in x['order_info']:
+                    try:
+                        run_col_M = user_list_id.index(y['user'])
+                    except:
+                        run_col_M = len(user_list) + count_order_info
+                    self.worksheet.write(self.rowNum + 1 + run_row, run_col_M + 2, y['money'])
+                    count_order_info += 1
+                run_row += 1
+            self.workbook.save(self.excelPath)
+
 
 if __name__ == '__main__':
     filepath = os.path.abspath(os.path.dirname(os.path.dirname(__file__))) + "/base_data/rebade.xlsx"

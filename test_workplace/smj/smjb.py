@@ -1520,7 +1520,7 @@ class InterfaceModule(object):
     # 修改用户类型
     def change_user_type(self, **kwargs):
         url = get_url(self.host, "change_user_type")
-        data = {"type": random.choice([1, 2]), "id": 19}
+        data = {"type": 1, "id": 19}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1663,6 +1663,24 @@ class InterfaceModule(object):
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
+        return response
+
+    # 删除分享人
+    def del_upper(self, **kwargs):
+        url = get_url(self.host, "del_upper")
+        data = {"id": 100073}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 修改分享人
+    def update_upper(self, **kwargs):
+        url = get_url(self.host, "update_upper")
+        data = {"id": "10001488", "store_id": "10001487"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
         return response
 
 

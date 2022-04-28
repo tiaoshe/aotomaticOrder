@@ -4,12 +4,18 @@
 from test_workplace.smj.smjb import InterfaceModule
 from test_workplace.smj.smjc import InterfaceModuleApi
 from test_workplace.smj.smj_utils import *
+from common.controlexcel import ExcelUtil
 import pytest, random
 import allure
 import threading
 from faker import Faker
 
 faker = Faker(locale='zh_CN')
+
+excel_filepath = os.path.abspath(
+    os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
+filepath_write_log = os.path.abspath(
+    os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'smj.log'))
 
 
 class TestSmj(object):
@@ -632,9 +638,9 @@ class TestSmj(object):
 
     def test_add_goods(self):
         goods_id_list = list()
-        for i in range(1):
-            data = {"title": "【云仓】-测试秒杀限购5-" + faker.sentence()}
-            data1 = {"title": "【自营仓】-测试秒杀限购5-" + faker.sentence()}
+        for i in range(25):
+            data = {"title": "【云仓】-测试批量删除功能-" + faker.sentence()}
+            data1 = {"title": "【自营仓】-测试批量删除功能-" + faker.sentence()}
             self.WorkerB.add_goods_shop(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
@@ -642,11 +648,11 @@ class TestSmj(object):
         return goods_id_list
 
     # 添加秒杀活动
-    @pytest.mark.parametrize("i", [i for i in range(20)])
+    @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_add_seckill(self, i):
         shop_offline_id = "31475"
         # shop_offline_id = "31554"
-        goods_list = self.test_add_goods(i)
+        goods_list = self.test_add_goods()
         # goods_list = [1000062921 + i for i in range(0, 20)]
         time.sleep(6)
         Q = QueryData()
@@ -665,8 +671,9 @@ class TestSmj(object):
                     inventory_id = Q.get_data(sql)[0][0]
                     sql = "select shop_price from smj_goods_sku where sku_id = %s" % sku_id
                     sku_price = Q.get_data(sql)[0][0]
-                    mota_sku = {"sku_id": sku_id, "inventory_id": inventory_id, "kill_price": "0", "vip_price": "0",
-                                "bonus_second_vip": "0", "stock": "0", "status": "0", "shop_price": sku_price}
+                    mota_sku = {"sku_id": sku_id, "inventory_id": inventory_id, "kill_price": "19.99",
+                                "vip_price": "18.88",
+                                "bonus_second_vip": "1.99", "stock": "100", "status": "1", "shop_price": sku_price}
                     sku.append(mota_sku)
                 else:
                     sku_id = sku_id_tu[0]
@@ -763,7 +770,7 @@ class TestSmj(object):
     # @pytest.mark.parametrize("i", [i for i in range(100012, 100013)])
     def test_set_money(self):
         user_id = "100072"
-        add_or_jian = 2
+        add_or_jian = 3
         # 1为扣减 2 不兑换 3 要兑换
         if add_or_jian == 1:
             type1 = 11
@@ -774,13 +781,13 @@ class TestSmj(object):
             type2 = 3
             type3 = 9
         # 加积分 9900
-        data2 = {"uid": user_id, "type": type1, "point": 0, "remark": "加扣积分"}
+        data2 = {"uid": user_id, "type": type1, "point": 150, "remark": "加扣积分"}
         self.WorkerB.update_integral_record(**data2)
         # 会员卡加钱 3000
-        data3 = {"uid": user_id, "type": type2, "money": 100000}
+        data3 = {"uid": user_id, "type": type2, "money": 100}
         self.WorkerB.update_vip_card(**data3)
         # 加余额 299.99
-        data1 = {"uid": user_id, "type": type3, "money": 200000}
+        data1 = {"uid": user_id, "type": type3, "money": 99.99}
         self.WorkerB.update_money(**data1)
         if add_or_jian == 3:
             # 查询礼品卡
@@ -850,7 +857,8 @@ class TestSmj(object):
     def subbmit_yuncang(self, goods_id, user_id, WorkerCC, prodact):
         goods_id = goods_id
         x = get_sku_id(goods_id)
-        sku_id = x[random.randint(0, len(x))][0]
+        w = random.randint(0, len(x) - 1)
+        sku_id = x[w][0]
         address_id = get_user_address_id(user_id)[0][0]
         shop_id = 31475
         # 优惠券ID查询 以及使用
@@ -891,7 +899,7 @@ class TestSmj(object):
         confirm_data = {"id": order_id, "shopId": shop_id}
         WorkerCC.confirm_receipt(**confirm_data)
         if prodact == 5:
-            return
+            return order_sn
         # 评价数据准备
         order_end_list = WorkerCC.evaluate_list()
         order_extent_id = order_end_list['data']['items'][0]['id']
@@ -924,13 +932,13 @@ class TestSmj(object):
     def subbmit_supermarkete(self, goods_id, user_id, WorkerCC, prodact=2):
         goods_id = goods_id
         x = get_sku_id(goods_id)
-        sku_id = x[random.randint(0, len(x))][0]
+        sku_id = x[random.randint(0, len(x) - 1)][0]
         address_id = get_user_address_id(user_id)[0][0]
         if user_id == 100072:
             shop_id = 31475
         else:
             y = get_shop_id(goods_id)
-            shop_id = y[random.randint(0, len(y))][0]
+            shop_id = y[random.randint(0, len(y) - 1)][0]
         shop_id = 31475
         # 1、快递，2、自提，3、同城
         deliver_type = 3
@@ -973,7 +981,7 @@ class TestSmj(object):
         pick_compelte = {"ids": order_id, "deliver_type": deliver_type}
         self.WorkerB.order_picking_compelte(**pick_compelte)
         if prodact == 4:
-            return
+            return order_sn
 
         if deliver_type == 3:
             # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
@@ -998,7 +1006,7 @@ class TestSmj(object):
     def subbmit_fuwu(self, goods_id, user_id, WorkerCC, prodact):
         goods_id = goods_id
         x = get_sku_id(goods_id)
-        sku_id = x[random.randint(0, len(x))][0]
+        sku_id = x[random.randint(0, len(x) - 1)][0]
         address_id = get_user_address_id(user_id)[0][0]
         shop_id = 31547
         # # 优惠券ID查询 以及使用
@@ -1045,6 +1053,7 @@ class TestSmj(object):
             use_data = {"goods_code_id": fuwu_code_id, "shop_id": random.choice(shop_id_list),
                         "order_id": order_id}
             self.WorkerB.order_use(**use_data)
+        return order_sn
 
     # 用户混合下单
     def test_users_subbmit_order(self):
@@ -1104,7 +1113,7 @@ class TestSmj(object):
 
     # 设置测试用户数据设置符合下单
     def test_set_user_good(self):
-        user_id_list = [100066, 100067, 100068, 100069, 10006970, 100071, 100072, 100073, 100074, 100075]
+        user_id_list = [100066, 100067, 100068, 100069, 10006970, 100071, 100072, 100073, 100075, 100076]
         for user_id in user_id_list:
             try:
                 sc = Login().login_c(user_id)
@@ -1124,13 +1133,13 @@ class TestSmj(object):
                 type2 = 3
                 type3 = 9
             # 加积分 9900
-            data2 = {"uid": user_id, "type": type1, "point": 0, "remark": "加扣积分"}
+            data2 = {"uid": user_id, "type": type1, "point": 100000, "remark": "加扣积分"}
             self.WorkerB.update_integral_record(**data2)
             # 会员卡加钱 3000
-            data3 = {"uid": user_id, "type": type2, "money": 0}
+            data3 = {"uid": user_id, "type": type2, "money": 1000000}
             self.WorkerB.update_vip_card(**data3)
             # 加余额 299.99
-            data1 = {"uid": user_id, "type": type3, "money": 0}
+            data1 = {"uid": user_id, "type": type3, "money": 1000000}
             self.WorkerB.update_money(**data1)
             if add_or_jian == 3:
                 # 查询礼品卡
@@ -1144,6 +1153,68 @@ class TestSmj(object):
                          "deviceId": "mini app",
                          "deviceModel": "microsoft", "from": 2}
                 worker.bind_gift_card(**data4)
+
+    # 用户关系设置，用户下单，返利查询，返利信息写入
+    def test_fayong(self):
+        # 设置用户角色和关系
+        user_list = [{'user_id': 100066, 'user_role': '顾客', 'user_upper': 100067},
+                     {'user_id': 100067, 'user_role': '顾客', 'user_upper': 100068},
+                     {'user_id': 100068, 'user_role': '团长', 'user_upper': 100069},
+                     {'user_id': 100069, 'user_role': '顾客', 'user_upper': 100070},
+                     {'user_id': 100070, 'user_role': '团长', 'user_upper': 100071},
+                     {'user_id': 100071, 'user_role': '团长', 'user_upper': 100072},
+                     {'user_id': 100072, 'user_role': '团长', 'user_upper': 100073},
+                     ]
+        order_info_list = list()
+        for i in user_list:
+            # 删除用户分享人
+            data = {"id": i['user_id']}
+            self.WorkerB.del_upper(**data)
+            # 修改用户上级
+            data1 = {"id": i['user_id'], "store_id": i['user_upper']}
+            self.WorkerB.update_upper(**data1)
+            # 修改用户角色
+            type_u = 1
+            if i['user_role'].strip() == '团长':
+                type_u = 2
+            data2 = {"id": i['user_id'], "type": type_u}
+            self.WorkerB.change_user_type(**data2)
+        for i in user_list:
+            # 登录C端帐号
+            scc = Login().login_c(i['user_id'])
+            goods_id_yc = 1000063509
+            goods_id_sp = 1000063516
+            goods_id_fw = 1000063214
+            WorkerCC = InterfaceModuleApi(scc)
+            # 云仓商品下单下单
+            # order_sn = self.subbmit_yuncang(goods_id_yc, i['user_id'], WorkerCC, prodact=5)
+            # order_sn = self.subbmit_supermarkete(goods_id_sp, i['user_id'], WorkerCC, prodact=4)
+            order_sn = self.subbmit_fuwu(goods_id_fw, i['user_id'], WorkerCC, prodact=4)
+            # 查询返利
+            data2 = {"order_sn": order_sn}
+            items = self.WorkerB.order_clearing(**data2)['data']['items']
+            if len(items) != 0:
+                order_info = {}
+                to_user_list = []
+                order_info['order_sn'] = items[0]['order_sn']
+                order_info['user_xd'] = items[0]['uid']
+                for i in items:
+                    to_user_info = {}
+                    to_user_info['user'] = i['to_id']
+                    to_user_info['money'] = i['money']
+                    to_user_list.append(to_user_info)
+                order_info['order_info'] = to_user_list
+                order_info_list.append(order_info)
+            else:
+                order_info = {}
+                to_user_list = []
+                order_info['order_sn'] = order_sn
+                order_info['user_xd'] = i['user_id']
+                order_info['order_info'] = to_user_list
+                order_info_list.append(order_info)
+
+        # 写数据
+        ExcelUtil(excel_filepath).write_smj_reback(user_list, order_info_list)
 
 
 if __name__ == '__main__':
