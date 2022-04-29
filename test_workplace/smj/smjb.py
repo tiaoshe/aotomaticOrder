@@ -596,7 +596,7 @@ class InterfaceModule(object):
         url = get_url(self.host, "add_lessen")
         data = {"title": faker.sentence(), "description": faker.sentence(), "start_time": get_now_time(),
                 "end_time": get_now_time(721200), "shop_offline_id": 31475,
-                "rules": {"type": random.choice([2]), "full": 300, "full_reduce": 100},
+                "rules": {"type": random.choice([2]), "full": 10, "full_reduce": 1},
                 "goods": ["1000062028", "1000062027", "1000062026"]}
         for key, value in kwargs.items():
             data[key] = value
