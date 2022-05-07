@@ -3,6 +3,7 @@
 # @File smj_scene.PY
 from test_workplace.smj.smjb import InterfaceModule
 from test_workplace.smj.smjc import InterfaceModuleApi
+from test_workplace.smj.smjqishouc import *
 from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
 import pytest, random
@@ -20,7 +21,7 @@ filepath_write_log = os.path.abspath(
 
 class TestSmj(object):
     def setup_class(self):
-        self.uid = 100069
+        self.uid = 100072
         s = Login().login_b("host_smj_b", "admin_login")
         self.WorkerB = InterfaceModule(s)
         sc = Login().login_c(self.uid)
@@ -97,7 +98,7 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(10)])
+    @pytest.mark.parametrize("time", [x for x in range(1)])
     @pytest.mark.parametrize("goods_id", [1000063209])
     def test_submmit_order_pay_supermarket(self, time, goods_id):
         goods_id = goods_id
@@ -133,7 +134,6 @@ class TestSmj(object):
         data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
         order_response = self.WorkerC.pay_order(**data)
         order_id = order_response['data']['id']
-        return
         # cancel_order = {"id": order_id}
         # # 取消订单
         # self.WorkerC.cancel_order(**cancel_order)
@@ -145,25 +145,38 @@ class TestSmj(object):
         # 拣货完成
         pick_compelte = {"ids": order_id, "deliver_type": deliver_type}
         self.WorkerB.order_picking_compelte(**pick_compelte)
-        return
 
         if deliver_type == 3:
             # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
-            change_order_status(random.randint(3, 6), order_id)
-        # 订单完成
-        data_end = {"ids": order_id, "deliver_type": deliver_type}
-        self.WorkerB.order_send_end(**data_end)
+            # change_order_status(random.randint(3, 6), order_id)
+            s = get_rider_login_on("18512816650")
+            worker = InterfaceQSApi(s)
+            # 抢单
+            data = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637"}
+            worker.get_order(**data)
+            # 到店
+            data1 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 5}
+            worker.set_order_status(**data1)
+            # 取货
+            data2 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 6}
+            worker.set_order_status(**data2)
+            # 完成
+            data3 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 10}
+            worker.set_order_status(**data3)
+        if deliver_type == 2:
+            # 订单完成
+            data_end = {"ids": order_id, "deliver_type": deliver_type}
+            self.WorkerB.order_send_end(**data_end)
         # 评价数据准备
         data_evalu = {"status": 0, "page": 1, "pageSize": 20}
         order_end_list = self.WorkerC.evaluate_list(**data_evalu)
         order_extent_id = order_end_list['data']['items'][0]['id']
-        print(order_extent_id)
         order_id_end = order_end_list['data']['items'][0]["order_id"]
         goods_id_end = order_end_list['data']['items'][0]["goods_id"]
         # 发布评价[get_video()],
         evaluate_data = {"order_id": order_id_end, "goods_id": goods_id_end, "score": random.randint(1, 5),
                          "imgs": get_images(random.randint(1, 9)), "is_anonymity": 0,
-                         "content": "图片-" + faker.text(max_nb_chars=2000), "video": "",
+                         "content": "图片-" + faker.text(max_nb_chars=200), "video": "",
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
 
@@ -216,7 +229,7 @@ class TestSmj(object):
                          "content": "视频-" + faker.text(max_nb_chars=120), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
-        flag = 0
+        flag = 1
         if flag == 0:
             # 申请售后退货
             self.test_apply_sale(sku_id, order_id, shop_id)
@@ -297,6 +310,7 @@ class TestSmj(object):
                       "imgs": get_images(random.randint(1, 8)),
                       "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4"]}
         self.WorkerC.order_sales(**sales_data)
+        return
 
         # 同意售后 1.查询售后信息
         sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
@@ -639,12 +653,12 @@ class TestSmj(object):
         print(goods_id)
         return goods_id
 
-    # 创建商品
+    # 创建添加商品
     def test_add_goods(self):
         goods_id_list = list()
-        for i in range(5):
-            data = {"title": "【云仓】-下单-" + faker.sentence()}
-            data1 = {"title": "【自营仓】-下单-" + faker.sentence()}
+        for i in range(1):
+            data = {"title": "【云仓久】-下单test-" + faker.sentence()}
+            data1 = {"title": "【自营仓久】-下单test-" + faker.sentence()}
             self.WorkerB.add_goods_shop(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
@@ -656,9 +670,8 @@ class TestSmj(object):
     def test_add_seckill(self, i):
         shop_offline_id = "31475"
         # shop_offline_id = "31554"
-        # goods_list = self.test_add_goods()
-        goods_list = [1000063577, 1000063575, 1000063573, 1000063571, 1000063569, 1000063405, 1000063403, 1000063401,
-                      1000063399, 1000063397, 1000063395, 1000063393, 1000063391, 1000063389, 1000063387]
+        goods_list = self.test_add_goods()
+        # goods_list = [1000063616, 1000063617]
         time.sleep(6)
         Q = QueryData()
         goods = list()
@@ -678,7 +691,7 @@ class TestSmj(object):
                     sku_price = Q.get_data(sql)[0][0]
                     mota_sku = {"sku_id": sku_id, "inventory_id": inventory_id, "kill_price": "19.99",
                                 "vip_price": "18.88",
-                                "bonus_second_vip": "1.99", "stock": "100", "status": "1", "shop_price": sku_price}
+                                "bonus_second_vip": "1.99", "stock": "100", "status": "0", "shop_price": sku_price}
                     sku.append(mota_sku)
                 else:
                     sku_id = sku_id_tu[0]
@@ -696,7 +709,7 @@ class TestSmj(object):
                           "sku": sku}
             goods.append(goods_mota)
         data = {"shop_offline_id": shop_offline_id, "goods": goods, "start_time": get_now_time(60 * 60 * i + 10),
-                "end_time": get_now_time(i * 60 * 60 + 60 * 60), }
+                "end_time": get_now_time(i * 60 * 60 + 60 * 10), }
         self.WorkerB.add_seckill(**data)
 
     # 添加满减活动
@@ -705,8 +718,7 @@ class TestSmj(object):
         # 新增满减活动商品
         # goods_list = self.test_add_goods(i)
         # print(goods_list)
-        goods_list = [1000063576, 1000063574, 1000063572, 1000063570, 1000063568, 1000063404, 1000063402, 1000063400,
-                      1000063398, 1000063396, 1000063394, 1000063392, 1000063390, 1000063388, 1000063386]
+        goods_list = [1000063615, 1000063614, 1000063617]
         data = {"goods": goods_list}
         # 创建满减活动
         self.WorkerB.add_lessen(**data)
@@ -787,13 +799,13 @@ class TestSmj(object):
             type2 = 3
             type3 = 9
         # 加积分 9900
-        data2 = {"uid": user_id, "type": type1, "point": 150, "remark": "加扣积分"}
+        data2 = {"uid": user_id, "type": type1, "point": 800, "remark": "加扣积分"}
         self.WorkerB.update_integral_record(**data2)
         # 会员卡加钱 3000
-        data3 = {"uid": user_id, "type": type2, "money": 100}
+        data3 = {"uid": user_id, "type": type2, "money": 45}
         self.WorkerB.update_vip_card(**data3)
         # 加余额 299.99
-        data1 = {"uid": user_id, "type": type3, "money": 99.99}
+        data1 = {"uid": user_id, "type": type3, "money": 49.99}
         self.WorkerB.update_money(**data1)
         if add_or_jian == 3:
             # 查询礼品卡
@@ -870,7 +882,7 @@ class TestSmj(object):
         # 优惠券ID查询 以及使用
         sql = "select id FROM smj_coupon_record where uid=%s and cid=5315 and is_used=0;" % user_id
         coupon_id = QueryData().get_data(sql)[0][0]
-        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 2,
+        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": random.randint(1, 3),
                           "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 1, "buyer_message": "这个备注信息应该能看到"}}, "shopId": shop_id,
                           "deliver_type": "1", "coupon_id": "", "integral_fee": 0,
@@ -947,7 +959,7 @@ class TestSmj(object):
             shop_id = y[random.randint(0, len(y) - 1)][0]
         # shop_id = 31475
         # 1、快递，2、自提，3、同城
-        deliver_type = 3
+        deliver_type = random.choice([2, 3])
         # 优惠券ID查询 以及使用
         # 1 = > '微信',
         # 2 = > '小程序',
@@ -957,7 +969,7 @@ class TestSmj(object):
         # random.choice(["wechat", "mp", "ios", "android", "wap"])
         sql = "select id FROM smj_coupon_record where uid=%s and cid=5315 and is_used=0;" % user_id
         coupon_id = QueryData().get_data(sql)[0][0]
-        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": random.randint(2, 5),
+        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": random.randint(1, 3),
                           "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 0, "buyer_message": "杜鲁门啊 杜鲁门"}}, "shopId": shop_id,
                           "deliver_type": deliver_type, "expect_to_time": get_now_time(60 * 60 * 24),
@@ -991,23 +1003,37 @@ class TestSmj(object):
 
         if deliver_type == 3:
             # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
-            change_order_status(random.randint(3, 6), order_id)
-        # 订单完成
-        data_end = {"ids": order_id, "deliver_type": deliver_type}
-        self.WorkerB.order_send_end(**data_end)
+            # change_order_status(random.randint(3, 6), order_id)
+            s = get_rider_login_on("18512816650")
+            worker = InterfaceQSApi(s)
+            # 抢单
+            data = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637"}
+            worker.get_order(**data)
+            # 到店
+            data1 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 5}
+            worker.set_order_status(**data1)
+            # 取货
+            data2 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 6}
+            worker.set_order_status(**data2)
+            # 完成
+            data3 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 10}
+            worker.set_order_status(**data3)
+        if deliver_type == 3:
+            # 订单完成
+            data_end = {"ids": order_id, "deliver_type": deliver_type}
+            self.WorkerB.order_send_end(**data_end)
         # 评价数据准备
         data_evalu = {"status": 0, "page": 1, "pageSize": 20}
-        order_end_list = WorkerCC.evaluate_list(**data_evalu)
+        order_end_list = self.WorkerC.evaluate_list(**data_evalu)
         order_extent_id = order_end_list['data']['items'][0]['id']
-        print(order_extent_id)
         order_id_end = order_end_list['data']['items'][0]["order_id"]
         goods_id_end = order_end_list['data']['items'][0]["goods_id"]
         # 发布评价[get_video()],
         evaluate_data = {"order_id": order_id_end, "goods_id": goods_id_end, "score": random.randint(1, 5),
                          "imgs": get_images(random.randint(1, 9)), "is_anonymity": 0,
-                         "content": "图片-" + faker.text(max_nb_chars=2000), "video": "",
+                         "content": "图片-" + faker.text(max_nb_chars=200), "video": "",
                          "order_extend_id": order_extent_id}
-        WorkerCC.add_evaluate(**evaluate_data)
+        self.WorkerC.add_evaluate(**evaluate_data)
 
     def subbmit_fuwu(self, goods_id, user_id, WorkerCC, prodact):
         goods_id = goods_id
@@ -1019,7 +1045,7 @@ class TestSmj(object):
         # sql = "select id FROM smj_coupon_record where uid=%s and cid=5317 and is_used=0;" % self.uid
         # coupon_id = QueryData().get_data(sql)[0][0]
         submit_data = {"goods_id": goods_id, "shopId": shop_id, "sku_id": sku_id, "latitude": "0", "longitude": "0",
-                       "num": 1,
+                       "num": random.randint(1, 3),
                        "address_id": address_id, "deliver_type": 2, "integral_fee": 0, "gift_fee": 0,
                        "coupon_id": "", "name": "howell",
                        "systemType": random.choice(["wechat", "mp", "ios", "android", "wap"])}
@@ -1072,13 +1098,9 @@ class TestSmj(object):
                 prodact = random.randint(1, 7)
                 prodact_supermarket = random.randint(1, 4)
                 prodact_fuwu = random.randint(1, 7)
-                goods_id = random.choice(
-                    [1000063577, 1000063575, 1000063573, 1000063571, 1000063569, 1000063405, 1000063403, 1000063401,
-                     1000063399, 1000063397, 1000063395, 1000063393, 1000063391, 1000063389, 1000063387])
-                goods_id_supermarket = random.choice(
-                    [1000063576, 1000063574, 1000063572, 1000063570, 1000063568, 1000063404, 1000063402, 1000063400,
-                     1000063398, 1000063396, 1000063394, 1000063392, 1000063390, 1000063388, 1000063386])
-                goods_id_fuwu = random.choice([x for x in range(1000063406, 1000063415)])
+                goods_id = random.choice([1000063627])
+                goods_id_supermarket = random.choice([1000063626])
+                goods_id_fuwu = random.choice([1000063630])
                 t = threading.Thread(target=self.subbmit_yuncang, args=(goods_id, user, WorkerCC, prodact))
                 t.start()
                 threading_list.append(t)
@@ -1102,15 +1124,11 @@ class TestSmj(object):
                 scc = Login().login_c(user)
                 WorkerCC = InterfaceModuleApi(scc)
                 prodact = random.randint(1, 7)
-                prodact_supermarket = random.randint(1, 4)
+                prodact_supermarket = random.randint(1, 6)
                 prodact_fuwu = random.randint(1, 7)
-                goods_id = random.choice(
-                    [1000063577, 1000063575, 1000063573, 1000063571, 1000063569, 1000063405, 1000063403, 1000063401,
-                     1000063399, 1000063397, 1000063395, 1000063393, 1000063391, 1000063389, 1000063387])
-                goods_id_supermarket = random.choice(
-                    [1000063576, 1000063574, 1000063572, 1000063570, 1000063568, 1000063404, 1000063402, 1000063400,
-                     1000063398, 1000063396, 1000063394, 1000063392, 1000063390, 1000063388, 1000063386])
-                goods_id_fuwu = random.choice([x for x in range(1000063406, 1000063415)])
+                goods_id = random.choice([1000063627])
+                goods_id_supermarket = random.choice([1000063626])
+                goods_id_fuwu = random.choice([1000063630])
                 t = threading.Thread(target=self.subbmit_yuncang, args=(goods_id, user, WorkerCC, prodact))
                 t.start()
                 threading_list.append(t)

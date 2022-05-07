@@ -7,6 +7,7 @@ from faker import Faker
 import random
 import requests
 import string
+import threading
 
 faker = Faker(locale='zh_CN')
 
@@ -91,6 +92,35 @@ class InterfaceQSApi(object):
         response = post(self.s, url, **data)
         return response
 
+    # 骑手接单
+    def get_order(self, **kwargs):
+        url = get_url(self.host, "get_order")
+        data = {"order_id": "1212", "lng": str(random.randint(103848967, 104320981) / 1000000),
+                "lat": str(random.randint(30417993, 30800710) / 1000000)}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 待抢单列表
+    def order_pool(self, **kwargs):
+        url = get_url(self.host, "order_pool")
+        data = {"lng": "104.06353", "lat": "30.56637"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 骑手到店 取货 完成
+    def set_order_status(self, **kwargs):
+        url = get_url(self.host, "set_order_status")
+        data = {"order_id": "1212", "lng": str(random.randint(103848967, 104320981) / 1000000),
+                "lat": str(random.randint(30417993, 30800710) / 1000000), "status": 5}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 # 让所有骑手上线
 def on_all_rider():
@@ -130,5 +160,38 @@ def updata_rider():
         worker_1.rider_on(**data)
 
 
+def end_order(worker, order_id):
+    # 抢单
+    data = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637"}
+    worker.get_order(**data)
+    # 到店
+    data1 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 5}
+    worker.set_order_status(**data1)
+    # 取货
+    data2 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 6}
+    worker.set_order_status(**data2)
+    # 完成
+    data3 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 10}
+    worker.set_order_status(**data3)
+
+
+# 清理带抢单订单
+def clear_order():
+    s = get_rider_login_on("18512816650")
+    worker = InterfaceQSApi(s)
+    # 订单列表
+    p = worker.order_pool()
+    for i in range(int(p['data']['count'] / 20)):
+        p = worker.order_pool()
+        threading_list=[]
+        for i in p['data']['items']:
+            order_id = i['id']
+            t2 = threading.Thread(target=end_order, args=(worker, order_id))
+            t2.start()
+            threading_list.append(t2)
+        for x in threading_list:
+            x.join()
+
+
 if __name__ == '__main__':
-    off_all_rider()
+    clear_order()
