@@ -286,6 +286,15 @@ class InterfaceModuleApi(object):
         response = post(self.s, url, **data)
         return response
 
+    # 领取优惠券
+    def get_coupon(self, **kwargs):
+        url = get_url(self.host, "get_coupon")
+        data = {"ids": 5525, "shop_id": 31475}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_c(100041)

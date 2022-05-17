@@ -1,3 +1,6 @@
+# @time 2022/5/17 18:10
+# @Author howell
+# @File rideexcel.PY
 # @time 2021/9/18 14:42
 # @Author howell
 # @File controlexcel.PY
@@ -20,13 +23,18 @@ class ExcelUtil(object):
         self.rowNum = self.table.nrows
         # 获取总列数
         self.colNum = self.table.ncols
-        # 将xlrd文件转化成xlwt文件，让文件可写
-        self.workbook = copy(self.data)
-        # 获得表格对象
-        self.worksheet = self.workbook.get_sheet(sheetname)
+        # # 将xlrd文件转化成xlwt文件，让文件可写
+        # self.workbook = copy(self.data)
+        # # 获得表格对象
+        # self.worksheet = self.workbook.get_sheet(sheetname)
 
     def get_user_data(self):
-        print(self.table.row_values(3))
+        for i in range(2, self.rowNum):
+            data = self.table.row_values(i)
+            if len(data[0]) == 0:
+                print(data)
+                continue
+            print(data)
 
     def write_data(self, user_list):
         if len(user_list) > 0:
@@ -140,4 +148,3 @@ class ExcelUtil(object):
 if __name__ == '__main__':
     filepath = os.path.abspath(os.path.dirname(os.path.dirname(__file__))) + "\\report\\run_report1.xls"
     ExcelUtil(filepath).get_user_data()
-

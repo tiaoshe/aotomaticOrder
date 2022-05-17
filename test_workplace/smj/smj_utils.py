@@ -128,6 +128,10 @@ class QueryData(object):
         self.cur.execute(str_sql)
         self.conn.commit()
 
+    def insert_data(self, str_sql):
+        self.cur.execute(str_sql)
+        self.conn.commit()
+
     def __del__(self):
         self.cur.close()
         self.conn.close()

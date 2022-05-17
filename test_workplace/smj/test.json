@@ -1,1 +1,94 @@
-{"action_type":1,"stock_type":1,"supplier_type":0,"is_order_award_calc":1,"is_break":0,"deliver_type":[1,2],"store_ids":[31508,31507,31506,31505,31504,31502,31501,31500,31484,31485,31486,31488,31491,31499],"first_fee":0,"cross_border":2,"second_fee":"0","combination":0,"zu_num":0,"stock_double":1,"is_quick":0,"is_top":0,"is_welfare":0,"team_strategy1":0,"team_senior1":0,"team_angel1":0,"team_angel2":0,"store_extend":[],"start_type":1,"end_type":3,"cat_id":[433,527],"seckill_type":1,"use_score":0,"min_score":0,"max_score":0,"is_open_limit":0,"single_max":0,"single_min":0,"limit_max":0,"day_max":0,"title":"商品名称","sort":"9999","content":"<p><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622508.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622510.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622511.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622513.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622514.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622515.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622516.jpg\" /></p>","seckill_flag":0,"is_coupon_convert":0,"cat_id1":433,"cat_id2":527,"cat_id3":0,"thumb":"https://smjcdn.jzwp.cn/1651892608123.jpg","imgs":["https://smjcdn.jzwp.cn/1651892610536.jpg","https://smjcdn.jzwp.cn/1651892613239.jpg"],"stock_base":"5","type_id":186,"type":186,"attr_datas":[{"sku_sn":"w1","sku_id":0,"goods_attr_ids":"11153,11149,11146","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31508,"incr_stock":100},{"warehouse_id":31507,"incr_stock":100},{"warehouse_id":31506,"incr_stock":100},{"warehouse_id":31505,"incr_stock":100},{"warehouse_id":31504,"incr_stock":100},{"warehouse_id":31502,"incr_stock":100},{"warehouse_id":31501,"incr_stock":100},{"warehouse_id":31500,"incr_stock":100},{"warehouse_id":31484,"incr_stock":100},{"warehouse_id":31485,"incr_stock":100},{"warehouse_id":31486,"incr_stock":100},{"warehouse_id":31488,"incr_stock":100},{"warehouse_id":31491,"incr_stock":100},{"warehouse_id":31499,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"180","partner_price":"null","team_price":"160","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"10","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"w1","sku_id":0,"goods_attr_ids":"11153,11149,11147","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31508,"incr_stock":100},{"warehouse_id":31507,"incr_stock":100},{"warehouse_id":31506,"incr_stock":100},{"warehouse_id":31505,"incr_stock":100},{"warehouse_id":31504,"incr_stock":100},{"warehouse_id":31502,"incr_stock":100},{"warehouse_id":31501,"incr_stock":100},{"warehouse_id":31500,"incr_stock":100},{"warehouse_id":31484,"incr_stock":100},{"warehouse_id":31485,"incr_stock":100},{"warehouse_id":31486,"incr_stock":100},{"warehouse_id":31488,"incr_stock":100},{"warehouse_id":31491,"incr_stock":100},{"warehouse_id":31499,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"180","partner_price":"null","team_price":"160","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"10","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"w1","sku_id":0,"goods_attr_ids":"11153,11150,11146","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31508,"incr_stock":100},{"warehouse_id":31507,"incr_stock":100},{"warehouse_id":31506,"incr_stock":100},{"warehouse_id":31505,"incr_stock":100},{"warehouse_id":31504,"incr_stock":100},{"warehouse_id":31502,"incr_stock":100},{"warehouse_id":31501,"incr_stock":100},{"warehouse_id":31500,"incr_stock":100},{"warehouse_id":31484,"incr_stock":100},{"warehouse_id":31485,"incr_stock":100},{"warehouse_id":31486,"incr_stock":100},{"warehouse_id":31488,"incr_stock":100},{"warehouse_id":31491,"incr_stock":100},{"warehouse_id":31499,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"180","partner_price":"null","team_price":"160","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"10","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"w1","sku_id":0,"goods_attr_ids":"11153,11150,11147","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31508,"incr_stock":100},{"warehouse_id":31507,"incr_stock":100},{"warehouse_id":31506,"incr_stock":100},{"warehouse_id":31505,"incr_stock":100},{"warehouse_id":31504,"incr_stock":100},{"warehouse_id":31502,"incr_stock":100},{"warehouse_id":31501,"incr_stock":100},{"warehouse_id":31500,"incr_stock":100},{"warehouse_id":31484,"incr_stock":100},{"warehouse_id":31485,"incr_stock":100},{"warehouse_id":31486,"incr_stock":100},{"warehouse_id":31488,"incr_stock":100},{"warehouse_id":31491,"incr_stock":100},{"warehouse_id":31499,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"180","partner_price":"null","team_price":"160","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"10","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"}],"sku_imgs":{"11149":{"thumb":["https://smjcdn.jzwp.cn/1651892596195.jpg"]},"11150":{"thumb":["https://smjcdn.jzwp.cn/1651892598714.jpg"]}},"main_attr_id":88,"params":[{"key":"1","value":"1"}],"goods_id":1000063613,"is_index":0}
+{
+  "id": 103,
+  "attr_id": 205,
+  "name": "规格",
+  "is_main": 0,
+  "sort": 0,
+  "is_unique": 0,
+  "goods_id": 0,
+  "is_color": 0,
+  "delflag": 0,
+  "created_at": 1652685032,
+  "updated_at": 1652691037,
+  "attr_name": "白酒类",
+  "values": [
+    {
+      "id": 11247,
+      "color": "",
+      "value": "500ml*6瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11248,
+      "color": "",
+      "value": "500ml*12瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11249,
+      "color": "",
+      "value": "480ml*12瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11250,
+      "color": "",
+      "value": "100ml*24瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11251,
+      "color": "",
+      "value": "125ml*24瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11252,
+      "color": "",
+      "value": "168ml*24瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11253,
+      "color": "",
+      "value": "750ml*6瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11254,
+      "color": "",
+      "value": "488ml*6瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11255,
+      "color": "",
+      "value": "50ml*40瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11256,
+      "color": "",
+      "value": "50ml*12瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11257,
+      "color": "",
+      "value": "500ml*4瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11258,
+      "color": "",
+      "value": "218ml*18瓶 整件装",
+      "sort": 0
+    },
+    {
+      "id": 11259,
+      "color": "",
+      "value": "500ml 单瓶装",
+      "sort": 0
+    }
+  ]
+}
