@@ -29,12 +29,14 @@ class ExcelUtil(object):
         # self.worksheet = self.workbook.get_sheet(sheetname)
 
     def get_user_data(self):
+        data_list = []
         for i in range(2, self.rowNum):
             data = self.table.row_values(i)
-            if len(data[0]) == 0:
-                print(data)
+            if data[0] == '' or data[8] == "无":
                 continue
+            data_list.append(data)
             print(data)
+        print(data_list)
 
     def write_data(self, user_list):
         if len(user_list) > 0:
