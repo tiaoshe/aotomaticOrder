@@ -21,7 +21,7 @@ filepath_write_log = os.path.abspath(
 
 class TestSmj(object):
     def setup_class(self):
-        self.uid = 100071
+        self.uid = 100088
         s = Login().login_b("host_smj_b", "admin_login")
         self.WorkerB = InterfaceModule(s)
         sc = Login().login_c(self.uid)
@@ -181,9 +181,9 @@ class TestSmj(object):
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
 
-    @pytest.mark.parametrize("i", [i for i in range(4000)])
+    @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_submmit_order_pay_yuncang(self, i):
-        goods_id = "1000063642"
+        goods_id = "1000064265"
         x = get_sku_id(goods_id)
         sku_id = x[random.randint(0, len(x) - 1)][0]
         address_id = get_user_address_id(self.uid)[0][0]
@@ -216,7 +216,6 @@ class TestSmj(object):
         self.WorkerB.order_delivery(**data_order)
         # 一件发货
         self.WorkerB.order_delivery_send()
-
         # 确认收货
         confirm_data = {"id": order_id, "shopId": shop_id}
         self.WorkerC.confirm_receipt(**confirm_data)
@@ -231,7 +230,7 @@ class TestSmj(object):
                          "content": "视频-" + faker.text(max_nb_chars=120), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
-        flag = 4
+        flag = 0
         if flag == 0:
             # 申请售后退货
             self.test_apply_sale(sku_id, order_id, shop_id)
@@ -249,7 +248,7 @@ class TestSmj(object):
 
     # 积分兑换
     @pytest.mark.parametrize("i", [i for i in range(40)])
-    def test_score_change(self,i):
+    def test_score_change(self, i):
         address_id = get_user_address_id(self.uid)[0][0]
         shop_id = 31475
         data = {"shop_id": shop_id, "sku_id": 100027797, "nums": 2, "address_id": address_id, "appName": "圣美家",
@@ -457,11 +456,13 @@ class TestSmj(object):
             self.WorkerC.add_evaluate(**evaluate_data)
 
     # 加入购物车
-    def test_join_cart(self, goods_id):
+    def test_join_cart(self, goods_id, shop_id):
         goods_id = goods_id
         for sku in get_sku_id(goods_id):
             sku_id = sku[0]
-            data = {"shopId": "31365", "cart_id": 0, "sku_id": sku_id, "num": 1}
+            data = {"shop_id": shop_id, "shopId": shop_id, "cart_id": 0, "sku_id": sku_id, "num": 8780, "appName": "圣美家",
+                    "appVersion": "v1.0.0", "systemVersion": "Windows 10 x64", "deviceId": "mini app",
+                    "deviceModel": "microsoft", "from": 2, "systemType": "mp"}
             self.WorkerC.join_cart(**data)
 
     # 获取购物车列表
@@ -471,17 +472,17 @@ class TestSmj(object):
 
     # 购物车下单-云仓
     def test_cart_submit(self):
-        goods_list = ["1000060675", "1000060673", "1000060671"]
-        # goods_list = ["1000060706"]
+        goods_list = ["1000064283", "1000064281", "1000064277", "1000064279", "1000064275"]
+        # goods_list = ["1000064275"]
+        shop_id = 31475
         for good_id in goods_list:
-            self.test_join_cart(good_id)
+            self.test_join_cart(good_id, shop_id)
         address_id = get_user_address_id(self.uid)[0][0]
-        shop_id = 31365
+        return
         # 准备购物车数据
-        cart_data = {"shopId": "31365"}
+        cart_data = {"shopId": shop_id}
         cart_response = self.WorkerC.cart_list(**cart_data)
         items_data = cart_response['data']['cloud']['common']['items']
-        print(items_data)
         extend = dict()
         cart_ids = ""
         goods_id = ""
@@ -508,22 +509,25 @@ class TestSmj(object):
         self.WorkerC.pay_order(**data)
 
     # 购物车下单-自提订单
-    def test_cart_submit_self(self):
+    @pytest.mark.parametrize("i", [i for i in range(10000)])
+    def test_cart_submit_self(self, i):
         # goods_list = ["1000060675", "1000060673", "1000060671"]
-        goods_list = ["1000060674", "1000060672"]
+        # goods_list = ["1000064282", "1000064280", "1000064278", "1000064276", "1000064274"]
+        goods_list = ["1000064282", "1000064280", "1000064278", "1000064276", "1000064274"]
+        y = get_shop_id(goods_list[0])
+        shop_id = y[random.randint(0, len(y) - 1)][0]
         for good_id in goods_list:
-            self.test_join_cart(good_id)
-            self.test_join_cart(good_id)
+            self.test_join_cart(good_id, shop_id)
         address_id = get_user_address_id(self.uid)[0][0]
-        shop_id = 31365
+        return
         # 准备购物车数据
-        cart_data = {"shopId": "31365"}
+        cart_data = {"shopId": shop_id, "shop_id": shop_id}
         cart_response = self.WorkerC.cart_list(**cart_data)
         items_data = cart_response['data']['self']['common']['items']
         extend = dict()
         cart_ids = ""
         goods_id = ""
-        deliver_type = 3
+        deliver_type = random.randint(2, 3)
         for item in items_data:
             cart_ids = cart_ids + str(item['id']) + ","
             if str(item['goods_id']) not in goods_id:
@@ -649,20 +653,20 @@ class TestSmj(object):
         self.WorkerB.add_shop_account(**data)
 
     def test_get_goods_id_list(self):
-        data = {"goodsInfo": "【自营仓】-下单-", "key": "all", "pageSize": 30, "page": 1}
+        data = {"goodsInfo": "【云仓】-下单-", "key": "all", "pageSize": 30, "page": 1}
         p = self.WorkerB.get_goods_list(**data)
-        goods_id = []
+        goods_ids = []
         for i in p['data']["list"]['items']:
-            goods_id.append(i['id'])
-        print(goods_id)
-        return goods_id
+            goods_ids.append(i['id'])
+        print(goods_ids)
+        return goods_ids
 
     # 创建添加商品
-    def test_add_goods(self, time=1):
+    def test_add_goods(self, time=20):
         goods_id_list = list()
         for i in range(1):
-            data = {"title": "【云仓十七】-秒杀-" + str(time) + faker.sentence()}
-            data1 = {"title": "【自营仓十七】-秒杀-" + str(time) + faker.sentence()}
+            data = {"title": "【云仓】-6月2日-" + str(time) + faker.sentence()}
+            data1 = {"title": "【自营仓】-6月2日-" + str(time) + faker.sentence()}
             self.WorkerB.add_goods_shop(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
@@ -670,7 +674,7 @@ class TestSmj(object):
         return goods_id_list
 
     # 添加秒杀活动
-    @pytest.mark.parametrize("i", [i for i in range(10)])
+    @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_add_seckill(self, i):
         shop_offline_id = "31475"
         goods_list = self.test_add_goods(i)
@@ -736,7 +740,7 @@ class TestSmj(object):
         self.WorkerB.add_author()
 
     @pytest.mark.parametrize("i", [i for i in range(500)])
-    def test_add_author(self, i):
+    def test_add_content(self, i):
         self.WorkerB.add_content()
 
     # @pytest.mark.parametrize("i", [i for i in range(100012, 100013)])
@@ -767,8 +771,9 @@ class TestSmj(object):
         WC = InterfaceModuleApi(sc)
         WC.add_address()
 
+    # 删除用户
     def test_del_user(self):
-        user_id = "100004"
+        user_id = "100072"
         q = QueryData()
         sql = "DELETE FROM `smj-dev`.`smj_third` WHERE `uid` = %s" % user_id
         q.update_data(sql)
@@ -794,8 +799,8 @@ class TestSmj(object):
 
     # @pytest.mark.parametrize("i", [i for i in range(100012, 100013)])
     def test_set_money(self):
-        user_id = "100082"
-        add_or_jian = 2
+        user_id = "100072"
+        add_or_jian = 1
         # 1为扣减 2 不兑换 3 要兑换
         if add_or_jian == 1:
             type1 = 11
@@ -806,13 +811,13 @@ class TestSmj(object):
             type2 = 3
             type3 = 9
         # 加积分 9900
-        data2 = {"uid": user_id, "type": type1, "point": 0, "remark": "加扣积分"}
+        data2 = {"uid": user_id, "type": type1, "point": 5193000, "remark": "加扣积分"}
         self.WorkerB.update_integral_record(**data2)
         # 会员卡加钱 3000
         data3 = {"uid": user_id, "type": type2, "money": 0}
         self.WorkerB.update_vip_card(**data3)
         # 加余额 299.99
-        data1 = {"uid": user_id, "type": type3, "money": 9000000}
+        data1 = {"uid": user_id, "type": type3, "money": 100000}
         self.WorkerB.update_money(**data1)
         if add_or_jian == 3:
             # 查询礼品卡
@@ -1102,23 +1107,23 @@ class TestSmj(object):
             for user in user_id_list:
                 scc = Login().login_c(user)
                 WorkerCC = InterfaceModuleApi(scc)
-                prodact = random.randint(1, 1)
+                prodact = random.randint(1, 7)
                 prodact_supermarket = random.randint(1, 4)
                 prodact_fuwu = random.randint(1, 7)
-                goods_id = random.choice([1000063693, 1000063689])
-                goods_id_supermarket = random.choice([1000063626])
-                goods_id_fuwu = random.choice([1000063630])
+                goods_id = random.choice([1000064275, 1000064279, 1000064277, 1000064281, 1000064283])
+                goods_id_supermarket = random.choice([1000064282, 1000064280, 1000064278, 1000064276, 1000064274])
+                goods_id_fuwu = random.choice([1000064329, 1000064330])
                 t = threading.Thread(target=self.subbmit_yuncang, args=(goods_id, user, WorkerCC, prodact))
                 t.start()
                 threading_list.append(t)
-                # t1 = threading.Thread(target=self.subbmit_supermarkete,
-                #                       args=(goods_id_supermarket, user, WorkerCC, prodact_supermarket))
-                # t1.start()
-                # threading_list.append(t1)
-                # t2 = threading.Thread(target=self.subbmit_fuwu,
-                #                       args=(goods_id_fuwu, user, WorkerCC, prodact_fuwu))
-                # t2.start()
-                # threading_list.append(t2)
+                t1 = threading.Thread(target=self.subbmit_supermarkete,
+                                      args=(goods_id_supermarket, user, WorkerCC, prodact_supermarket))
+                t1.start()
+                threading_list.append(t1)
+                t2 = threading.Thread(target=self.subbmit_fuwu,
+                                      args=(goods_id_fuwu, user, WorkerCC, prodact_fuwu))
+                t2.start()
+                threading_list.append(t2)
             for x in threading_list:
                 x.join()
 
@@ -1150,11 +1155,10 @@ class TestSmj(object):
             for x in threading_list:
                 x.join()
 
-        # 用户混合下单
-
+    # 用户混合下单
     def test_users_subbmit_order2(self):
         for i in range(10000):
-            user_id_list = [100066, 100067, 100068, 10006970, 100071, 100072, 100073, 100074, 100075]
+            user_id_list = [100066, 100067, 100068, 100069, 100071, 100072, 100073, 100074, 100075]
             threading_list = []
             for user in user_id_list:
                 scc = Login().login_c(user)
@@ -1162,27 +1166,27 @@ class TestSmj(object):
                 prodact = random.randint(1, 1)
                 prodact_supermarket = random.randint(1, 6)
                 prodact_fuwu = random.randint(1, 7)
-                goods_id = random.choice([1000063691, 1000063689, 1000063687, 1000063687])
-                goods_id_supermarket = random.choice([1000063626])
+                goods_id = random.choice([1000064029])
+                goods_id_supermarket = random.choice([1000064028])
                 goods_id_fuwu = random.choice([1000063630])
                 t = threading.Thread(target=self.subbmit_yuncang, args=(goods_id, user, WorkerCC, prodact))
                 t.start()
                 threading_list.append(t)
-                # t1 = threading.Thread(target=self.subbmit_supermarkete,
-                #                       args=(goods_id_supermarket, user, WorkerCC, prodact_supermarket))
-                # t1.start()
-                # threading_list.append(t1)
-                # t2 = threading.Thread(target=self.subbmit_fuwu,
-                #                       args=(goods_id_fuwu, user, WorkerCC, prodact_fuwu))
-                # t2.start()
-                # threading_list.append(t2)
-            # for x in threading_list:
-            #     x.join()
+                t1 = threading.Thread(target=self.subbmit_supermarkete,
+                                      args=(goods_id_supermarket, user, WorkerCC, prodact_supermarket))
+                t1.start()
+                threading_list.append(t1)
+                t2 = threading.Thread(target=self.subbmit_fuwu,
+                                      args=(goods_id_fuwu, user, WorkerCC, prodact_fuwu))
+                t2.start()
+                threading_list.append(t2)
+            for x in threading_list:
+                x.join()
 
     # 设置测试用户数据设置符合下单
     def test_set_user_good(self):
-        user_id_list = [100066, 100067, 100068, 100069, 10006970, 100071, 100072, 100073, 100075, 100076]
-        # user_id_list = [100078]
+        user_id_list = [100067, 100068, 100066, 100069, 100071, 100072, 100073, 100075, 100076,100088]
+        user_id_list = [100088]
         for user_id in user_id_list:
             try:
                 sc = Login().login_c(user_id)
@@ -1208,7 +1212,7 @@ class TestSmj(object):
             data3 = {"uid": user_id, "type": type2, "money": 95.5}
             self.WorkerB.update_vip_card(**data3)
             # 加余额 299.99
-            data1 = {"uid": user_id, "type": type3, "money": 1000099.99}
+            data1 = {"uid": user_id, "type": type3, "money": 90000990.99}
             self.WorkerB.update_money(**data1)
             if add_or_jian == 3:
                 # 查询礼品卡
@@ -1226,11 +1230,11 @@ class TestSmj(object):
     # 用户关系设置，用户下单，返利查询，返利信息写入
     def test_fayong(self):
         # 设置用户角色和关系
-        user_list = [{'user_id': 100066, 'user_role': '顾客', 'user_upper': 100067},
+        user_list = [{'user_id': 100070, 'user_role': '顾客', 'user_upper': 100067},
                      {'user_id': 100067, 'user_role': '顾客', 'user_upper': 100068},
                      {'user_id': 100068, 'user_role': '团长', 'user_upper': 100069},
                      {'user_id': 100069, 'user_role': '顾客', 'user_upper': 100070},
-                     {'user_id': 100070, 'user_role': '团长', 'user_upper': 100071},
+                     {'user_id': 100066, 'user_role': '团长', 'user_upper': 100071},
                      {'user_id': 100071, 'user_role': '团长', 'user_upper': 100072},
                      {'user_id': 100072, 'user_role': '团长', 'user_upper': 100073},
                      ]
@@ -1248,6 +1252,7 @@ class TestSmj(object):
                 type_u = 2
             data2 = {"id": i['user_id'], "type": type_u}
             self.WorkerB.change_user_type(**data2)
+            return
         for i in user_list:
             # 登录C端帐号
             scc = Login().login_c(i['user_id'])
@@ -1306,13 +1311,6 @@ class TestSmj(object):
                     continue
             # for x in threading_list:
             #     x.join()
-
-    def test_insert_data(self):
-        sql = "	INSERT INTO `smj_common_captcha` (`account`, `captcha`, `expiration_time`," \
-              " `ip`, `num`, `status`, `created_at`, `updated_at`) VALUES (%s, '666666', %s, " \
-              "'118.112.73.93', 1, 0, %s, %s)" % ("13678013770", get_now_time_cuo(), get_now_time_cuo(),
-                                                  get_now_time_cuo(),)
-        QueryData().insert_data(sql)
 
 
 if __name__ == '__main__':

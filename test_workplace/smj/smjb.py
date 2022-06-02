@@ -3,6 +3,7 @@
 # @File smjb.PY
 from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
+from common.rideexcel import ExcelUtil as ExcelUtilT
 from faker import Faker
 import random
 import time
@@ -11,7 +12,7 @@ import datetime
 faker = Faker(locale='zh_CN')
 
 excel_filepath = os.path.abspath(
-    os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report.xls'))
+    os.path.join(os.path.dirname('__file__'), os.path.pardir, os.path.pardir, 'report', 'run_report1.xls'))
 
 
 class InterfaceModule(object):
@@ -792,98 +793,6 @@ class InterfaceModule(object):
         ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
-    def add_goods_shop(self, **kwargs):
-        url = get_url(self.host, "add_goods")
-        # delivery_type  配送方式（（1 同城配送 2到店自提 3快递发货））
-        # stock_type. 仓库类型（仓库类型 1自营仓 2 云仓）
-        params = []
-        for i in range(50):
-            p_dic = dict()
-            p_dic["key"] = faker.sentence()
-            p_dic["value"] = faker.sentence()
-            params.append(p_dic)
-        data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
-                "deliver_type": [1, 2],
-                "store_ids": [31508, 31507, 31506, 31505, 31504, 31502, 31501, 31500, 31484, 31485, 31486, 31488, 31491,
-                              31499], "first_fee": 0, "cross_border": 2, "second_fee": "0", "combination": 0,
-                "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0, "team_strategy1": 0,
-                "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [], "start_type": 1,
-                "end_type": 3, "cat_id": [433, 527], "seckill_type": 1, "use_score": 0, "min_score": 0, "max_score": 0,
-                "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
-                "title": faker.sentence(),
-                "sort": "9999",
-                "content": "<p><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622508.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622510.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622511.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622513.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622514.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622515.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1651892622516.jpg\" /></p>",
-                "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": 433, "cat_id2": 527, "cat_id3": 0,
-                "thumb": get_image(random.randint(1, 15)),
-                "imgs": get_images(random.randint(2, 4)),
-                "stock_base": "5", "type_id": 186, "type": 186, "attr_datas": [
-                {"sku_sn": "w1", "sku_id": 0, "goods_attr_ids": "11153,11149,11146", "stock": 0, "incr_stock": 0,
-                 "weight": "5",
-                 "stocks": [{"warehouse_id": 31508, "incr_stock": 100}, {"warehouse_id": 31507, "incr_stock": 100},
-                            {"warehouse_id": 31506, "incr_stock": 100}, {"warehouse_id": 31505, "incr_stock": 100},
-                            {"warehouse_id": 31504, "incr_stock": 100}, {"warehouse_id": 31502, "incr_stock": 100},
-                            {"warehouse_id": 31501, "incr_stock": 100}, {"warehouse_id": 31500, "incr_stock": 100},
-                            {"warehouse_id": 31484, "incr_stock": 100}, {"warehouse_id": 31485, "incr_stock": 100},
-                            {"warehouse_id": 31486, "incr_stock": 100}, {"warehouse_id": 31488, "incr_stock": 100},
-                            {"warehouse_id": 31491, "incr_stock": 100}, {"warehouse_id": 31499, "incr_stock": 100}],
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "vip_price": "180",
-                 "partner_price": "null", "team_price": "160", "bonus_second_vip": "null",
-                 "bonus_second_partner": "null", "bonus_second_team": "10", "storage_cost": "null",
-                 "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null", "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "w1", "sku_id": 0, "goods_attr_ids": "11153,11149,11147", "stock": 0, "incr_stock": 0,
-                 "weight": "5",
-                 "stocks": [{"warehouse_id": 31508, "incr_stock": 100}, {"warehouse_id": 31507, "incr_stock": 100},
-                            {"warehouse_id": 31506, "incr_stock": 100}, {"warehouse_id": 31505, "incr_stock": 100},
-                            {"warehouse_id": 31504, "incr_stock": 100}, {"warehouse_id": 31502, "incr_stock": 100},
-                            {"warehouse_id": 31501, "incr_stock": 100}, {"warehouse_id": 31500, "incr_stock": 100},
-                            {"warehouse_id": 31484, "incr_stock": 100}, {"warehouse_id": 31485, "incr_stock": 100},
-                            {"warehouse_id": 31486, "incr_stock": 100}, {"warehouse_id": 31488, "incr_stock": 100},
-                            {"warehouse_id": 31491, "incr_stock": 100}, {"warehouse_id": 31499, "incr_stock": 100}],
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "vip_price": "180",
-                 "partner_price": "null", "team_price": "160", "bonus_second_vip": "null",
-                 "bonus_second_partner": "null", "bonus_second_team": "10", "storage_cost": "null",
-                 "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null", "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "w1", "sku_id": 0, "goods_attr_ids": "11153,11150,11146", "stock": 0, "incr_stock": 0,
-                 "weight": "5",
-                 "stocks": [{"warehouse_id": 31508, "incr_stock": 100}, {"warehouse_id": 31507, "incr_stock": 100},
-                            {"warehouse_id": 31506, "incr_stock": 100}, {"warehouse_id": 31505, "incr_stock": 100},
-                            {"warehouse_id": 31504, "incr_stock": 100}, {"warehouse_id": 31502, "incr_stock": 100},
-                            {"warehouse_id": 31501, "incr_stock": 100}, {"warehouse_id": 31500, "incr_stock": 100},
-                            {"warehouse_id": 31484, "incr_stock": 100}, {"warehouse_id": 31485, "incr_stock": 100},
-                            {"warehouse_id": 31486, "incr_stock": 100}, {"warehouse_id": 31488, "incr_stock": 100},
-                            {"warehouse_id": 31491, "incr_stock": 100}, {"warehouse_id": 31499, "incr_stock": 100}],
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "vip_price": "180",
-                 "partner_price": "null", "team_price": "160", "bonus_second_vip": "null",
-                 "bonus_second_partner": "null", "bonus_second_team": "10", "storage_cost": "null",
-                 "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null", "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"},
-                {"sku_sn": "w1", "sku_id": 0, "goods_attr_ids": "11153,11150,11147", "stock": 0, "incr_stock": 0,
-                 "weight": "5",
-                 "stocks": [{"warehouse_id": 31508, "incr_stock": 100}, {"warehouse_id": 31507, "incr_stock": 100},
-                            {"warehouse_id": 31506, "incr_stock": 100}, {"warehouse_id": 31505, "incr_stock": 100},
-                            {"warehouse_id": 31504, "incr_stock": 100}, {"warehouse_id": 31502, "incr_stock": 100},
-                            {"warehouse_id": 31501, "incr_stock": 100}, {"warehouse_id": 31500, "incr_stock": 100},
-                            {"warehouse_id": 31484, "incr_stock": 100}, {"warehouse_id": 31485, "incr_stock": 100},
-                            {"warehouse_id": 31486, "incr_stock": 100}, {"warehouse_id": 31488, "incr_stock": 100},
-                            {"warehouse_id": 31491, "incr_stock": 100}, {"warehouse_id": 31499, "incr_stock": 100}],
-                 "market_price": "300", "cost_price": "100", "shop_price": "200", "vip_price": "180",
-                 "partner_price": "null", "team_price": "160", "bonus_second_vip": "null",
-                 "bonus_second_partner": "null", "bonus_second_team": "10", "storage_cost": "null",
-                 "clear_price": "null", "price2": "null", "fee1": "null", "fee2": "null", "fee3": "null",
-                 "fee4": "null", "fee5": "null", "fee6": "null", "fee7": "null", "fee11": "null", "fee12": "null",
-                 "fee13": "null"}], "sku_imgs": {"11149": {"thumb": ["https://smjcdn.jzwp.cn/1651892596195.jpg"]},
-                                                 "11150": {"thumb": ["https://smjcdn.jzwp.cn/1651892598714.jpg"]}},
-                "main_attr_id": 88, "params": params, "goods_id": get_max_goods_id(), "is_index": 0}
-        for key, value in kwargs.items():
-            data[key] = value
-        response = post(self.s, url, **data)
-        return response
-
     def add_channel(self, **kwargs):
         url = get_url(self.host, "add_channel")
         data = {"name": "舒服的"}
@@ -1534,16 +1443,6 @@ class InterfaceModule(object):
         response = get(self.s, url, **data)
         return response
 
-    # 获取服务发货的门店
-    def get_goods_list(self, **kwargs):
-        url = get_url(self.host, "get_goods_list")
-        # status 1 status 10
-        data = {"goodsInfo": ""}
-        for key, value in kwargs.items():
-            data[key] = value
-        response = get(self.s, url, **data)
-        return response
-
     # 删除分享人
     def del_upper(self, **kwargs):
         url = get_url(self.host, "del_upper")
@@ -1562,12 +1461,203 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    def add_attr_item_add_value(self, **kwargs):
+        url = get_url(self.host, "add_attr_item_add_value")
+        data = {"value": "123", "sort": "10", "is_main": 0, "attr_item_id": 87, "attr_id": 186, "goods_id": 1000063841}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # def add_goods_shop(self, **kwargs):
+    #     url = get_url(self.host, "add_goods")
+    #     filepath = os.path.abspath(
+    #         os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\run_report1.xls"
+    #     goods_id = 450
+    #     count = 0
+    #     data = ExcelUtilT(filepath).get_user_data()
+    #     for i in data:
+    #         # price_jian = "".join(list(filter(str.isdigit, i["data"][6])))
+    #         price_pin = "".join(list(filter(str.isdigit, i["data"][5])))
+    #         new_goods_id = goods_id + count
+    #         # data1 = {"value": i['str1'], "sort": "10", "is_main": 0, "attr_item_id": 107, "attr_id": 207,
+    #         #          "goods_id": new_goods_id}
+    #         # goods_attr_ids1 = self.add_attr_item_add_value(**data1)['data']
+    #         data2 = {"value": i['str2'], "sort": "10", "is_main": 0, "attr_item_id": 107, "attr_id": 207,
+    #                  "goods_id": new_goods_id}
+    #         goods_attr_ids2 = self.add_attr_item_add_value(**data2)['data']
+    #         data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
+    #                 "deliver_type": [1, 2], "store_ids": [1], "first_fee": 0, "cross_border": 2, "second_fee": "0",
+    #                 "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
+    #                 "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
+    #                 "start_type": 1, "end_type": 3, "cat_id": [436, 547], "seckill_type": 1, "use_score": 0,
+    #                 "min_score": 0,
+    #                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
+    #                 "title": i["data"][1], "sort": int(i["data"][0]),
+    #                 "content": "",
+    #                 "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": 436, "cat_id2": 547, "cat_id3": 0,
+    #                 "thumb": "https://smjcdn.jzwp.cn/1652844165852.jpg",
+    #                 "imgs": ["https://smjcdn.jzwp.cn/1652844168589.jpg"],
+    #                 "type_id": 207, "type": 207, "attr_datas": [
+    #                 {"sku_sn": int(i["data"][2]), "sku_id": 0, "goods_attr_ids": goods_attr_ids2, "stock": 0,
+    #                  "incr_stock": 0,
+    #                  "weight": "1", "stocks": [{"warehouse_id": 1, "incr_stock": 10}], "market_price": price_pin,
+    #                  "cost_price": price_pin, "shop_price": price_pin, "vip_price": price_pin, "team_price": price_pin,
+    #                  "bonus_second_team": "0"}], "sku_imgs": {}, "main_attr_id": 0, "params": [],
+    #                 "goods_id": new_goods_id,
+    #                 "is_index": 0}
+    #         for key, value in kwargs.items():
+    #             data[key] = value
+    #         post(self.s, url, **data)
+    #         count += 1
+
+    def add_goods_shop(self, **kwargs):
+        url = get_url(self.host, "add_goods")
+        data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
+                "deliver_type": [1, 2], "store_ids": [31484], "first_fee": 0, "cross_border": 2, "second_fee": "0",
+                "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
+                "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
+                "start_type": 1, "end_type": 3, "cat_id": [435], "seckill_type": 1, "use_score": 0, "min_score": 0,
+                "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
+                "title": "商品名称", "sort": "9999", "content": "<p>sasd as d</p>", "seckill_flag": 0,
+                "is_coupon_convert": 0, "cat_id1": 435, "cat_id2": 0, "cat_id3": 0,
+                "thumb": get_image(random.randint(1,15)),
+                "imgs": get_images(random.randint(0, 4)), "type_id": 186, "type": 186, "attr_datas": [
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11153,11149,11146", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11153,11149,11147", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11153,11150,11146", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11153,11150,11147", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11154,11149,11146", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11154,11149,11147", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11154,11150,11146", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"},
+                {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11154,11150,11147", "stock": 0, "incr_stock": 0,
+                 "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
+                 "cost_price": "100", "shop_price": "200", "vip_price": "190", "partner_price": "null",
+                 "team_price": "180", "bonus_second_vip": "null", "bonus_second_partner": "null",
+                 "bonus_second_team": "5", "storage_cost": "null", "clear_price": "null", "price2": "null",
+                 "fee1": "null", "fee2": "null", "fee3": "null", "fee4": "null", "fee5": "null", "fee6": "null",
+                 "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"}],
+                "sku_imgs": {"11149": {"thumb": get_images(1)},
+                             "11150": {"thumb": get_images(1)}}, "main_attr_id": 88,
+                "params": [], "goods_id": get_max_goods_id(), "is_index": 0}
+        for key, value in kwargs.items():
+            data[key] = value
+        post(self.s, url, **data)
+
+
+    # 获取服务发货的门店
+    def get_goods_list(self, **kwargs):
+        url = get_url(self.host, "get_goods_list")
+        # status 1 status 10
+        data = {"key": "up", "pageSize": 999, "page": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+
+def set_goods_sort(self, **kwargs):
+    url = get_url(self.host, "set_goods_sort")
+    data = {"id": 475, "sort": "372"}
+    for key, value in kwargs.items():
+        data[key] = value
+    response = post(self.s, url, **data)
+    return response
+
+
+def change_goods_sort(self):
+    s = Login().login_b("host_smj_zsb", "admin_login")
+    data_temp = {}
+    # for i in range(1):
+    #     InterfaceModule(s).add_shop_offline(**data_temp)
+    # InterfaceModule(s).add_author(**data_temp)
+    # InterfaceModule(s).add_goods_fuwu(**data_temp)
+    # InterfaceModule(s).add_goods_shop(**data_temp)
+    ab_lj = InterfaceModule(s)
+    goods_temp = ab_lj.get_goods_list(**data_temp)["data"]["list"]['items']
+    id_s = []
+    for i in goods_temp:
+        id_s.append(i['id'])
+    id_sort_s = sorted(id_s, reverse=True)
+    count = 1
+    for id in id_sort_s:
+        data = {"id": id, "sort": count}
+        ab_lj.set_goods_sort(**data)
+        count += 1
+
 
 if __name__ == '__main__':
-    s = Login().login_b("host_smj_b", "admin_login")
+    s = Login().login_b("host_smj_zsb", "admin_login")
     data_temp = {}
-    for i in range(2):
-        #     InterfaceModule(s).add_shop_offline(**data_temp)
-        # InterfaceModule(s).add_author(**data_temp)
-        InterfaceModule(s).add_goods_fuwu(**data_temp)
-        # InterfaceModule(s).add_goods_shop(**data_temp)
+    name_list = ExcelUtilT(excelpath=excel_filepath).get_data_name()
+    print(name_list)
+    ab_lj = InterfaceModule(s)
+    new_name_list = []
+    count = 380
+    for name in name_list:
+        data = {"key": "up", "pageSize": 10, "page": 1, "goodsInfo": name}
+        goods_temp = ab_lj.get_goods_list(**data)["data"]["list"]
+        if goods_temp['count'] == 2:
+            if name in new_name_list:
+                goods_info = goods_temp['items'][1]
+                data = {"id": goods_info['id'], "sort": count}
+                print(data)
+                print("==================")
+                ab_lj.set_goods_sort(**data)
+                count -= 1
+            else:
+                new_name_list.append(name)
+                goods_info = goods_temp['items'][0]
+                data = {"id": goods_info['id'], "sort": count}
+                print(data)
+                print("222222222222222222")
+                ab_lj.set_goods_sort(**data)
+                count -= 1
+        elif goods_temp['count'] == 1:
+            goods_info = goods_temp['items'][0]
+            data = {"id": goods_info['id'], "sort": count}
+            print(data)
+            ab_lj.set_goods_sort(**data)
+            count -= 1

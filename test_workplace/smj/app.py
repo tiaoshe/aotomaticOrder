@@ -16,8 +16,8 @@ from faker import Faker
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello_world():
+@app.route('/add-money')
+def add_money():
     uid = 100071
     s = Login().login_b("host_smj_b", "admin_login")
     WorkerB = InterfaceModule(s)

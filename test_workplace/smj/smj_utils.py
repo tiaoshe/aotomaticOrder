@@ -105,7 +105,7 @@ class QueryData(object):
     # 链接数据库
     @staticmethod
     def connect_mysql():
-        conn = pymysql.connect(host='112.124.11.215', user='admin', passwd='gwUuVyOsjdb2', port=3306, db='smj-dev',
+        conn = pymysql.connect(host='47.108.206.84', user='admin', passwd='gwUuVyOsjdb2', port=3306, db='smj-dev',
                                charset='utf8mb4')
         cur = conn.cursor()  # 生成游标对象
         return conn, cur
@@ -185,6 +185,7 @@ class Login(object):
 def get(*args, **kwargs):
     s = args[0]
     url = args[1]
+    # verify=True
     p = s.get(url=url, params=kwargs)
     t = WriteLog(filepath_write_log)
     t.write_str(content="地址：%s | get" % url)

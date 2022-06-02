@@ -188,7 +188,7 @@ def end_order(worker, order_id):
 
 # 清理带抢单订单
 def clear_order():
-    s = get_rider_login_on("18512816650")
+    s = get_rider_login_on("18000576044")
     worker = InterfaceQSApi(s)
     # 订单列表
     p = worker.order_pool()
@@ -197,15 +197,17 @@ def clear_order():
         threading_list = []
         for i in p['data']['items']:
             order_id = i['id']
-            t2 = threading.Thread(target=end_order, args=(worker, order_id))
-            t2.start()
-            threading_list.append(t2)
-        for x in threading_list:
-            x.join()
+            end_order(worker, order_id)
+
+        #     t2 = threading.Thread(target=end_order, args=(worker, order_id))
+        #     t2.start()
+        #     threading_list.append(t2)
+        # for x in threading_list:
+        #     x.join()
 
 
 def end_order_s():
-    s = get_rider_login_on("18512816650")
+    s = get_rider_login_on("18000576044")
     worker = InterfaceQSApi(s)
     # 订单列表
     p = worker.sending_list()
@@ -217,4 +219,4 @@ def end_order_s():
 
 
 if __name__ == '__main__':
-    on_all_rider()
+    clear_order()

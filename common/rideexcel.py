@@ -29,12 +29,53 @@ class ExcelUtil(object):
         # self.worksheet = self.workbook.get_sheet(sheetname)
 
     def get_user_data(self):
-        for i in range(2, self.rowNum):
+        sku_name_list = []
+        data_list = []
+        data_dist_list = []
+        for i in range(0, self.rowNum):
+            data_dist = {}
             data = self.table.row_values(i)
-            if len(data[0]) == 0:
-                print(data)
+            if data[0] == '' or data[8] == "无":
                 continue
-            print(data)
+            sku_name_list.append(data[4])
+            data_list.append(data)
+            da = data[4].split("*")
+            db = data[5].split("/")
+            dc = data[6].split("/")
+            if len(da) == 2 and len(db) == 2 and dc[0] == "":
+                # str1 = str(da[2]) + "*" + str(da[1]) + str(db[1]) + " " + "整" + str(dc[1]) + "装"
+                str2 = "1支"
+                # data_dist["str1"] = str1
+                data_dist["str2"] = str2
+                data_dist['data'] = data
+                data_dist_list.append(data_dist)
+        print(data_dist_list)
+        return data_dist_list
+
+        # elif len(da) == 1 and len(db) == 2 and dc[0] == "":
+        #     str2 = str(da[0]) + " " + "每" + str(db[1])
+        #     print(str2)
+        #     print("======================================")
+        #     return str2, data
+        # # 输出规格名称
+        # print(len(sku_name_list))
+        # print(sku_name_list)
+        L4 = []
+        for x in sku_name_list:
+            y = x.strip()
+            if y not in L4:
+                L4.append(x)
+        print(L4)
+        print(len(L4))
+
+    def get_data_name(self):
+        sku_name_list = []
+        for i in range(0, self.rowNum):
+            data = self.table.row_values(i)
+            if data[0] == '' or data[8] == "无":
+                continue
+            sku_name_list.append(data[1])
+        return sku_name_list
 
     def write_data(self, user_list):
         if len(user_list) > 0:
@@ -147,4 +188,4 @@ class ExcelUtil(object):
 
 if __name__ == '__main__':
     filepath = os.path.abspath(os.path.dirname(os.path.dirname(__file__))) + "\\report\\run_report1.xls"
-    ExcelUtil(filepath).get_user_data()
+    ExcelUtil(filepath).get_data_name()
