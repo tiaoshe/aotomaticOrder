@@ -374,11 +374,11 @@ class InterfaceModule(object):
         # data = {"uid": "", "username": "", "type": "-1", "phone": "", "first_uid": "", "from": "", "channel": "",
         #         "status": "", "start_time": "", "end_time": "", "login_start": "", "login_end": "", "page": 1,
         #         "pageSize": 30, "tag": ""}
-        data = {"type": "-1", "page": 1, "pageSize": 30}
+        data = {"type": "-1", "page": 1, "pageSize": 80}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
-        ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
+        # ExcelUtil(excel_filepath).write_response_data(response['data']['items'])
         return response
 
     # 超市列表
@@ -836,7 +836,7 @@ class InterfaceModule(object):
         #         "video": "", "supplier_type": "0", "goods_id": "1000060494",
         #         "sort": random.randint(1, 100), "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
         data = {"supplier_type": 0, "author_id": random.randint(2371, 2391), "content": faker.text(max_nb_chars=1000),
-                "images": [], "goods_id": 1000062115, "sort": 5, "video": get_video(),
+                "images": get_images(random.randint(1, 9)), "goods_id": 1000062115, "sort": 5, "video": "",
                 "virtual_like": 9999, "virtual_share": 9999, "status": 1, "title": faker.text(max_nb_chars=30)}
         for key, value in kwargs.items():
             data[key] = value
@@ -1417,10 +1417,30 @@ class InterfaceModule(object):
     def sales_list(self, **kwargs):
         url = get_url(self.host, "sales_list")
         # status 1 status 10
-        data = {"pageSize": 999, "page": 1, "status": 1}
+        data = {"pageSize": 999, "page": 1, "status": 10}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
+        return response
+
+    # 售后列表
+    def refund_list(self, **kwargs):
+        url = get_url(self.host, "refund_list")
+        # status 1 status 10
+        data = {"pageSize": 999, "page": 1, "status": 20}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 售后列表
+    def set_refund_money(self, **kwargs):
+        url = get_url(self.host, "set_refund_money")
+        # status 1 status 10
+        data = {"sale_id":3659}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
         return response
 
     # 售后发货
@@ -1521,7 +1541,7 @@ class InterfaceModule(object):
                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
                 "title": "商品名称", "sort": "9999", "content": "<p>sasd as d</p>", "seckill_flag": 0,
                 "is_coupon_convert": 0, "cat_id1": 435, "cat_id2": 0, "cat_id3": 0,
-                "thumb": get_image(random.randint(1,15)),
+                "thumb": get_image(random.randint(1, 15)),
                 "imgs": get_images(random.randint(0, 4)), "type_id": 186, "type": 186, "attr_datas": [
                 {"sku_sn": "s1", "sku_id": 0, "goods_attr_ids": "11153,11149,11146", "stock": 0, "incr_stock": 0,
                  "weight": "5", "stocks": [{"warehouse_id": 31484, "incr_stock": 100}], "market_price": "300",
@@ -1586,7 +1606,6 @@ class InterfaceModule(object):
             data[key] = value
         post(self.s, url, **data)
 
-
     # 获取服务发货的门店
     def get_goods_list(self, **kwargs):
         url = get_url(self.host, "get_goods_list")
@@ -1595,6 +1614,36 @@ class InterfaceModule(object):
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
+        return response
+
+    # 同城配送订单列表
+    def city_order_list(self, **kwargs):
+        url = get_url(self.host, "city_order_list")
+        # status 1 status 10
+        data = {"use_status": "0", "pageSize": 999, "page": 1, "shop_id": "31475", "deliver_type": 3}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 同城配送订单列表
+    def pick_order_list(self, **kwargs):
+        url = get_url(self.host, "pick_order_list")
+        # status 1 status 10
+        data = {"use_status": "0", "pageSize": 999, "page": 1, "shop_id": "31475", "deliver_type": 3}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 关闭订单
+    def close_order(self, **kwargs):
+        url = get_url(self.host, "close_order")
+        # status 1 status 10
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
         return response
 
 
@@ -1629,35 +1678,7 @@ def change_goods_sort(self):
 
 
 if __name__ == '__main__':
-    s = Login().login_b("host_smj_zsb", "admin_login")
-    data_temp = {}
-    name_list = ExcelUtilT(excelpath=excel_filepath).get_data_name()
-    print(name_list)
-    ab_lj = InterfaceModule(s)
-    new_name_list = []
-    count = 380
-    for name in name_list:
-        data = {"key": "up", "pageSize": 10, "page": 1, "goodsInfo": name}
-        goods_temp = ab_lj.get_goods_list(**data)["data"]["list"]
-        if goods_temp['count'] == 2:
-            if name in new_name_list:
-                goods_info = goods_temp['items'][1]
-                data = {"id": goods_info['id'], "sort": count}
-                print(data)
-                print("==================")
-                ab_lj.set_goods_sort(**data)
-                count -= 1
-            else:
-                new_name_list.append(name)
-                goods_info = goods_temp['items'][0]
-                data = {"id": goods_info['id'], "sort": count}
-                print(data)
-                print("222222222222222222")
-                ab_lj.set_goods_sort(**data)
-                count -= 1
-        elif goods_temp['count'] == 1:
-            goods_info = goods_temp['items'][0]
-            data = {"id": goods_info['id'], "sort": count}
-            print(data)
-            ab_lj.set_goods_sort(**data)
-            count -= 1
+    s = Login().login_b("host_smj_b", "admin_login")
+    worker = InterfaceModule(s)
+    data = {"title": "【服务】-6月10日-测试流程" + faker.sentence()}
+    worker.add_goods_fuwu(**data)
