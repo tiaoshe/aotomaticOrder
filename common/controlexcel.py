@@ -28,6 +28,10 @@ class ExcelUtil(object):
     def get_user_data(self):
         print(self.table.row_values(3))
 
+    def write_data_mubiao(self, row, num=11, info="无数据"):
+        self.worksheet.write(row, num, info)
+        self.workbook.save(self.excelPath)
+
     def write_data(self, user_list):
         if len(user_list) > 0:
             count = 0
@@ -140,4 +144,3 @@ class ExcelUtil(object):
 if __name__ == '__main__':
     filepath = os.path.abspath(os.path.dirname(os.path.dirname(__file__))) + "\\report\\run_report1.xls"
     ExcelUtil(filepath).get_user_data()
-

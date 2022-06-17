@@ -6,6 +6,7 @@ from test_workplace.smj.smjc import InterfaceModuleApi
 from test_workplace.smj.smjqishouc import *
 from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
+from common.rideexcel import ExcelUtil as EU
 import pytest, random
 import allure
 import threading
@@ -672,7 +673,7 @@ class TestSmj(object):
         self.WorkerB.add_shop_account(**data)
 
     def test_get_goods_id_list(self):
-        data = {"goodsInfo": "【自营仓】-6月10日-测试流程", "key": "all", "pageSize": 30, "page": 1}
+        data = {"goodsInfo": "【自营仓】-6月14日", "key": "all", "pageSize": 30, "page": 1}
         p = self.WorkerB.get_goods_list(**data)
         goods_ids = []
         for i in p['data']['items']:
@@ -684,8 +685,8 @@ class TestSmj(object):
     def test_add_goods(self, time=20):
         goods_id_list = list()
         for i in range(10):
-            data = {"title": "【云仓】-6月10日-测试流程" + str(i) + faker.sentence()}
-            data1 = {"title": "【自营仓】-6月10日-测试流程" + str(i) + faker.sentence()}
+            data = {"title": "【云仓】-6月14日" + str(i) + faker.sentence(), "sort": "9999"}
+            data1 = {"title": "【自营仓】-6月14日" + str(100 + i) + faker.sentence(), "sort": "9999"}
             self.WorkerB.add_goods_shop(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
@@ -1162,11 +1163,13 @@ class TestSmj(object):
                 prodact_supermarket = random.randint(1, 6)
                 prodact_fuwu = random.randint(1, 7)
                 goods_id = random.choice(
-                    [1000072161, 1000072159, 1000072157, 1000072155, 1000072153, 1000072151, 1000072149, 1000072147,
-                     1000072145, 1000072143])
+                    [1000076931, 1000076929, 1000076927, 1000076925, 1000076923, 1000076921, 1000076919, 1000076917,
+                     1000076915, 1000076913, 1000076911, 1000076909, 1000076907, 1000076905, 1000076903, 1000076901,
+                     1000076899, 1000076897, 1000076895, 1000076893])
                 goods_id_supermarket = random.choice(
-                    [1000072160, 1000072158, 1000072156, 1000072154, 1000072152, 1000072150, 1000072148, 1000072146,
-                     1000072144, 1000072142])
+                    [1000076930, 1000076928, 1000076926, 1000076924, 1000076922, 1000076920, 1000076918, 1000076916,
+                     1000076914, 1000076912, 1000076910, 1000076908, 1000076906, 1000076904, 1000076902, 1000076900,
+                     1000076898, 1000076896, 1000076894, 1000076892])
                 goods_id_fuwu = random.choice([1000072162, 1000072163])
                 t = threading.Thread(target=self.subbmit_yuncang, args=(goods_id, user, WorkerCC, prodact))
                 t.start()
@@ -1187,7 +1190,7 @@ class TestSmj(object):
     # 设置测试用户数据设置符合下单
     def test_set_user_good(self):
         user_id_list = [100066, 100067, 100068, 100071, 100072, 100073, 100075, 100089, 100090, 100069]
-        # user_id_list = [100088]
+        # user_id_list = [100089]
         for user_id in user_id_list:
             try:
                 sc = Login().login_c(user_id)
@@ -1210,7 +1213,7 @@ class TestSmj(object):
             data2 = {"uid": user_id, "type": type1, "point": 0, "remark": "加扣积分"}
             self.WorkerB.update_integral_record(**data2)
             # 会员卡加钱 3000
-            data3 = {"uid": user_id, "type": type2, "money": 95.5}
+            data3 = {"uid": user_id, "type": type2, "money": 100000000}
             self.WorkerB.update_vip_card(**data3)
             # 加余额 299.99
             data1 = {"uid": user_id, "type": type3, "money": 90000990.99}
@@ -1506,6 +1509,35 @@ class TestSmj(object):
             # 订单完成
             data_end = {"ids": order_id, "deliver_type": 2}
             self.WorkerB.order_send_end(**data_end)
+
+    def test_controlexcel(self):
+        excel_filepath_begin = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\run_report1.xls"
+        excel_filepath_end = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end.xls"
+        excel_filepath_end_ex = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        begin_name, begin_index_list = EU(excel_filepath_begin).get_data_name()
+        end_name, end_index_list = EU(excel_filepath_end).get_data_name()
+        t = ExcelUtil(excel_filepath_end_ex)
+        t.write_data_mubiao(2)
+        # print(begin_name)
+        # print(begin_index_list)
+        # print(len(begin_name))
+        # print(end_name)
+        # print(end_index_list)
+        # print(len(end_name))
+        # list_deferent = []
+        # count = 0
+        #
+        # for str_bm in end_name:
+        #     count += 1
+        #     if str_bm not in begin_name:
+        #         list_deferent.append(str_bm)
+        #         t.write_data_mubiao(count)
+        #
+        # print(list_deferent)
+        # print(len(list_deferent))
 
 
 if __name__ == '__main__':

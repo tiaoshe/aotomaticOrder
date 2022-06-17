@@ -836,7 +836,7 @@ class InterfaceModule(object):
         #         "video": "", "supplier_type": "0", "goods_id": "1000060494",
         #         "sort": random.randint(1, 100), "virtual_like": "1000", "virtual_share": "1000", "status": "1", }
         data = {"supplier_type": 0, "author_id": random.randint(2371, 2391), "content": faker.text(max_nb_chars=1000),
-                "images": get_images(random.randint(1, 9)), "goods_id": 1000062115, "sort": 5, "video": "",
+                "images": get_images(random.randint(1, 9)), "goods_id": 1000062115, "sort": 17, "video": get_video(),
                 "virtual_like": 9999, "virtual_share": 9999, "status": 1, "title": faker.text(max_nb_chars=30)}
         for key, value in kwargs.items():
             data[key] = value
@@ -1197,7 +1197,7 @@ class InterfaceModule(object):
                 "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
                 "start_type": 1, "end_type": 3, "cat_id": [437], "seckill_type": 1, "use_score": 0, "min_score": 0,
                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
-                "title": "【云仓商品】-【第二轮】-" + faker.sentence(), "sort": "9999", "supplier_id": 30388,
+                "title": "【云仓商品】-【第二轮】-" + faker.sentence(), "sort": "9990", "supplier_id": 30388,
                 "content": "<p><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323968.jpeg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323970.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323971.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323973.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323974.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323976.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323977.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323978.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323979.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323981.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323982.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323983.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323985.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323986.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323987.jpg\" /></p>",
                 "weight": "5", "volume_width": "5", "freight_type": 2, "freight_fee": "5", "insurance_id": 207,
                 "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": 437, "cat_id2": 0, "cat_id3": 0,
@@ -1539,7 +1539,7 @@ class InterfaceModule(object):
                 "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
                 "start_type": 1, "end_type": 3, "cat_id": [435], "seckill_type": 1, "use_score": 0, "min_score": 0,
                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
-                "title": "商品名称", "sort": "9999", "content": "<p>sasd as d</p>", "seckill_flag": 0,
+                "title": "商品名称", "sort": "9990", "content": "<p>sasd as d</p>", "seckill_flag": 0,
                 "is_coupon_convert": 0, "cat_id1": 435, "cat_id2": 0, "cat_id3": 0,
                 "thumb": get_image(random.randint(1, 15)),
                 "imgs": get_images(random.randint(0, 4)), "type_id": 186, "type": 186, "attr_datas": [

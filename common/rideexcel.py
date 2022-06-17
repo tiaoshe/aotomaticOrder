@@ -70,12 +70,14 @@ class ExcelUtil(object):
 
     def get_data_name(self):
         sku_name_list = []
+        sku_number = []
         for i in range(0, self.rowNum):
             data = self.table.row_values(i)
-            if data[0] == '' or data[8] == "无":
+            if data[0] == '':
                 continue
-            sku_name_list.append(data[1])
-        return sku_name_list
+            sku_name_list.append(str(data[2])[:-2])
+            sku_number.append(i)
+        return sku_name_list,sku_number
 
     def write_data(self, user_list):
         if len(user_list) > 0:
@@ -188,4 +190,4 @@ class ExcelUtil(object):
 
 if __name__ == '__main__':
     filepath = os.path.abspath(os.path.dirname(os.path.dirname(__file__))) + "\\report\\run_report1.xls"
-    ExcelUtil(filepath).get_data_name()
+    print(ExcelUtil(filepath).get_user_data())
