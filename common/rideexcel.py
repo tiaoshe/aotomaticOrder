@@ -77,7 +77,16 @@ class ExcelUtil(object):
                 continue
             sku_name_list.append(str(data[2])[:-2])
             sku_number.append(i)
-        return sku_name_list,sku_number
+        return sku_name_list, sku_number
+
+    def get_data_huohao(self):
+        sku_sn_list = []
+        for i in range(0, self.rowNum):
+            data = self.table.row_values(i)
+            if data[0] == '' or data[9] == "无数据":
+                continue
+            sku_sn_list.append(str(data[2])[:-2])
+        return sku_sn_list
 
     def write_data(self, user_list):
         if len(user_list) > 0:

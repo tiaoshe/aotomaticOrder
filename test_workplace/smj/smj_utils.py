@@ -187,7 +187,7 @@ def get(*args, **kwargs):
     url = args[1]
     # verify=True
     p = s.get(url=url, params=kwargs)
-    # t = WriteLog(filepath_write_log)
+    t = WriteLog(filepath_write_log)
     # t.write_str(content="地址：%s | get" % url)
     # t.write_str(content="参数：%s" % str(kwargs).replace("'", '"'))
     # t.write_str(content="返回：%s " % str(p.json()).replace("'", '"'))
@@ -197,8 +197,8 @@ def get(*args, **kwargs):
 def post(*args, **kwargs):
     s = args[0]
     url = args[1]
-    p = s.post(url=url, json=kwargs)
-    # t = WriteLog(filepath_write_log)
+    p = s.post(url=url, json=kwargs, verify=True)
+    t = WriteLog(filepath_write_log)
     # t.write_str(content="地址：%s | post" % url)
     # t.write_str(content="参数：%s" % str(kwargs).replace("'", '"'))
     # t.write_str(content="返回：%s " % str(p.json()).replace("'", '"'))

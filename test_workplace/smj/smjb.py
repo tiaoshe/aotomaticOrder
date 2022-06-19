@@ -18,7 +18,7 @@ excel_filepath = os.path.abspath(
 class InterfaceModule(object):
     def __init__(self, request_session):
         self.s = request_session
-        self.host = "host_smj_b"
+        self.host = "host_smj_zsb"
 
     # 添加优惠券
     def add_coupon(self, **kwargs):
@@ -1437,7 +1437,7 @@ class InterfaceModule(object):
     def set_refund_money(self, **kwargs):
         url = get_url(self.host, "set_refund_money")
         # status 1 status 10
-        data = {"sale_id":3659}
+        data = {"sale_id": 3659}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1610,7 +1610,16 @@ class InterfaceModule(object):
     def get_goods_list(self, **kwargs):
         url = get_url(self.host, "get_goods_list")
         # status 1 status 10
-        data = {"key": "up", "pageSize": 999, "page": 1}
+        data = {"key": "up", "pageSize": 20, "page": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 获取服务发货的门店
+    def goods_detail_sp(self, **kwargs):
+        url = get_url(self.host, "goods_detail_sp")
+        data = {}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)
@@ -1641,6 +1650,16 @@ class InterfaceModule(object):
         url = get_url(self.host, "close_order")
         # status 1 status 10
         data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 下架商品
+    def down_good(self, **kwargs):
+        url = get_url(self.host, "down_good")
+        # status 1 status 10
+        data = {"goodsIds": [483], "status": 0}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)

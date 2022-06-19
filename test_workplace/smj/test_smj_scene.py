@@ -1,6 +1,8 @@
 # @time 2022/1/12 9:31
 # @Author howell
 # @File smj_scene.PY
+import time
+
 from test_workplace.smj.smjb import InterfaceModule
 from test_workplace.smj.smjc import InterfaceModuleApi
 from test_workplace.smj.smjqishouc import *
@@ -1519,25 +1521,95 @@ class TestSmj(object):
             os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
         begin_name, begin_index_list = EU(excel_filepath_begin).get_data_name()
         end_name, end_index_list = EU(excel_filepath_end).get_data_name()
-        t = ExcelUtil(excel_filepath_end_ex)
-        t.write_data_mubiao(2)
         # print(begin_name)
         # print(begin_index_list)
         # print(len(begin_name))
         # print(end_name)
         # print(end_index_list)
         # print(len(end_name))
-        # list_deferent = []
-        # count = 0
-        #
-        # for str_bm in end_name:
-        #     count += 1
-        #     if str_bm not in begin_name:
-        #         list_deferent.append(str_bm)
-        #         t.write_data_mubiao(count)
-        #
-        # print(list_deferent)
-        # print(len(list_deferent))
+        list_deferent = []
+        count = 0
+        row_list = []
+        for str_bm in end_name:
+            if str_bm not in begin_name:
+                list_deferent.append(str_bm)
+                row_list.append(count)
+            count += 1
+
+        print(list_deferent)
+        print(len(list_deferent))
+        print(row_list)
+        ExcelUtil(excel_filepath_end_ex).write_data_mubiao(row_list, num=9)
+
+    def test_set_goods_down(self):
+        excel_filepath_end_ex = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        end_sn_list = EU(excel_filepath_end_ex).get_data_huohao()
+        print(end_sn_list)
+        print(len(end_sn_list))
+        s = Login().login_b("host_smj_zsb", "admin_login")
+        worker = InterfaceModule(s)
+        # 获取商品列表
+        data = {"pageSize": 350}
+        p = worker.get_goods_list(**data)
+        goods_id_list = []
+        for good_info in p['data']['items']:
+            goods_id_list.append(good_info['id'])
+        # 下架商品
+        for good_id in goods_id_list:
+            good_ids = []
+            # 获取商品详情
+            data_detail = {"id": good_id, "type": 1}
+            p_detail = worker.goods_detail_sp(**data_detail)
+            temp_sn = []
+            for sku_info in p_detail['data']['skuData']:
+                temp_sn.append(sku_info['sku_sn'])
+            if len(temp_sn) == 1:
+                if temp_sn[0] in end_sn_list:
+                    continue
+            elif len(temp_sn) == 2:
+                if temp_sn[0] in end_sn_list or temp_sn[1] in end_sn_list:
+                    WriteLog(filepath_write_log).write_str("========================")
+                    continue
+            else:
+                WriteLog(filepath_write_log).write_str("出问题啦" + str(temp_sn) + ":" + str(good_id))
+            good_ids.append(good_id)
+            data_down = {"goodsIds": good_ids, "status": 0}
+            worker.down_good(**data_down)
+
+    def test_select_goods(self):
+        excel_filepath_end_ex = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        end_sn_list = EU(excel_filepath_end_ex).get_data_huohao()
+        print(end_sn_list)
+        print(len(end_sn_list))
+        s = Login().login_b("host_smj_zsb", "admin_login")
+        worker = InterfaceModule(s)
+        # 获取商品列表
+        data = {"pageSize": 350}
+        p = worker.get_goods_list(**data)
+        goods_id_list = []
+        for good_info in p['data']['items']:
+            goods_id_list.append(good_info['id'])
+        # 下架商品
+        for good_id in goods_id_list:
+            # 获取商品详情
+            data_detail = {"id": good_id, "type": 1}
+            p_detail = worker.goods_detail_sp(**data_detail)
+            temp_sn = []
+            for sku_info in p_detail['data']['skuData']:
+                temp_sn.append(sku_info['sku_sn'])
+            if len(temp_sn) == 1:
+                if temp_sn[0] in end_sn_list:
+                    end_sn_list.remove(temp_sn[0])
+            elif len(temp_sn) == 2:
+                if temp_sn[0] in end_sn_list:
+                    end_sn_list.remove(temp_sn[0])
+                elif temp_sn[1] in end_sn_list:
+                    end_sn_list.remove(temp_sn[1])
+
+        print(end_sn_list)
+
 
 
 if __name__ == '__main__':
