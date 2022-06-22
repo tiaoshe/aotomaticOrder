@@ -16,9 +16,9 @@ excel_filepath = os.path.abspath(
 
 
 class InterfaceModule(object):
-    def __init__(self, request_session):
+    def __init__(self, request_session, host="host_smj_b"):
         self.s = request_session
-        self.host = "host_smj_zsb"
+        self.host = host
 
     # 添加优惠券
     def add_coupon(self, **kwargs):
@@ -1489,49 +1489,15 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
-    # def add_goods_shop(self, **kwargs):
-    #     url = get_url(self.host, "add_goods")
-    #     filepath = os.path.abspath(
-    #         os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\run_report1.xls"
-    #     goods_id = 450
-    #     count = 0
-    #     data = ExcelUtilT(filepath).get_user_data()
-    #     for i in data:
-    #         # price_jian = "".join(list(filter(str.isdigit, i["data"][6])))
-    #         price_pin = "".join(list(filter(str.isdigit, i["data"][5])))
-    #         new_goods_id = goods_id + count
-    #         # data1 = {"value": i['str1'], "sort": "10", "is_main": 0, "attr_item_id": 107, "attr_id": 207,
-    #         #          "goods_id": new_goods_id}
-    #         # goods_attr_ids1 = self.add_attr_item_add_value(**data1)['data']
-    #         data2 = {"value": i['str2'], "sort": "10", "is_main": 0, "attr_item_id": 107, "attr_id": 207,
-    #                  "goods_id": new_goods_id}
-    #         goods_attr_ids2 = self.add_attr_item_add_value(**data2)['data']
-    #         data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
-    #                 "deliver_type": [1, 2], "store_ids": [1], "first_fee": 0, "cross_border": 2, "second_fee": "0",
-    #                 "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
-    #                 "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0, "store_extend": [],
-    #                 "start_type": 1, "end_type": 3, "cat_id": [436, 547], "seckill_type": 1, "use_score": 0,
-    #                 "min_score": 0,
-    #                 "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0, "day_max": 0,
-    #                 "title": i["data"][1], "sort": int(i["data"][0]),
-    #                 "content": "",
-    #                 "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": 436, "cat_id2": 547, "cat_id3": 0,
-    #                 "thumb": "https://smjcdn.jzwp.cn/1652844165852.jpg",
-    #                 "imgs": ["https://smjcdn.jzwp.cn/1652844168589.jpg"],
-    #                 "type_id": 207, "type": 207, "attr_datas": [
-    #                 {"sku_sn": int(i["data"][2]), "sku_id": 0, "goods_attr_ids": goods_attr_ids2, "stock": 0,
-    #                  "incr_stock": 0,
-    #                  "weight": "1", "stocks": [{"warehouse_id": 1, "incr_stock": 10}], "market_price": price_pin,
-    #                  "cost_price": price_pin, "shop_price": price_pin, "vip_price": price_pin, "team_price": price_pin,
-    #                  "bonus_second_team": "0"}], "sku_imgs": {}, "main_attr_id": 0, "params": [],
-    #                 "goods_id": new_goods_id,
-    #                 "is_index": 0}
-    #         for key, value in kwargs.items():
-    #             data[key] = value
-    #         post(self.s, url, **data)
-    #         count += 1
-
     def add_goods_shop(self, **kwargs):
+        url = get_url(self.host, "add_goods")
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    def add_goods_shop_a(self, **kwargs):
         url = get_url(self.host, "add_goods")
         data = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1, "is_break": 0,
                 "deliver_type": [1, 2], "store_ids": [31484], "first_fee": 0, "cross_border": 2, "second_fee": "0",

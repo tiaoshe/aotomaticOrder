@@ -10,6 +10,7 @@ import xlwt
 from xlutils3.copy import copy
 import os
 import time
+from decimal import Decimal
 
 
 class ExcelUtil(object):
@@ -68,6 +69,26 @@ class ExcelUtil(object):
         print(L4)
         print(len(L4))
 
+    def get_goods_data(self):
+        return_data = []
+        for i in range(0, self.rowNum):
+            data = self.table.row_values(i)
+            da = data[4].split("*")
+            db = data[5].split("/")
+            dc = data[8].split("/")
+            if len(da) == 3:
+                one_str = da[2] + " 每" + db[1]
+                data[12] = one_str
+                all_str = da[2] + "*" + da[1] + " 整" + dc[1] + "装"
+                data[13] = all_str
+            if len(da) == 1:
+                one_str = da[0] + " 每" + db[1]
+                data[12] = one_str
+            data[5] = db[0][:-1]
+            data[8] = dc[0][:-1]
+            return_data.append(data)
+        return return_data
+
     def get_data_name(self):
         sku_name_list = []
         sku_number = []
@@ -78,6 +99,23 @@ class ExcelUtil(object):
             sku_name_list.append(str(data[2])[:-2])
             sku_number.append(i)
         return sku_name_list, sku_number
+
+    def get_data_money(self):
+        goods_money = []
+        goods_tuandui = []
+        for i in range(0, self.rowNum):
+            data = self.table.row_values(i)
+            # goods_money.append(data[5].split("元")[0])
+            if data[8] == "":
+                a = 0
+            else:
+                a = float(data[8].split("元")[0])
+            # Decimal(a * 0.96).quantize(Decimal("0.00"))
+            b = round(a * 0.96, 2)
+            c = round(a * 0.01, 2)
+            goods_money.append(b)
+            goods_tuandui.append(c)
+        return goods_money, goods_tuandui
 
     def get_data_huohao(self):
         sku_sn_list = []

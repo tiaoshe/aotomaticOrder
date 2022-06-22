@@ -24,11 +24,16 @@ filepath_write_log = os.path.abspath(
 
 class TestSmj(object):
     def setup_class(self):
-        self.uid = 100088
-        s = Login().login_b("host_smj_b", "admin_login")
-        self.WorkerB = InterfaceModule(s)
-        sc = Login().login_c(self.uid)
-        self.WorkerC = InterfaceModuleApi(sc)
+        flag = "cs"
+        if flag == "cs":
+            self.uid = 100088
+            s = Login().login_b("host_smj_b", "admin_login")
+            self.WorkerB = InterfaceModule(s, host="host_smj_b")
+            sc = Login().login_c(self.uid)
+            self.WorkerC = InterfaceModuleApi(sc)
+        elif flag == "zs":
+            s = Login().login_b("host_smj_zsb", "admin_login")
+            self.WorkerB = InterfaceModule(s, host="host_smj_zsb")
 
     @pytest.mark.parametrize("i", [i for i in range(60)])
     def test_add_coupon(self, i):
@@ -1607,9 +1612,83 @@ class TestSmj(object):
                     end_sn_list.remove(temp_sn[0])
                 elif temp_sn[1] in end_sn_list:
                     end_sn_list.remove(temp_sn[1])
-
         print(end_sn_list)
 
+    def test_set_goods_money(self):
+        excel_filepath_end_ex = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        goods_money, goods_tuandui = EU(excel_filepath_end_ex).get_data_money()
+        ExcelUtil(excel_filepath_end_ex).write_money_data(goods_money, 9)
+        time.sleep(15)
+        ExcelUtil(excel_filepath_end_ex).write_money_data(goods_tuandui, 10)
+
+    def test_shop_goods_add(self):
+        filepath = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        goods_id = 492
+        count = 0
+        data = EU(filepath, sheetname="Sheet5").get_goods_data()
+        for i in data:
+            if i[14] == "白酒类":
+                cat_id = [437, 542]
+            elif i[14] == "洋酒类":
+                cat_id = [437, 543]
+            elif i[14] == "红酒类":
+                cat_id = [437, 544]
+            elif i[14] == "饮料类":
+                cat_id = [437, 545]
+            new_goods_id = goods_id + count
+            attr_item_id = 103
+            attr_id = 205
+            sort = int(int(i[0]))
+            sort = 421
+            store_id = 1
+            attr_datas = []
+            data_str = {"value": i[12], "sort": "10", "is_main": 0, "attr_item_id": attr_item_id, "attr_id": attr_id,
+                        "goods_id": new_goods_id}
+            goods_attr_ids = self.WorkerB.add_attr_item_add_value(**data_str)['data']
+            temp = {"sku_sn": i[2], "sku_id": 0, "goods_attr_ids": goods_attr_ids, "stock": 0,
+                    "incr_stock": 0,
+                    "weight": "1.5", "stocks": [{"warehouse_id": store_id, "incr_stock": 10}], "market_price": i[5],
+                    "cost_price": i[5], "shop_price": i[5], "vip_price": i[5], "team_price": i[6],
+                    "bonus_second_team": i[7]}
+            attr_datas.append(temp)
+            if i[13] != "":
+                data_str = {"value": i[13], "sort": "10", "is_main": 0, "attr_item_id": 103, "attr_id": attr_id,
+                            "goods_id": new_goods_id}
+                goods_attr_ids2 = self.WorkerB.add_attr_item_add_value(**data_str)['data']
+                temp = {"sku_sn": i[3], "sku_id": 0, "goods_attr_ids": goods_attr_ids2, "stock": 0,
+                        "incr_stock": 0,
+                        "weight": 9, "stocks": [{"warehouse_id": store_id, "incr_stock": 10}], "market_price": i[8],
+                        "cost_price": i[8], "shop_price": i[8], "vip_price": i[8], "team_price": i[9],
+                        "bonus_second_team": i[10]}
+                attr_datas.append(temp)
+
+            data_goods = {"action_type": 1, "stock_type": 1, "supplier_type": 0, "is_order_award_calc": 1,
+                          "is_break": 0,
+                          "deliver_type": [1, 2], "store_ids": [store_id], "first_fee": 0, "cross_border": 2,
+                          "second_fee": "0",
+                          "combination": 0, "zu_num": 0, "stock_double": 1, "is_quick": 0, "is_top": 0, "is_welfare": 0,
+                          "team_strategy1": 0, "team_senior1": 0, "team_angel1": 0, "team_angel2": 0,
+                          "store_extend": [],
+                          "start_type": 1, "end_type": 3, "cat_id": cat_id, "seckill_type": 1, "use_score": 0,
+                          "min_score": 0,
+                          "max_score": 0, "is_open_limit": 0, "single_max": 0, "single_min": 0, "limit_max": 0,
+                          "day_max": 0,
+                          "title": i[1], "sort": sort,
+                          "content": "",
+                          "seckill_flag": 0, "is_coupon_convert": 0, "cat_id1": cat_id[0], "cat_id2": cat_id[1],
+                          "cat_id3": 0,
+                          "thumb": "https://smjcdn.jzwp.cn/1652844165852.jpg",
+                          "imgs": ["https://smjcdn.jzwp.cn/1652844168589.jpg"],
+                          "type_id": attr_id, "type": attr_id, "attr_datas": attr_datas, "sku_imgs": {},
+                          "main_attr_id": 0,
+                          "params": [],
+                          "goods_id": new_goods_id,
+                          "is_index": 0}
+            self.WorkerB.add_goods_shop(**data_goods)
+            count += 1
+            time.sleep(5)
 
 
 if __name__ == '__main__':

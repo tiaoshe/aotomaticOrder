@@ -1,1 +1,134 @@
-{"action_type":1,"stock_type":1,"supplier_type":0,"is_order_award_calc":1,"is_break":0,"deliver_type":[1,2],"store_ids":[31484],"first_fee":0,"cross_border":2,"second_fee":"0","combination":0,"zu_num":0,"stock_double":1,"is_quick":0,"is_top":0,"is_welfare":0,"team_strategy1":0,"team_senior1":0,"team_angel1":0,"team_angel2":0,"store_extend":[],"start_type":1,"end_type":3,"cat_id":[435],"seckill_type":1,"use_score":0,"min_score":0,"max_score":0,"is_open_limit":0,"single_max":0,"single_min":0,"limit_max":0,"day_max":0,"title":"商品名称","sort":"9999","content":"<p>sasd as d</p>","seckill_flag":0,"is_coupon_convert":0,"cat_id1":435,"cat_id2":0,"cat_id3":0,"thumb":"https://smjcdn.jzwp.cn/1653529092919.jpg","imgs":["https://smjcdn.jzwp.cn/1653529095265.jpg"],"type_id":186,"type":186,"attr_datas":[{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11153,11149,11146","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11153,11149,11147","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11153,11150,11146","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11153,11150,11147","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11154,11149,11146","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11154,11149,11147","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11154,11150,11146","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"},{"sku_sn":"s1","sku_id":0,"goods_attr_ids":"11154,11150,11147","stock":0,"incr_stock":0,"weight":"5","stocks":[{"warehouse_id":31484,"incr_stock":100}],"market_price":"300","cost_price":"100","shop_price":"200","vip_price":"190","partner_price":"null","team_price":"180","bonus_second_vip":"null","bonus_second_partner":"null","bonus_second_team":"5","storage_cost":"null","clear_price":"null","price2":"null","fee1":"null","fee2":"null","fee3":"null","fee4":"null","fee5":"null","fee6":"null","fee7":"null","fee11":"null","fee12":"null","fee13":"null"}],"sku_imgs":{"11149":{"thumb":["https://smjcdn.jzwp.cn/1653529086720.jpg"]},"11150":{"thumb":["https://smjcdn.jzwp.cn/1653529088762.jpg"]}},"main_attr_id":88,"params":[],"goods_id":1000063989,"is_index":0}
+{
+  "action_type": 1,
+  "stock_type": 1,
+  "supplier_type": 0,
+  "is_order_award_calc": 1,
+  "is_break": 0,
+  "deliver_type": [
+    1,
+    2
+  ],
+  "store_ids": [
+    1
+  ],
+  "first_fee": 0,
+  "cross_border": 2,
+  "second_fee": "0",
+  "combination": 0,
+  "zu_num": 0,
+  "stock_double": 1,
+  "is_quick": 0,
+  "is_top": 0,
+  "is_welfare": 0,
+  "team_strategy1": 0,
+  "team_senior1": 0,
+  "team_angel1": 0,
+  "team_angel2": 0,
+  "store_extend": [],
+  "start_type": 1,
+  "end_type": 3,
+  "cat_id": [
+    437,
+    544
+  ],
+  "seckill_type": 1,
+  "use_score": 0,
+  "min_score": 0,
+  "max_score": 0,
+  "is_open_limit": 0,
+  "single_max": 0,
+  "single_min": 0,
+  "limit_max": 0,
+  "day_max": 0,
+  "title": "测试",
+  "seckill_flag": 0,
+  "is_coupon_convert": 0,
+  "cat_id1": 437,
+  "cat_id2": 544,
+  "cat_id3": 0,
+  "thumb": "https://smjcdn.jzwp.cn/1655781227050.jpg",
+  "imgs": [
+    "https://smjcdn.jzwp.cn/1655781229944.jpg"
+  ],
+  "type_id": 205,
+  "type": 205,
+  "attr_datas": [
+    {
+      "sku_sn": "2",
+      "sku_id": 0,
+      "goods_attr_ids": "11314",
+      "stock": 0,
+      "incr_stock": 0,
+      "weight": "8",
+      "stocks": [
+        {
+          "warehouse_id": 1,
+          "incr_stock": 20
+        }
+      ],
+      "market_price": "1000",
+      "cost_price": "1000",
+      "shop_price": "1000",
+      "vip_price": "1000",
+      "partner_price": null,
+      "team_price": "1000",
+      "bonus_second_vip": null,
+      "bonus_second_partner": null,
+      "bonus_second_team": "1",
+      "storage_cost": null,
+      "clear_price": null,
+      "price2": null,
+      "fee1": null,
+      "fee2": null,
+      "fee3": null,
+      "fee4": null,
+      "fee5": null,
+      "fee6": null,
+      "fee7": null,
+      "fee11": null,
+      "fee12": null,
+      "fee13": null
+    },
+    {
+      "sku_sn": "2",
+      "sku_id": 0,
+      "goods_attr_ids": "11313",
+      "stock": 0,
+      "incr_stock": 0,
+      "weight": "8",
+      "stocks": [
+        {
+          "warehouse_id": 1,
+          "incr_stock": 20
+        }
+      ],
+      "market_price": "1000",
+      "cost_price": "1000",
+      "shop_price": "1000",
+      "vip_price": "1000",
+      "partner_price": null,
+      "team_price": "1000",
+      "bonus_second_vip": null,
+      "bonus_second_partner": null,
+      "bonus_second_team": "1",
+      "storage_cost": null,
+      "clear_price": null,
+      "price2": null,
+      "fee1": null,
+      "fee2": null,
+      "fee3": null,
+      "fee4": null,
+      "fee5": null,
+      "fee6": null,
+      "fee7": null,
+      "fee11": null,
+      "fee12": null,
+      "fee13": null
+    }
+  ],
+  "sku_imgs": {},
+  "main_attr_id": 0,
+  "params": [],
+  "goods_id": 485,
+  "is_index": 0
+}

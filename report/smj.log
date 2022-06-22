@@ -17671,3 +17671,95 @@ RE goods_id=1000076926 AND delflag=0;|查询数据成功
 2022-06-17 18:25:02  用户100088在C端登录成功
 2022-06-17 18:26:51  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
 2022-06-17 18:26:51  用户100088在C端登录成功
+2022-06-20 09:44:15  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 09:44:15  用户100088在C端登录成功
+2022-06-20 10:01:34  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:01:34  用户100088在C端登录成功
+2022-06-20 10:09:28  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:09:28  用户100088在C端登录成功
+2022-06-20 10:10:15  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:10:15  用户100088在C端登录成功
+2022-06-20 10:15:48  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:15:48  用户100088在C端登录成功
+2022-06-20 10:17:45  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:17:45  用户100088在C端登录成功
+2022-06-20 10:19:09  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:19:09  用户100088在C端登录成功
+2022-06-20 10:26:00  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:26:00  用户100088在C端登录成功
+2022-06-20 10:27:44  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:27:44  用户100088在C端登录成功
+2022-06-20 10:29:33  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:29:33  用户100088在C端登录成功
+2022-06-20 10:35:36  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:35:36  用户100088在C端登录成功
+2022-06-20 10:36:55  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:36:55  用户100088在C端登录成功
+2022-06-20 10:51:31  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:51:31  用户100088在C端登录成功
+2022-06-20 10:58:59  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 10:58:59  用户100088在C端登录成功
+2022-06-20 11:00:10  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 11:00:10  用户100088在C端登录成功
+2022-06-20 11:00:45  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-20 11:00:45  用户100088在C端登录成功
+2022-06-21 09:36:53  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 09:36:53  用户100088在C端登录成功
+2022-06-21 09:45:38  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 09:45:38  用户100088在C端登录成功
+2022-06-21 09:46:20  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 09:46:20  用户100088在C端登录成功
+2022-06-21 09:47:00  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 09:47:00  用户100088在C端登录成功
+2022-06-21 09:49:49  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 09:49:49  用户100088在C端登录成功
+2022-06-21 10:09:01  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:09:01  用户100088在C端登录成功
+2022-06-21 10:15:36  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:15:36  用户100088在C端登录成功
+2022-06-21 10:16:27  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:16:27  用户100088在C端登录成功
+2022-06-21 10:17:34  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:17:34  用户100088在C端登录成功
+2022-06-21 10:17:58  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:17:58  用户100088在C端登录成功
+2022-06-21 10:19:02  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:19:02  用户100088在C端登录成功
+2022-06-21 10:20:00  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:20:00  用户100088在C端登录成功
+2022-06-21 10:22:04  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:22:04  用户100088在C端登录成功
+2022-06-21 10:27:04  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:27:04  用户100088在C端登录成功
+2022-06-21 10:28:22  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:28:22  用户100088在C端登录成功
+2022-06-21 10:30:58  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 10:30:58  用户100088在C端登录成功
+2022-06-21 11:03:28  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 11:03:28  用户100088在C端登录成功
+2022-06-21 11:49:17  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 11:49:17  用户100088在C端登录成功
+2022-06-21 11:52:00  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 11:52:00  用户100088在C端登录成功
+2022-06-21 11:55:20  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 11:55:20  用户100088在C端登录成功
+2022-06-21 13:15:53  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:15:53  用户100088在C端登录成功
+2022-06-21 13:19:20  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:19:20  用户100088在C端登录成功
+2022-06-21 13:22:55  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:22:55  用户100088在C端登录成功
+2022-06-21 13:23:20  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:23:20  用户100088在C端登录成功
+2022-06-21 13:25:31  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:25:31  用户100088在C端登录成功
+2022-06-21 13:26:22  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:26:22  用户100088在C端登录成功
+2022-06-21 13:33:51  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:33:51  用户100088在C端登录成功
+2022-06-21 13:34:49  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:34:49  用户100088在C端登录成功
+2022-06-21 13:39:54  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:39:54  用户100088在C端登录成功
+2022-06-21 13:40:28  |SELECT token FROM smj_member_access_token WHERE uid = 100088|查询数据成功
+2022-06-21 13:40:28  用户100088在C端登录成功
