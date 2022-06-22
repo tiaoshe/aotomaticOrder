@@ -1621,6 +1621,14 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    def set_goods_sort(self, **kwargs):
+        url = get_url(self.host, "set_goods_sort")
+        data = {"id": 475, "sort": "372"}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
     # 下架商品
     def down_good(self, **kwargs):
         url = get_url(self.host, "down_good")
@@ -1631,14 +1639,15 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
-
-def set_goods_sort(self, **kwargs):
-    url = get_url(self.host, "set_goods_sort")
-    data = {"id": 475, "sort": "372"}
-    for key, value in kwargs.items():
-        data[key] = value
-    response = post(self.s, url, **data)
-    return response
+    # 添加用户标签
+    def add_user_tag(self, **kwargs):
+        url = get_url(self.host, "add_user_tag")
+        data = {"name": "爱好", "type": 0, "select_type": 1,
+                "tags": [{"id": "", "name": "篮球", "content": ""}]}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
 
 
 def change_goods_sort(self):

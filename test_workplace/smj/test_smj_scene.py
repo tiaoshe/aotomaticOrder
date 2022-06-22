@@ -1517,6 +1517,7 @@ class TestSmj(object):
             data_end = {"ids": order_id, "deliver_type": 2}
             self.WorkerB.order_send_end(**data_end)
 
+    # 通过两个表格遍历，查找出新表格在就表格中不存在的数据
     def test_controlexcel(self):
         excel_filepath_begin = os.path.abspath(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\run_report1.xls"
@@ -1546,6 +1547,7 @@ class TestSmj(object):
         print(row_list)
         ExcelUtil(excel_filepath_end_ex).write_data_mubiao(row_list, num=9)
 
+    # 将非表格数据下架
     def test_set_goods_down(self):
         excel_filepath_end_ex = os.path.abspath(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
@@ -1582,38 +1584,6 @@ class TestSmj(object):
             data_down = {"goodsIds": good_ids, "status": 0}
             worker.down_good(**data_down)
 
-    def test_select_goods(self):
-        excel_filepath_end_ex = os.path.abspath(
-            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
-        end_sn_list = EU(excel_filepath_end_ex).get_data_huohao()
-        print(end_sn_list)
-        print(len(end_sn_list))
-        s = Login().login_b("host_smj_zsb", "admin_login")
-        worker = InterfaceModule(s)
-        # 获取商品列表
-        data = {"pageSize": 350}
-        p = worker.get_goods_list(**data)
-        goods_id_list = []
-        for good_info in p['data']['items']:
-            goods_id_list.append(good_info['id'])
-        # 下架商品
-        for good_id in goods_id_list:
-            # 获取商品详情
-            data_detail = {"id": good_id, "type": 1}
-            p_detail = worker.goods_detail_sp(**data_detail)
-            temp_sn = []
-            for sku_info in p_detail['data']['skuData']:
-                temp_sn.append(sku_info['sku_sn'])
-            if len(temp_sn) == 1:
-                if temp_sn[0] in end_sn_list:
-                    end_sn_list.remove(temp_sn[0])
-            elif len(temp_sn) == 2:
-                if temp_sn[0] in end_sn_list:
-                    end_sn_list.remove(temp_sn[0])
-                elif temp_sn[1] in end_sn_list:
-                    end_sn_list.remove(temp_sn[1])
-        print(end_sn_list)
-
     def test_set_goods_money(self):
         excel_filepath_end_ex = os.path.abspath(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
@@ -1622,6 +1592,7 @@ class TestSmj(object):
         time.sleep(15)
         ExcelUtil(excel_filepath_end_ex).write_money_data(goods_tuandui, 10)
 
+    # 通过表格数据内容添加商品信息,取的是特定表格数据end_ex.xls
     def test_shop_goods_add(self):
         filepath = os.path.abspath(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
@@ -1689,6 +1660,75 @@ class TestSmj(object):
             self.WorkerB.add_goods_shop(**data_goods)
             count += 1
             time.sleep(5)
+
+    # 检查上架商品信息是否完全符合表格预期
+    def test_check_goods_info(self):
+        # 读取表格中商品信息
+        filepath = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        data_excel = EU(filepath, sheetname="Sheet1").get_goods_data()
+        # 循环表格数据
+        for data_row in data_excel:
+            data = {"goodsInfo": data_row[1], "key": "all", "pageSize": 30, "page": 1}
+            p = self.WorkerB.get_goods_list(**data)
+            # 循环可能多条的搜索结果
+            for i in p['data']['items']:
+
+                # 获取商品详情
+                data_detail = {"id": i['id'], "type": 1}
+                p_detail = self.WorkerB.goods_detail_sp(**data_detail)
+                # 循环可能多个的sku数据
+                for sku_info in p_detail['data']['skuData']:
+
+                    if str(data_row[2])[:-2] == sku_info['sku_sn'] != "6926892501033":
+                        assert float('%.2f' % float(data_row[5])) == float(sku_info['vip_price']) == float(
+                            sku_info['shop_price']) == float(sku_info['cost_price'])
+                        assert float('%.2f' % float(data_row[6])) == float(sku_info['team_price'])
+                        assert float('%.2f' % float(data_row[7])) == float(sku_info['bonus_second_team'])
+                        continue
+                    elif str(data_row[3])[:-2] == sku_info['sku_sn'] != "6926892501033" and data_row[1] == \
+                            p_detail['data']['detail']['title'] != "杰卡斯西拉加本纳" and data_row[1] != "可口可乐" \
+                            and data_row[1] != "雪碧清爽柠檬味汽水":
+                        assert float('%.2f' % float(data_row[8])) == float(sku_info['vip_price']) == float(
+                            sku_info['shop_price']) == float(sku_info['cost_price'])
+                        assert float('%.2f' % float(data_row[9])) == float(sku_info['team_price'])
+                        assert float('%.2f' % float(data_row[10])) == float(sku_info['bonus_second_team'])
+                        continue
+
+    # 将商品的排序设置为表格的排序顺序
+    def test_set_sort_by_excel(self):
+        # 读取表格中商品信息
+        filepath = os.path.abspath(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "\\report\\end_ex.xls"
+        data_excel = EU(filepath, sheetname="Sheet1").get_goods_data()
+        # 循环表格数据
+        for data_row in data_excel:
+            data = {"goodsInfo": data_row[1], "key": "all", "pageSize": 30, "page": 1}
+            p = self.WorkerB.get_goods_list(**data)
+            # 循环可能多条的搜索结果
+            for i in p['data']['items']:
+                # 获取商品详情
+                data_detail = {"id": i['id'], "type": 1}
+                p_detail = self.WorkerB.goods_detail_sp(**data_detail)
+                sku_sn_list = []
+                # 循环可能多个的sku数据
+                for sku_info in p_detail['data']['skuData']:
+                    sku_sn_list.append(sku_info['sku_sn'])
+                if str(data_row[2])[:-2] in sku_sn_list:
+                    data_sort = {"id": i['id'], "sort": 167 - int(data_row[0])}
+                    self.WorkerB.set_goods_sort(**data_sort)
+
+    # 添加用户标签
+    @pytest.mark.parametrize("i", [i for i in range(1)])
+    def test_add_user_tags(self, i):
+        # faker.text(max_nb_chars=100)[:-1]
+        tags = []
+        for i in range(3000):
+            dict_tag = {"id": "", "name": faker.name(), "content": ""}
+            tags.append(dict_tag)
+        data = {"name": "老邓头的后宫", "type": 0, "select_type": 1,
+                "tags": tags}
+        self.WorkerB.add_user_tag(**data)
 
 
 if __name__ == '__main__':
