@@ -12,6 +12,7 @@ from common.rideexcel import ExcelUtil as EU
 import pytest, random
 import allure
 import threading
+from datetime import datetime
 from faker import Faker
 
 faker = Faker(locale='zh_CN')
@@ -31,6 +32,41 @@ class TestSmj(object):
             self.WorkerB = InterfaceModule(s, host="host_smj_b")
             sc = Login().login_c(self.uid)
             self.WorkerC = InterfaceModuleApi(sc)
+            self.seted_tags = {"deal_time_ago": ["消费时间", "整数"],
+                               "deal_time_custom": ["消费时间-自定义时间段", "时间-列表"],
+                               "deal_times": ["消费次数", "整数-列表"],
+                               "deal_total": ["消费总额", "浮点-列表"],
+                               "deal_price": ["客单价", "浮点-列表"],
+                               "integral_total": ["累计积分", "整数-列表"],
+                               "integral_balance": ["剩余积分", "整数-列表"],
+                               "vip_card_total": ["累计会员卡充值", "浮点-列表"],
+                               "vip_card_balance": ["剩余会员卡金额", "浮点-列表"],
+                               "balance_total": ["累计余额", "浮点-列表"],
+                               "balance": ["剩余余额", "浮点-列表"],
+                               "buy_goods_all": ["全部商品", "空"],
+                               "buy_goods_cat": ["指定分类商品", "整数-有效数据列表"],
+                               "buy_goods_single": ["指定商品", "对象-列表-id,title,thumb"],
+                               "buy_offline_all": ["全部服务", "空"],
+                               "buy_offline_cat": ["指定分类服务", "整数-有效数据列表"],
+                               "buy_offline_single": ["指定服务", "对象-列表-id,title,thumb"],
+                               "member_type_vip": ["用户类型-会员", "空"],
+                               "member_type_team": ["用户类型-团长", "空"],
+                               "register_time_ago": ["注册时间", "整数"],
+                               "register_time_custom": ["注册时间-自定义时间段", "时间-列表"],
+                               "up_time_ago": ["晋升时间", "整数"],
+                               "up_time_custom": ["晋升时间-自定义时间段", "时间-列表"],
+                               "team_nums": ["团队人数", "整数-列表"],
+                               "team_time_ago": ["邀请时间", "整数"],
+                               "team_time_custom": ["邀请时间-自定义时间段", "时间-列表"],
+                               "rebate_time_ago": ["业绩时间", "整数"],
+                               "rebate_time_custom": ["业绩时间-自定义时间段", "时间-列表"],
+                               "rebate_order": ["订单数量", "整数-列表"],
+                               "rebate_total": ["推广业绩", "浮点-列表"],
+                               "from_system_mp": ["小程序", "空"],
+                               "from_system_ios": ["ios", "空"],
+                               "from_system_android": ["安卓", "空"],
+                               "from_chancel": ["注册渠道", "整数-有效数据列表"],
+                               }
         elif flag == "zs":
             s = Login().login_b("host_smj_zsb", "admin_login")
             self.WorkerB = InterfaceModule(s, host="host_smj_zsb")
@@ -1729,6 +1765,110 @@ class TestSmj(object):
         data = {"name": "老邓头的后宫", "type": 0, "select_type": 1,
                 "tags": tags}
         self.WorkerB.add_user_tag(**data)
+
+    # 添加自动标签
+    @pytest.mark.parametrize("i", [i for i in range(34)])
+    def test_add_user_auto_tags(self, i):
+        # 自动给用户打标签
+        # faker.text(max_nb_chars=100)[:-1]
+        """
+        :param:
+        :return:
+        """
+        tags_count = 1
+        countent_count = 1
+        tags = []
+        for i in range(tags_count):
+            content = []
+            tag_name = ""
+            for x in range(countent_count):
+                key = random.choice(list(self.seted_tags.keys()))
+                value_list = self.seted_tags[key]
+                self.seted_tags.pop(key)
+                tag_name = tag_name + "*" + value_list[0]
+                value = ""
+                if value_list[1] == "整数-列表":
+                    a = random.randint(1, 10000)
+                    b = random.randint(a, 10000)
+                    value = [a, b]
+                    value = [1, 999999999]
+                elif value_list[1] == "整数":
+                    value = random.randint(1, 100)
+                    value = 999999999
+                elif value_list[1] == "浮点-列表":
+                    a = random.randint(1, 1000000)
+                    b = random.randint(a, 1000000)
+                    value = [a / 100, b / 100]
+                    value = [1, 999999999]
+                elif value_list[1] == "时间-列表":
+                    a = faker.date_time_between(datetime(2022, 1, 1), datetime(2022, 1, 3)).strftime(
+                        "%Y-%m-%d %H:%M:%S")
+                    b = faker.date_time_between(datetime(2022, 6, 22), datetime(2022, 6, 23)).strftime(
+                        "%Y-%m-%d %H:%M:%S")
+                    # 转换为时间戳:
+                    timeStamp_a = int(time.mktime(time.strptime(a, "%Y-%m-%d %H:%M:%S")))
+                    # 转换为时间戳:
+                    timeStamp_b = int(time.mktime(time.strptime(b, "%Y-%m-%d %H:%M:%S")))
+                    value = [a, b]
+                    if timeStamp_a > timeStamp_b:
+                        value[0] = b
+                        value[1] = a
+                elif value_list[1] == "整数-有效数据列表" and value_list[0] == "注册渠道":
+                    data_channel = {}
+                    p = self.WorkerB.get_channel_list(**data_channel)
+                    channel_id_list = []
+                    for item in p['data']['items']:
+                        channel_id_list.append(item['id'])
+                    value = random.choice(channel_id_list)
+                elif value_list[1] == "整数-有效数据列表" and value_list[0] == "指定分类商品":
+                    value = self.get_category(1)
+                elif value_list[1] == "整数-有效数据列表" and value_list[0] == "指定分类服务":
+                    value = self.get_category(2)
+                elif value_list[1] == "对象-列表-id,title,thumb" and value_list[0] == "指定商品":
+                    value = [{"id": 1000076931, "title": "【云仓】-6月14日9情况社区只有具有可是地方.",
+                              "thumb": "https://smjcdn.jzwp.cn/1642642789668.jpg"},
+                             {"id": 1000076930, "title": "【自营仓】-6月14日109喜欢环境还是国家.",
+                              "thumb": "https://smjcdn.jzwp.cn/1643183148074.jpg"}]
+                elif value_list[1] == "对象-列表-id,title,thumb" and value_list[0] == "指定服务":
+                    value = [{"id": 1000072163, "title": "【服务】-【三】觉得有限知道今年社会一样投资应用.",
+                              "thumb": "https://smjcdn.jzwp.cn/1650960644468.jpg"},
+                             {"id": 1000072162, "title": "【服务】-【三】完成方面谢谢也是.",
+                              "thumb": "https://smjcdn.jzwp.cn/1650960644468.jpg"}]
+                content_dict = {"key": key, "value": value}
+                content.append(content_dict)
+            end_name = str(random.randint(1, 10000)) + tag_name
+            tag_dict = {"id": "", "name": end_name[0:20], "content": content}
+            tags.append(tag_dict)
+        tags_dict_data = {"name": faker.name(), "type": 1, "select_type": 0,
+                          "tags": tags}
+        self.WorkerB.add_user_tag(**tags_dict_data)
+
+    def get_category(self, type=2):
+        category_goods = {"type": type}
+        p = self.WorkerB.goods_category(**category_goods)
+        category_list = []
+        for cate in p['data']['category']:
+            cate_list = []
+            cate_list.append(cate['id'])
+            category_list.append(cate_list)
+            try:
+                for cate_c in cate['children']:
+                    cate_c_list = []
+                    cate_c_list.append(cate['id'])
+                    cate_c_list.append(cate_c['id'])
+                    category_list.append(cate_c_list)
+            except KeyError:
+                continue
+        value = random.choice(category_list)
+        return value
+
+    def test_delect_tag(self):
+        for i in range(1, 10):
+            data = {"pageSize": "20", "page": 1}
+            p = self.WorkerB.get_tag_list(**data)
+            for item in p['data']['items']:
+                data_del = {"id": item['id']}
+                self.WorkerB.delete_tag(**data_del)
 
 
 if __name__ == '__main__':

@@ -1,134 +1,64 @@
 {
-  "action_type": 1,
-  "stock_type": 1,
-  "supplier_type": 0,
-  "is_order_award_calc": 1,
-  "is_break": 0,
-  "deliver_type": [
-    1,
-    2
-  ],
-  "store_ids": [
-    1
-  ],
-  "first_fee": 0,
-  "cross_border": 2,
-  "second_fee": "0",
-  "combination": 0,
-  "zu_num": 0,
-  "stock_double": 1,
-  "is_quick": 0,
-  "is_top": 0,
-  "is_welfare": 0,
-  "team_strategy1": 0,
-  "team_senior1": 0,
-  "team_angel1": 0,
-  "team_angel2": 0,
-  "store_extend": [],
-  "start_type": 1,
-  "end_type": 3,
-  "cat_id": [
-    437,
-    544
-  ],
-  "seckill_type": 1,
-  "use_score": 0,
-  "min_score": 0,
-  "max_score": 0,
-  "is_open_limit": 0,
-  "single_max": 0,
-  "single_min": 0,
-  "limit_max": 0,
-  "day_max": 0,
-  "title": "测试",
-  "seckill_flag": 0,
-  "is_coupon_convert": 0,
-  "cat_id1": 437,
-  "cat_id2": 544,
-  "cat_id3": 0,
-  "thumb": "https://smjcdn.jzwp.cn/1655781227050.jpg",
-  "imgs": [
-    "https://smjcdn.jzwp.cn/1655781229944.jpg"
-  ],
-  "type_id": 205,
-  "type": 205,
-  "attr_datas": [
+  "name": "独门听",
+  "type": 1,
+  "select_type": 0,
+  "tags": [
     {
-      "sku_sn": "2",
-      "sku_id": 0,
-      "goods_attr_ids": "11314",
-      "stock": 0,
-      "incr_stock": 0,
-      "weight": "8",
-      "stocks": [
+      "id": "",
+      "name": "ios用户",
+      "content": [
         {
-          "warehouse_id": 1,
-          "incr_stock": 20
+          "key": "from_system_ios",
+          "value": ""
         }
-      ],
-      "market_price": "1000",
-      "cost_price": "1000",
-      "shop_price": "1000",
-      "vip_price": "1000",
-      "partner_price": null,
-      "team_price": "1000",
-      "bonus_second_vip": null,
-      "bonus_second_partner": null,
-      "bonus_second_team": "1",
-      "storage_cost": null,
-      "clear_price": null,
-      "price2": null,
-      "fee1": null,
-      "fee2": null,
-      "fee3": null,
-      "fee4": null,
-      "fee5": null,
-      "fee6": null,
-      "fee7": null,
-      "fee11": null,
-      "fee12": null,
-      "fee13": null
+      ]
     },
     {
-      "sku_sn": "2",
-      "sku_id": 0,
-      "goods_attr_ids": "11313",
-      "stock": 0,
-      "incr_stock": 0,
-      "weight": "8",
-      "stocks": [
+      "id": "",
+      "name": "安卓用户",
+      "content": [
         {
-          "warehouse_id": 1,
-          "incr_stock": 20
+          "key": "from_system_android",
+          "value": ""
         }
-      ],
-      "market_price": "1000",
-      "cost_price": "1000",
-      "shop_price": "1000",
-      "vip_price": "1000",
-      "partner_price": null,
-      "team_price": "1000",
-      "bonus_second_vip": null,
-      "bonus_second_partner": null,
-      "bonus_second_team": "1",
-      "storage_cost": null,
-      "clear_price": null,
-      "price2": null,
-      "fee1": null,
-      "fee2": null,
-      "fee3": null,
-      "fee4": null,
-      "fee5": null,
-      "fee6": null,
-      "fee7": null,
-      "fee11": null,
-      "fee12": null,
-      "fee13": null
+      ]
+    },
+    {
+      "id": "",
+      "name": "小程序用户",
+      "content": [
+        {
+          "key": "from_system_android",
+          "value": ""
+        },
+        {
+          "key": "from_system_mp",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "",
+      "name": "注册渠道刘小红",
+      "content": [
+        {
+          "key": "from_chancel",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "id": "",
+      "name": "消费大户",
+      "content": [
+        {
+          "key": "deal_total",
+          "value": [
+            1000,
+            "30000000"
+          ]
+        }
+      ]
     }
-  ],
-  "sku_imgs": {},
-  "main_attr_id": 0,
-  "params": [],
-  "goods_id": 485,
-  "is_index": 0
+  ]
 }

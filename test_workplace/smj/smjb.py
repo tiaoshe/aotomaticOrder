@@ -1649,6 +1649,43 @@ class InterfaceModule(object):
         response = post(self.s, url, **data)
         return response
 
+    # 获取用户渠道列表
+    def get_channel_list(self, **kwargs):
+        url = get_url(self.host, "get_channel_list")
+        data = {"pageSize": "9999", "page": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 获取用户渠道列表
+    def get_tag_list(self, **kwargs):
+        url = get_url(self.host, "get_tag_list")
+        data = {"pageSize": "20", "page": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+    # 删除用户标签
+    def delete_tag(self, **kwargs):
+        url = get_url(self.host, "delete_tag")
+        data = {"id":25}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
+    # 商品分类列表
+    def goods_category(self, **kwargs):
+        url = get_url(self.host, "goods_category")
+        data = {"type": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
+
+
 
 def change_goods_sort(self):
     s = Login().login_b("host_smj_zsb", "admin_login")
