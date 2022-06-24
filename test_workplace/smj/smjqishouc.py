@@ -219,4 +219,4 @@ def end_order_s():
 
 
 if __name__ == '__main__':
-    clear_order()
+    off_all_rider()

@@ -14,6 +14,7 @@ import allure
 import threading
 from datetime import datetime
 from faker import Faker
+import copy
 
 faker = Faker(locale='zh_CN')
 
@@ -27,7 +28,7 @@ class TestSmj(object):
     def setup_class(self):
         flag = "cs"
         if flag == "cs":
-            self.uid = 100088
+            self.uid = 100071
             s = Login().login_b("host_smj_b", "admin_login")
             self.WorkerB = InterfaceModule(s, host="host_smj_b")
             sc = Login().login_c(self.uid)
@@ -142,8 +143,8 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(1)])
-    @pytest.mark.parametrize("goods_id", [1000064331])
+    @pytest.mark.parametrize("time", [x for x in range(300)])
+    @pytest.mark.parametrize("goods_id", [1000076932])
     def test_submmit_order_pay_supermarket(self, time, goods_id):
         goods_id = goods_id
         sku_id = get_sku_id(goods_id)[0][0]
@@ -170,7 +171,7 @@ class TestSmj(object):
         add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": random.randint(2, 2),
                           "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 0, "buyer_message": "杜鲁门啊 杜鲁门"}}, "shopId": shop_id,
-                          "deliver_type": deliver_type, "expect_to_time": get_now_time(60 * 60 * 24),
+                          "deliver_type": deliver_type, "expect_to_time": get_now_time(60 * 3),
                           "coupon_id": "",
                           "systemType": random.choice(["wechat", "mp", "ios", "android", "wap"])}
         response = self.WorkerC.submmit_order(**add_goods_data)
@@ -194,7 +195,7 @@ class TestSmj(object):
         if deliver_type == 3:
             # 如果是同城配送需要将数据库中的订单状态修改为 6 配送中
             # change_order_status(random.randint(3, 6), order_id)
-            s = get_rider_login_on("18000576044")
+            s = get_rider_login_on("18512819001")
             worker = InterfaceQSApi(s)
             # 抢单
             data = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637"}
@@ -225,9 +226,9 @@ class TestSmj(object):
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
 
-    @pytest.mark.parametrize("i", [i for i in range(10000)])
+    @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_submmit_order_pay_yuncang(self, i):
-        goods_id = "1000069517"
+        goods_id = "1000076933"
         x = get_sku_id(goods_id)
         sku_id = x[random.randint(0, len(x) - 1)][0]
         address_id = get_user_address_id(self.uid)[0][0]
@@ -254,7 +255,6 @@ class TestSmj(object):
         # cancel_order = {"id": order_id}
         # # 取消订单
         # self.WorkerC.cancel_order(**cancel_order)
-        return
         data_order = {"items": [{"id": order_id, "code": "YTO", "sn": "YT6345970536613"}]}
         # 写入快递单号
         self.WorkerB.order_delivery(**data_order)
@@ -274,7 +274,7 @@ class TestSmj(object):
                          "content": "视频-" + faker.text(max_nb_chars=120), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
-        flag = 0
+        flag = 4
         if flag == 0:
             # 申请售后退货
             self.test_apply_sale(sku_id, order_id, shop_id, self.WorkerC)
@@ -436,9 +436,9 @@ class TestSmj(object):
         self.WorkerB.order_send(**sale_data_agree)
 
     # 服务下单
-    @pytest.mark.parametrize("x", [x for x in range(10000)])
+    @pytest.mark.parametrize("x", [x for x in range(1)])
     def test_submit_order_pay_fuwu(self, x):
-        goods_id = 1000063630
+        goods_id = 1000076934
         x = get_sku_id(goods_id)
         sku_id = x[random.randint(0, len(x) - 1)][0]
         address_id = get_user_address_id(self.uid)[0][0]
@@ -727,10 +727,10 @@ class TestSmj(object):
     # 创建添加商品
     def test_add_goods(self, time=20):
         goods_id_list = list()
-        for i in range(10):
-            data = {"title": "【云仓】-6月14日" + str(i) + faker.sentence(), "sort": "9999"}
-            data1 = {"title": "【自营仓】-6月14日" + str(100 + i) + faker.sentence(), "sort": "9999"}
-            self.WorkerB.add_goods_shop(**data1)
+        for i in range(1):
+            data = {"title": "【云仓】-6月24日" + str(i) + faker.sentence(), "sort": "9999"}
+            data1 = {"title": "【自营仓】-6月24日" + str(100 + i) + faker.sentence(), "sort": "9999"}
+            self.WorkerB.add_goods_shop_a(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
             goods_id_list.append(str(get_max_goods_id() - 1))
@@ -1303,6 +1303,7 @@ class TestSmj(object):
                 type_u = 2
             data2 = {"id": i['user_id'], "type": type_u}
             self.WorkerB.change_user_type(**data2)
+        return
         for i in user_list:
             # 登录C端帐号
             scc = Login().login_c(i['user_id'])
@@ -1755,28 +1756,24 @@ class TestSmj(object):
                     self.WorkerB.set_goods_sort(**data_sort)
 
     # 添加用户标签
-    @pytest.mark.parametrize("i", [i for i in range(1)])
+    @pytest.mark.parametrize("i", [i for i in range(10)])
     def test_add_user_tags(self, i):
         # faker.text(max_nb_chars=100)[:-1]
         tags = []
-        for i in range(3000):
-            dict_tag = {"id": "", "name": faker.name(), "content": ""}
+        for i in range(50):
+            dict_tag = {"id": "", "name": str(random.randint(1, 1000)) + faker.name(), "content": ""}
             tags.append(dict_tag)
-        data = {"name": "老邓头的后宫", "type": 0, "select_type": 1,
+        data = {"name": "老邓头的宫", "type": 0, "select_type": 1,
                 "tags": tags}
         self.WorkerB.add_user_tag(**data)
 
     # 添加自动标签
-    @pytest.mark.parametrize("i", [i for i in range(34)])
-    def test_add_user_auto_tags(self, i):
-        # 自动给用户打标签
-        # faker.text(max_nb_chars=100)[:-1]
-        """
-        :param:
-        :return:
-        """
-        tags_count = 1
-        countent_count = 1
+    @pytest.mark.parametrize("ia", [ia for ia in range(3)])
+    def test_add_user_auto_tags(self, ia):
+        tags_count = 4
+        countent_count = 2
+        # countent_count = 1
+        end_name = ""
         tags = []
         for i in range(tags_count):
             content = []
@@ -1784,7 +1781,34 @@ class TestSmj(object):
             for x in range(countent_count):
                 key = random.choice(list(self.seted_tags.keys()))
                 value_list = self.seted_tags[key]
-                self.seted_tags.pop(key)
+                if countent_count == 1:
+                    self.seted_tags.pop(key)
+                else:
+                    if key == "deal_time_ago" or key == "deal_time_custom":
+                        self.seted_tags.pop("deal_time_ago")
+                        self.seted_tags.pop("deal_time_custom")
+                    elif key == "buy_goods_all" or key == "buy_goods_cat" or key == "buy_goods_single":
+                        self.seted_tags.pop("buy_goods_all")
+                        self.seted_tags.pop("buy_goods_cat")
+                        self.seted_tags.pop("buy_goods_single")
+                    elif key == "buy_offline_all" or key == "buy_offline_cat" or key == "buy_offline_single":
+                        self.seted_tags.pop("buy_offline_all")
+                        self.seted_tags.pop("buy_offline_cat")
+                        self.seted_tags.pop("buy_offline_single")
+                    elif key == "register_time_ago" or key == "register_time_custom":
+                        self.seted_tags.pop("register_time_ago")
+                        self.seted_tags.pop("register_time_custom")
+                    elif key == "up_time_ago" or key == "up_time_custom":
+                        self.seted_tags.pop("up_time_ago")
+                        self.seted_tags.pop("up_time_custom")
+                    elif key == "team_time_ago" or key == "team_time_custom":
+                        self.seted_tags.pop("team_time_ago")
+                        self.seted_tags.pop("team_time_custom")
+                    elif key == "rebate_time_ago" or key == "rebate_time_custom":
+                        self.seted_tags.pop("rebate_time_ago")
+                        self.seted_tags.pop("rebate_time_custom")
+                    else:
+                        self.seted_tags.pop(key)
                 tag_name = tag_name + "*" + value_list[0]
                 value = ""
                 if value_list[1] == "整数-列表":
@@ -1803,7 +1827,7 @@ class TestSmj(object):
                 elif value_list[1] == "时间-列表":
                     a = faker.date_time_between(datetime(2022, 1, 1), datetime(2022, 1, 3)).strftime(
                         "%Y-%m-%d %H:%M:%S")
-                    b = faker.date_time_between(datetime(2022, 6, 22), datetime(2022, 6, 23)).strftime(
+                    b = faker.date_time_between(datetime(2022, 6, 25), datetime(2022, 6, 30)).strftime(
                         "%Y-%m-%d %H:%M:%S")
                     # 转换为时间戳:
                     timeStamp_a = int(time.mktime(time.strptime(a, "%Y-%m-%d %H:%M:%S")))
@@ -1820,26 +1844,29 @@ class TestSmj(object):
                     for item in p['data']['items']:
                         channel_id_list.append(item['id'])
                     value = random.choice(channel_id_list)
+                    value = 12
                 elif value_list[1] == "整数-有效数据列表" and value_list[0] == "指定分类商品":
                     value = self.get_category(1)
+                    value = [435, 437]
                 elif value_list[1] == "整数-有效数据列表" and value_list[0] == "指定分类服务":
                     value = self.get_category(2)
+                    value = [457]
                 elif value_list[1] == "对象-列表-id,title,thumb" and value_list[0] == "指定商品":
-                    value = [{"id": 1000076931, "title": "【云仓】-6月14日9情况社区只有具有可是地方.",
-                              "thumb": "https://smjcdn.jzwp.cn/1642642789668.jpg"},
-                             {"id": 1000076930, "title": "【自营仓】-6月14日109喜欢环境还是国家.",
-                              "thumb": "https://smjcdn.jzwp.cn/1643183148074.jpg"}]
+                    value = [{"id": 1000076933, "title": "【云仓】-6月24日0价格选择加入成功.",
+                              "thumb": "https://smjcdn.jzwp.cn/1642642693246.jpg"},
+                             {"id": 1000076932, "title": "【自营仓】-6月24日100质量中文更多情况.",
+                              "thumb": "https://cxtcdn.jzwp.cn/1642736305106.jpg"}]
                 elif value_list[1] == "对象-列表-id,title,thumb" and value_list[0] == "指定服务":
-                    value = [{"id": 1000072163, "title": "【服务】-【三】觉得有限知道今年社会一样投资应用.",
+                    value = [{"id": 1000076934, "title": "【服务】-【三】是一留言进入其中电影一点开始.",
                               "thumb": "https://smjcdn.jzwp.cn/1650960644468.jpg"},
-                             {"id": 1000072162, "title": "【服务】-【三】完成方面谢谢也是.",
+                             {"id": 1000072163, "title": "【服务】-【三】觉得有限知道今年社会一样投资应用.",
                               "thumb": "https://smjcdn.jzwp.cn/1650960644468.jpg"}]
                 content_dict = {"key": key, "value": value}
                 content.append(content_dict)
-            end_name = str(random.randint(1, 10000)) + tag_name
+            end_name = "[" + str(ia) + "]" + str(random.randint(1, 100)) + tag_name
             tag_dict = {"id": "", "name": end_name[0:20], "content": content}
             tags.append(tag_dict)
-        tags_dict_data = {"name": faker.name(), "type": 1, "select_type": 0,
+        tags_dict_data = {"name": end_name[0:20], "type": 1, "select_type": 0,
                           "tags": tags}
         self.WorkerB.add_user_tag(**tags_dict_data)
 
@@ -1863,8 +1890,8 @@ class TestSmj(object):
         return value
 
     def test_delect_tag(self):
-        for i in range(1, 10):
-            data = {"pageSize": "20", "page": 1}
+        for i in range(10):
+            data = {"pageSize": "1", "page": 1}
             p = self.WorkerB.get_tag_list(**data)
             for item in p['data']['items']:
                 data_del = {"id": item['id']}

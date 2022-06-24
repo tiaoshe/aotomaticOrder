@@ -1711,5 +1711,5 @@ def change_goods_sort(self):
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     worker = InterfaceModule(s)
-    data = {"title": "【服务】-6月10日-测试流程" + faker.sentence()}
+    data = {"title": "【服务】-6月24日-测试流程" + faker.sentence()}
     worker.add_goods_fuwu(**data)
