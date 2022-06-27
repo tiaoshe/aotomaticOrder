@@ -1159,7 +1159,7 @@ class InterfaceModule(object):
                  "fee7": "null", "fee11": "null", "fee12": "null", "fee13": "null"}], "sku_imgs": {}, "main_attr_id": 0,
                  "params": params, "goods_id": get_max_goods_id()}
         for key, value in kwargs.items():
-            data[key] = value
+            data1[key] = value
         response = post(self.s, url, **data1)
         return response
 
@@ -1711,5 +1711,5 @@ def change_goods_sort(self):
 if __name__ == '__main__':
     s = Login().login_b("host_smj_b", "admin_login")
     worker = InterfaceModule(s)
-    data = {"title": "【服务】-6月24日-测试流程" + faker.sentence()}
+    data = {"title": "【服务】-6月27日-测试流程" + faker.sentence()}
     worker.add_goods_fuwu(**data)

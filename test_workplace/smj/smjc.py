@@ -295,6 +295,15 @@ class InterfaceModuleApi(object):
         response = get(self.s, url, **data)
         return response
 
+    # app登录注册
+    def new_login(self, **kwargs):
+        url = get_url(self.host, "new_login")
+        data = {"phone": faker.phone_number(), "code": 135246, "type": 3, "status": 1}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = post(self.s, url, **data)
+        return response
+
 
 if __name__ == '__main__':
     s = Login().login_c(100041)
