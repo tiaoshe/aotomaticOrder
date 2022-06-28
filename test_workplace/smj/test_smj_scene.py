@@ -14,6 +14,7 @@ import allure
 import threading
 from datetime import datetime
 from faker import Faker
+import qiniu
 import copy
 
 faker = Faker(locale='zh_CN')
@@ -28,7 +29,7 @@ class TestSmj(object):
     def setup_class(self):
         flag = "cs"
         if flag == "cs":
-            self.uid = 100093
+            self.uid = 328884
             s = Login().login_b("host_smj_b", "admin_login")
             self.WorkerB = InterfaceModule(s, host="host_smj_b")
             sc = Login().login_c(self.uid)
@@ -1232,7 +1233,7 @@ class TestSmj(object):
     # 设置测试用户数据设置符合下单
     def test_set_user_good(self):
         # user_id_list = [100066, 100067, 100068, 100071, 100072, 100073, 100075, 100089, 100090, 100069]
-        user_id_list = [x for x in range(100094, 110000)]
+        user_id_list = [x for x in range(328884, 328885)]
         for user_id in user_id_list:
             try:
                 sc = Login().login_c(user_id)
@@ -1905,12 +1906,21 @@ class TestSmj(object):
 
         for i in range(9000):
             threading_list = []
-            for x in range(30):
+            for x in range(10):
                 t1 = threading.Thread(target=self.new_people)
                 t1.start()
                 threading_list.append(t1)
             for y in threading_list:
                 y.join()
+
+    # 上传图片
+    def test_uptoken(self):
+        with open("howell.jpeg", "rb") as f:
+            data_bytes = f.read()
+        p = self.WorkerB.uptoken()
+        ret, res = qiniu.put_data(p['data']['uptoken'], "howell001.jpeg", data_bytes)
+        print(ret)
+        print(res)
 
 
 if __name__ == '__main__':

@@ -1670,7 +1670,7 @@ class InterfaceModule(object):
     # 删除用户标签
     def delete_tag(self, **kwargs):
         url = get_url(self.host, "delete_tag")
-        data = {"id":25}
+        data = {"id": 25}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)
@@ -1685,6 +1685,14 @@ class InterfaceModule(object):
         response = get(self.s, url, **data)
         return response
 
+    # 测试上传图片
+    def uptoken(self, **kwargs):
+        url = get_url(self.host, "uptoken")
+        data = {}
+        for key, value in kwargs.items():
+            data[key] = value
+        response = get(self.s, url, **data)
+        return response
 
 
 def change_goods_sort(self):

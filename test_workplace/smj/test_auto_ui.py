@@ -23,44 +23,55 @@ capabilities['unicodeKeyboard'] = True
 capabilities['resetKeyboard'] = False
 capabilities['noReset'] = True
 capabilities['automationName'] = 'uiautomator2'
-driver = webdriver.Remote('http://127.0.0.1:4750/wd/hub', capabilities)
-driver.implicitly_wait(60)
+driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', capabilities)
+driver.implicitly_wait(10)
 
 
 def test_click():
-    # 连接测试机所在服务器服务器
-    # el = driver.find_element_by_android_uiautomator(
-    #     'new UiSelector().className(\"android.view.View\").textContains(\"取消\")')
-    # el.click()
-    # el = driver.find_element_by_android_uiautomator(
-    #     'new UiSelector().className(\"android.view.View\").textContains(\"水果蔬菜\")')
-
-    # # 获取confirm对象
-    # alert = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
-    #                          'new UiSelector().className(\"android.widget.FrameLayout\").textContains(\"取消\")')
-    # # 点击取消（需要先获取对象）
-    # alert.click()
     x = driver.get_window_size()['width']
     y = driver.get_window_size()['height']
     time.sleep(2)
-    click_y = int(y/5*3-30-3)
-    driver.tap([(65, click_y)], 500)
-    el = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
-                             'new UiSelector().className(\"android.view.View\").textContains(\"水果蔬菜\")')
-    el.click()
+    click_y = int(y / 5 * 3 - 30 - 3)
+    driver.tap([(x * 0.09, click_y)], 500)
+    for i in range(50):
+        # 选择分类
+        el = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                 'new UiSelector().className(\"android.view.View\").textContains(\"测试标签\")')
+        el.click()
+        # 选择规格
+        el = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                 'new UiSelector().className(\"android.view.View\").textContains(\"选规格\")')
+        el.click()
+        time.sleep(1)
+        driver.tap([(x * 0.5, y - 30)], 500)
+        # 结算
+        driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                            'new UiSelector().className(\"android.view.View\").textContains(\"结算\")').click()
+        try:
+            # 提交订单
+            driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                'new UiSelector().className(\"android.view.View\").textContains(\"提交订单\")').click()
+        except Exception as e:
+            print(e)
+            # name = str(i) + "error.png"
+            # driver.save_screenshot(name)
+            # 结算
+            driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                'new UiSelector().className(\"android.view.View\").textContains(\"结算\")').click()
+            # 提交订单
+            el2 = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                      'new UiSelector().className(\"android.view.View\").textContains(\"提交订单\")')
+            el2.click()
 
-    # # 打印confirm对象的提示信息
-    # # print(alert.text)
-    # # # 点击确认
-    # # alert.accept()
+        # driver.find_element_by_android_uiautomator(
+        #     'new UiSelector().className(\"android.view.View\").textContains(\"结算\")').click()
+        # 支付
+        driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                            'new UiSelector().className(\"android.view.View\").textContains(\"确认支付\")').click()
+        # 返回首页
+        driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                            'new UiSelector().className(\"android.view.View\").textContains(\"返回首页\")').click()
 
-    # print("1111")
-    # time.sleep(2)
-    # driver.find_element_by_android_uiautomator('text(\"水果蔬菜\")').click()
-    # print("2222")
 
-
-# time.sleep(2)
-# 断开连接
 if __name__ == '__main__':
-    test_click()
+    test_click(5)

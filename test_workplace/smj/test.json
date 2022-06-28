@@ -1,64 +1,1151 @@
 {
-  "name": "独门听",
-  "type": 1,
-  "select_type": 0,
-  "tags": [
-    {
-      "id": "",
-      "name": "ios用户",
-      "content": [
+  "time": 1656388539.138,
+  "message": "ok",
+  "code": 0,
+  "status": 200,
+  "data": {
+    "skuData": [
+      {
+        "id": 100129709,
+        "goods_id": 1000076936,
+        "sku_type": 1,
+        "properties": "87:11146,88:11149,89:11153",
+        "properties_name": "大小:小,重量:1斤,产地:成都",
+        "sku_sn": "S1",
+        "market_price": "500.00",
+        "shop_price": "400.99",
+        "cost_price": "200.00",
+        "service_price": "0.00",
+        "service_cost": "0.00",
+        "storage_cost": "0.00",
+        "clear_price": "0.00",
+        "vip_price": "380.99",
+        "partner_price": "0.00",
+        "team_price": "360.99",
+        "bonus_second_vip": "0.00",
+        "bonus_second_partner": "0.00",
+        "bonus_second_team": "10.00",
+        "stock": 9998,
+        "origin_stock": 0,
+        "weight": 0,
+        "sell_prices": "{\"price2\":0}",
+        "ask_score": 0,
+        "ask_amount": "0.00",
+        "commissions": "{\"fee1\":0,\"fee2\":0,\"fee3\":0,\"fee4\":0,\"fee5\":0,\"fee6\":0,\"fee7\":0,\"fee11\":\"null\",\"fee12\":\"null\",\"fee13\":\"null\"}",
+        "integral": "0.00",
+        "delflag": 0,
+        "created_at": 1656297441,
+        "updated_at": 1656309265,
+        "price2": 0,
+        "fee1": 0,
+        "fee2": 0,
+        "fee3": 0,
+        "fee4": 0,
+        "fee5": 0,
+        "fee6": 0,
+        "fee7": 0,
+        "fee11": "null",
+        "fee12": "null",
+        "fee13": "null",
+        "attrData": [
+          {
+            "attr_id": "11146",
+            "value": "小"
+          },
+          {
+            "attr_id": "11149",
+            "value": "1斤"
+          },
+          {
+            "attr_id": "11153",
+            "value": "成都"
+          }
+        ],
+        "sale_num": "2",
+        "stocks": [
+          {
+            "warehouse_id": 31503,
+            "shop_id": 0,
+            "total_stock": 10000,
+            "stock": 9998
+          }
+        ]
+      },
+      {
+        "id": 100129710,
+        "goods_id": 1000076936,
+        "sku_type": 1,
+        "properties": "87:11147,88:11149,89:11153",
+        "properties_name": "大小:中,重量:1斤,产地:成都",
+        "sku_sn": "S1",
+        "market_price": "500.00",
+        "shop_price": "400.99",
+        "cost_price": "200.00",
+        "service_price": "0.00",
+        "service_cost": "0.00",
+        "storage_cost": "0.00",
+        "clear_price": "0.00",
+        "vip_price": "380.99",
+        "partner_price": "0.00",
+        "team_price": "360.99",
+        "bonus_second_vip": "0.00",
+        "bonus_second_partner": "0.00",
+        "bonus_second_team": "10.00",
+        "stock": 9999,
+        "origin_stock": 0,
+        "weight": 0,
+        "sell_prices": "{\"price2\":0}",
+        "ask_score": 0,
+        "ask_amount": "0.00",
+        "commissions": "{\"fee1\":0,\"fee2\":0,\"fee3\":0,\"fee4\":0,\"fee5\":0,\"fee6\":0,\"fee7\":0,\"fee11\":\"null\",\"fee12\":\"null\",\"fee13\":\"null\"}",
+        "integral": "0.00",
+        "delflag": 0,
+        "created_at": 1656297441,
+        "updated_at": 1656309266,
+        "price2": 0,
+        "fee1": 0,
+        "fee2": 0,
+        "fee3": 0,
+        "fee4": 0,
+        "fee5": 0,
+        "fee6": 0,
+        "fee7": 0,
+        "fee11": "null",
+        "fee12": "null",
+        "fee13": "null",
+        "attrData": [
+          {
+            "attr_id": "11147",
+            "value": "中"
+          },
+          {
+            "attr_id": "11149",
+            "value": "1斤"
+          },
+          {
+            "attr_id": "11153",
+            "value": "成都"
+          }
+        ],
+        "sale_num": "1",
+        "stocks": [
+          {
+            "warehouse_id": 31503,
+            "shop_id": 0,
+            "total_stock": 10000,
+            "stock": 9999
+          }
+        ]
+      },
+      {
+        "id": 100129711,
+        "goods_id": 1000076936,
+        "sku_type": 1,
+        "properties": "87:11146,88:11150,89:11153",
+        "properties_name": "大小:小,重量:2斤,产地:成都",
+        "sku_sn": "S1",
+        "market_price": "500.00",
+        "shop_price": "400.99",
+        "cost_price": "200.00",
+        "service_price": "0.00",
+        "service_cost": "0.00",
+        "storage_cost": "0.00",
+        "clear_price": "0.00",
+        "vip_price": "380.99",
+        "partner_price": "0.00",
+        "team_price": "360.99",
+        "bonus_second_vip": "0.00",
+        "bonus_second_partner": "0.00",
+        "bonus_second_team": "10.00",
+        "stock": 10000,
+        "origin_stock": 0,
+        "weight": 0,
+        "sell_prices": "{\"price2\":0}",
+        "ask_score": 0,
+        "ask_amount": "0.00",
+        "commissions": "{\"fee1\":0,\"fee2\":0,\"fee3\":0,\"fee4\":0,\"fee5\":0,\"fee6\":0,\"fee7\":0,\"fee11\":\"null\",\"fee12\":\"null\",\"fee13\":\"null\"}",
+        "integral": "0.00",
+        "delflag": 0,
+        "created_at": 1656297441,
+        "updated_at": 1656309266,
+        "price2": 0,
+        "fee1": 0,
+        "fee2": 0,
+        "fee3": 0,
+        "fee4": 0,
+        "fee5": 0,
+        "fee6": 0,
+        "fee7": 0,
+        "fee11": "null",
+        "fee12": "null",
+        "fee13": "null",
+        "attrData": [
+          {
+            "attr_id": "11146",
+            "value": "小"
+          },
+          {
+            "attr_id": "11150",
+            "value": "2斤"
+          },
+          {
+            "attr_id": "11153",
+            "value": "成都"
+          }
+        ],
+        "sale_num": 0,
+        "stocks": [
+          {
+            "warehouse_id": 31503,
+            "shop_id": 0,
+            "total_stock": 10000,
+            "stock": 10000
+          }
+        ]
+      },
+      {
+        "id": 100129712,
+        "goods_id": 1000076936,
+        "sku_type": 1,
+        "properties": "87:11147,88:11150,89:11153",
+        "properties_name": "大小:中,重量:2斤,产地:成都",
+        "sku_sn": "S1",
+        "market_price": "500.00",
+        "shop_price": "400.99",
+        "cost_price": "200.00",
+        "service_price": "0.00",
+        "service_cost": "0.00",
+        "storage_cost": "0.00",
+        "clear_price": "0.00",
+        "vip_price": "380.99",
+        "partner_price": "0.00",
+        "team_price": "360.99",
+        "bonus_second_vip": "0.00",
+        "bonus_second_partner": "0.00",
+        "bonus_second_team": "10.00",
+        "stock": 10000,
+        "origin_stock": 0,
+        "weight": 0,
+        "sell_prices": "{\"price2\":0}",
+        "ask_score": 0,
+        "ask_amount": "0.00",
+        "commissions": "{\"fee1\":0,\"fee2\":0,\"fee3\":0,\"fee4\":0,\"fee5\":0,\"fee6\":0,\"fee7\":0,\"fee11\":\"null\",\"fee12\":\"null\",\"fee13\":\"null\"}",
+        "integral": "0.00",
+        "delflag": 0,
+        "created_at": 1656297441,
+        "updated_at": 1656309266,
+        "price2": 0,
+        "fee1": 0,
+        "fee2": 0,
+        "fee3": 0,
+        "fee4": 0,
+        "fee5": 0,
+        "fee6": 0,
+        "fee7": 0,
+        "fee11": "null",
+        "fee12": "null",
+        "fee13": "null",
+        "attrData": [
+          {
+            "attr_id": "11147",
+            "value": "中"
+          },
+          {
+            "attr_id": "11150",
+            "value": "2斤"
+          },
+          {
+            "attr_id": "11153",
+            "value": "成都"
+          }
+        ],
+        "sale_num": 0,
+        "stocks": [
+          {
+            "warehouse_id": 31503,
+            "shop_id": 0,
+            "total_stock": 10000,
+            "stock": 10000
+          }
+        ]
+      },
+      {
+        "id": 100129713,
+        "goods_id": 1000076936,
+        "sku_type": 1,
+        "properties": "87:11146,88:11151,89:11153",
+        "properties_name": "大小:小,重量:3斤,产地:成都",
+        "sku_sn": "S1",
+        "market_price": "500.00",
+        "shop_price": "400.99",
+        "cost_price": "200.00",
+        "service_price": "0.00",
+        "service_cost": "0.00",
+        "storage_cost": "0.00",
+        "clear_price": "0.00",
+        "vip_price": "380.99",
+        "partner_price": "0.00",
+        "team_price": "360.99",
+        "bonus_second_vip": "0.00",
+        "bonus_second_partner": "0.00",
+        "bonus_second_team": "10.00",
+        "stock": 10000,
+        "origin_stock": 0,
+        "weight": 0,
+        "sell_prices": "{\"price2\":0}",
+        "ask_score": 0,
+        "ask_amount": "0.00",
+        "commissions": "{\"fee1\":0,\"fee2\":0,\"fee3\":0,\"fee4\":0,\"fee5\":0,\"fee6\":0,\"fee7\":0,\"fee11\":\"null\",\"fee12\":\"null\",\"fee13\":\"null\"}",
+        "integral": "0.00",
+        "delflag": 0,
+        "created_at": 1656297441,
+        "updated_at": 1656309266,
+        "price2": 0,
+        "fee1": 0,
+        "fee2": 0,
+        "fee3": 0,
+        "fee4": 0,
+        "fee5": 0,
+        "fee6": 0,
+        "fee7": 0,
+        "fee11": "null",
+        "fee12": "null",
+        "fee13": "null",
+        "attrData": [
+          {
+            "attr_id": "11146",
+            "value": "小"
+          },
+          {
+            "attr_id": "11151",
+            "value": "3斤"
+          },
+          {
+            "attr_id": "11153",
+            "value": "成都"
+          }
+        ],
+        "sale_num": 0,
+        "stocks": [
+          {
+            "warehouse_id": 31503,
+            "shop_id": 0,
+            "total_stock": 10000,
+            "stock": 10000
+          }
+        ]
+      },
+      {
+        "id": 100129714,
+        "goods_id": 1000076936,
+        "sku_type": 1,
+        "properties": "87:11147,88:11151,89:11153",
+        "properties_name": "大小:中,重量:3斤,产地:成都",
+        "sku_sn": "S1",
+        "market_price": "500.00",
+        "shop_price": "400.99",
+        "cost_price": "200.00",
+        "service_price": "0.00",
+        "service_cost": "0.00",
+        "storage_cost": "0.00",
+        "clear_price": "0.00",
+        "vip_price": "380.99",
+        "partner_price": "0.00",
+        "team_price": "360.99",
+        "bonus_second_vip": "0.00",
+        "bonus_second_partner": "0.00",
+        "bonus_second_team": "10.00",
+        "stock": 10000,
+        "origin_stock": 0,
+        "weight": 0,
+        "sell_prices": "{\"price2\":0}",
+        "ask_score": 0,
+        "ask_amount": "0.00",
+        "commissions": "{\"fee1\":0,\"fee2\":0,\"fee3\":0,\"fee4\":0,\"fee5\":0,\"fee6\":0,\"fee7\":0,\"fee11\":\"null\",\"fee12\":\"null\",\"fee13\":\"null\"}",
+        "integral": "0.00",
+        "delflag": 0,
+        "created_at": 1656297441,
+        "updated_at": 1656309266,
+        "price2": 0,
+        "fee1": 0,
+        "fee2": 0,
+        "fee3": 0,
+        "fee4": 0,
+        "fee5": 0,
+        "fee6": 0,
+        "fee7": 0,
+        "fee11": "null",
+        "fee12": "null",
+        "fee13": "null",
+        "attrData": [
+          {
+            "attr_id": "11147",
+            "value": "中"
+          },
+          {
+            "attr_id": "11151",
+            "value": "3斤"
+          },
+          {
+            "attr_id": "11153",
+            "value": "成都"
+          }
+        ],
+        "sale_num": 0,
+        "stocks": [
+          {
+            "warehouse_id": 31503,
+            "shop_id": 0,
+            "total_stock": 10000,
+            "stock": 10000
+          }
+        ]
+      }
+    ],
+    "detail": {
+      "id": 1000076936,
+      "supplier_id": 30388,
+      "supplier_type": 0,
+      "stock_type": 2,
+      "master_shop_id": null,
+      "title": "【云仓】-6月27日0或者地方法律出现原因起来问题.",
+      "subtitle": "",
+      "feature": "",
+      "cat_id1": 551,
+      "cat_id2": 0,
+      "cat_id3": 0,
+      "goods_type": 0,
+      "activity_id": 0,
+      "type": 186,
+      "brand_id": "",
+      "goods_sn": "howell001",
+      "factory_remark": "",
+      "sort": 9999,
+      "is_new": 0,
+      "is_hot": 0,
+      "use_score": 0,
+      "min_score": 0,
+      "max_score": 0,
+      "label_ids": "",
+      "list_label_ids": "",
+      "detail_label_ids": "",
+      "param": [
         {
-          "key": "from_system_ios",
-          "value": ""
-        }
-      ]
-    },
-    {
-      "id": "",
-      "name": "安卓用户",
-      "content": [
-        {
-          "key": "from_system_android",
-          "value": ""
-        }
-      ]
-    },
-    {
-      "id": "",
-      "name": "小程序用户",
-      "content": [
-        {
-          "key": "from_system_android",
-          "value": ""
+          "key": "这么可能登录.",
+          "value": "实现因为控制必须."
         },
         {
-          "key": "from_system_mp",
-          "value": ""
-        }
-      ]
-    },
-    {
-      "id": "",
-      "name": "注册渠道刘小红",
-      "content": [
+          "key": "现在注意结果登录类别怎么完成.",
+          "value": "对于今年业务大小因此时候游戏同时."
+        },
         {
-          "key": "from_chancel",
-          "value": 15
-        }
-      ]
-    },
-    {
-      "id": "",
-      "name": "消费大户",
-      "content": [
+          "key": "文化目前投资朋友政府出来.",
+          "value": "所以作为游戏文化其中."
+        },
         {
-          "key": "deal_total",
-          "value": [
-            1000,
-            "30000000"
+          "key": "原因环境因为这个.",
+          "value": "生产都是但是今年."
+        },
+        {
+          "key": "设计感觉在线空间谢谢.",
+          "value": "需要一起详细法律由于."
+        }
+      ],
+      "description": "",
+      "unit": "",
+      "content": "<p><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323968.jpeg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323970.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323971.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323973.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323974.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323976.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323977.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323978.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323979.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323981.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323982.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323983.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323985.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323986.jpg\" /><img class=\"wscnph\" src=\"https://smjcdn.jzwp.cn/1650945323987.jpg\" /></p>",
+      "market_price": "500.00",
+      "shop_price": "400.99",
+      "cost_price": "200.00",
+      "sale_price": "400.99",
+      "member_price": "380.99",
+      "store_price": "",
+      "user_price": "",
+      "activity_price": "0",
+      "partner_price": "",
+      "team_price": "360.99",
+      "team_fee": "10",
+      "first_fee": "0",
+      "second_fee": "0",
+      "share_fee": "",
+      "team_commission": "{\"team_angel1\":0,\"team_angel2\":0,\"team_sq1\":0,\"team_sq2\":0,\"team_wh1\":0,\"team_wh2\":0,\"team_senior1\":0,\"team_strategy1\":0}",
+      "stock": 59997,
+      "sale_num": 3,
+      "used_num": 0,
+      "order_num": 2,
+      "sale_num_real": 3,
+      "views": 0,
+      "show_sale_num": 3,
+      "show_stock_num": 0,
+      "stock_double": 1,
+      "give_integral": 0,
+      "thumb": "https://smjcdn.jzwp.cn/1643190310677.jpg",
+      "long_thumb": "",
+      "video": "https://smjcdn.jzwp.cn/1644378963094.mp4",
+      "imgs": [
+        "https://smjcdn.jzwp.cn/1642642710005.jpg",
+        "https://cxtcdn.jzwp.cn/1642736305106.jpg",
+        "https://smjcdn.jzwp.cn/1643183182745.jpg",
+        "https://smjcdn.jzwp.cn/1643190306757.jpg"
+      ],
+      "sku_imgs": {
+        "11149": {
+          "thumb": [
+            "https://smjcdn.jzwp.cn/1650945287229.jpg"
+          ]
+        },
+        "11150": {
+          "thumb": [
+            "https://smjcdn.jzwp.cn/1650945289443.jpg"
+          ]
+        },
+        "11151": {
+          "thumb": [
+            "https://smjcdn.jzwp.cn/1650945291292.jpg"
           ]
         }
-      ]
-    }
-  ]
+      },
+      "properties": [
+        {
+          "id": 87,
+          "name": "大小",
+          "values": [
+            {
+              "id": 11146,
+              "value": "小"
+            },
+            {
+              "id": 11147,
+              "value": "中"
+            }
+          ]
+        },
+        {
+          "id": 88,
+          "name": "重量",
+          "values": [
+            {
+              "id": 11149,
+              "value": "1斤"
+            },
+            {
+              "id": 11150,
+              "value": "2斤"
+            },
+            {
+              "id": 11151,
+              "value": "3斤"
+            }
+          ]
+        },
+        {
+          "id": 89,
+          "name": "产地",
+          "values": [
+            {
+              "id": 11153,
+              "value": "成都"
+            }
+          ]
+        }
+      ],
+      "freight_id": "",
+      "insurance_id": 207,
+      "weight": 5,
+      "volume_length": 0,
+      "volume_width": 5,
+      "volume_height": 0,
+      "aftersale_invoice": "",
+      "aftersale_service": "",
+      "aftersale_info": "",
+      "deliver_type": [
+        3
+      ],
+      "status": 10,
+      "state": 0,
+      "is_open_limit": 0,
+      "single_max": 0,
+      "single_min": 0,
+      "limit_max": 0,
+      "day_max": 0,
+      "start_at": 1656309265,
+      "end_at": 0,
+      "start_type": 1,
+      "end_type": 3,
+      "freight_fee": "5.00",
+      "is_store_refund": 0,
+      "store_extend": [],
+      "seckill_begin_time": 0,
+      "seckill_end_time": 0,
+      "seckill_flag": 0,
+      "cross_border": 2,
+      "delflag": 0,
+      "created_at": 1656297441,
+      "updated_at": 1656309265,
+      "is_boom": 0,
+      "data": "",
+      "is_zu": 0,
+      "zu_data": "",
+      "zu_num": 0,
+      "stock_base": 0,
+      "stock_multiple": 1,
+      "is_quick": 0,
+      "is_top": 0,
+      "is_welfare": 0,
+      "is_gift": 0,
+      "activity_name": "",
+      "integral_rules": "{\"integral_customer_point\":0,\"buyer_point\":0,\"first_point\":0,\"second_point\":0}",
+      "seckill_thumb": "",
+      "seckill_type": 1,
+      "service_price": "0.00",
+      "service_cost": "0.00",
+      "select_type": 1,
+      "is_break": 0,
+      "break_num": 0,
+      "member_types": [],
+      "admin_name": "",
+      "expiration_time_of_consumption": "",
+      "service_expire_type": 0,
+      "is_recommend_officer_package": 2,
+      "is_receive_way_self": 0,
+      "is_receive_way_logistics": 0,
+      "is_order_award_calc": 1,
+      "is_index": 0,
+      "main_attr_id": 88,
+      "type_id": 186,
+      "team_angel1": 0,
+      "team_angel2": 0,
+      "team_sq1": 0,
+      "team_sq2": 0,
+      "team_wh1": 0,
+      "team_wh2": 0,
+      "team_senior1": 0,
+      "team_strategy1": 0,
+      "integral_customer_point": 0,
+      "buyer_point": 0,
+      "first_point": 0,
+      "second_point": 0,
+      "supplier_name": "杜鲁门",
+      "brand_name": "--",
+      "status_label": "上架",
+      "cat1_name": "测试标签分类",
+      "cat2_name": "--",
+      "cat3_name": "--",
+      "cate_name": "测试标签分类",
+      "stock_sale_num": 3,
+      "labels": [],
+      "freight_type": 2,
+      "store_ids": [
+        31503
+      ],
+      "freight_name": ""
+    },
+    "goods_id": "1000076936",
+    "supplier": [
+      {
+        "id": 30383,
+        "name": "豪威尔2"
+      },
+      {
+        "id": 30389,
+        "name": "上得分"
+      },
+      {
+        "id": 30387,
+        "name": "任杰低领"
+      },
+      {
+        "id": 30388,
+        "name": "杜鲁门"
+      },
+      {
+        "id": 30390,
+        "name": "说的"
+      },
+      {
+        "id": 30391,
+        "name": "说的发撒旦发"
+      },
+      {
+        "id": 30392,
+        "name": "地方第三方上得分"
+      },
+      {
+        "id": 30394,
+        "name": "花溪农贸"
+      }
+    ],
+    "category": [
+      {
+        "id": 551,
+        "pid": 0,
+        "name": "测试标签分类",
+        "value": 551,
+        "label": "测试标签分类",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 535,
+        "pid": 0,
+        "name": "电饭锅电饭锅",
+        "value": 535,
+        "label": "电饭锅电饭锅",
+        "is_checked": false,
+        "expanded": true,
+        "children": [
+          {
+            "id": 541,
+            "pid": 535,
+            "name": "123",
+            "value": 541,
+            "label": "123",
+            "is_checked": false,
+            "leaf": true
+          },
+          {
+            "id": 549,
+            "pid": 535,
+            "name": "343242",
+            "value": 549,
+            "label": "343242",
+            "is_checked": false,
+            "leaf": true
+          }
+        ]
+      },
+      {
+        "id": 433,
+        "pid": 0,
+        "name": "水果蔬菜",
+        "value": 433,
+        "label": "水果蔬菜",
+        "is_checked": false,
+        "expanded": true,
+        "children": [
+          {
+            "id": 537,
+            "pid": 433,
+            "name": "舒服点",
+            "value": 537,
+            "label": "舒服点",
+            "is_checked": false,
+            "leaf": true
+          },
+          {
+            "id": 536,
+            "pid": 433,
+            "name": "梵蒂冈",
+            "value": 536,
+            "label": "梵蒂冈",
+            "is_checked": false,
+            "leaf": true
+          },
+          {
+            "id": 443,
+            "pid": 433,
+            "name": "草莓",
+            "value": 443,
+            "label": "草莓",
+            "is_checked": false,
+            "leaf": true
+          },
+          {
+            "id": 527,
+            "pid": 433,
+            "name": "西红柿",
+            "value": 527,
+            "label": "西红柿",
+            "is_checked": false,
+            "leaf": true
+          },
+          {
+            "id": 446,
+            "pid": 433,
+            "name": "菜",
+            "value": 446,
+            "label": "菜",
+            "is_checked": false,
+            "leaf": true
+          },
+          {
+            "id": 547,
+            "pid": 433,
+            "name": "舒服大姐夫",
+            "value": 547,
+            "label": "舒服大姐夫",
+            "is_checked": false,
+            "leaf": true
+          }
+        ]
+      },
+      {
+        "id": 434,
+        "pid": 0,
+        "name": "纸品家清1",
+        "value": 434,
+        "label": "纸品家清1",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 435,
+        "pid": 0,
+        "name": "粮油调味",
+        "value": 435,
+        "label": "粮油调味",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 534,
+        "pid": 0,
+        "name": "发过火发过火",
+        "value": 534,
+        "label": "发过火发过火",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 441,
+        "pid": 0,
+        "name": "肉禽蛋品",
+        "value": 441,
+        "label": "肉禽蛋品",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 449,
+        "pid": 0,
+        "name": "健康保健",
+        "value": 449,
+        "label": "健康保健",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 440,
+        "pid": 0,
+        "name": "乳品烘焙",
+        "value": 440,
+        "label": "乳品烘焙",
+        "is_checked": false,
+        "expanded": true,
+        "children": [
+          {
+            "id": 444,
+            "pid": 440,
+            "name": "西藏牛奶",
+            "value": 444,
+            "label": "西藏牛奶",
+            "is_checked": false,
+            "leaf": true
+          }
+        ]
+      },
+      {
+        "id": 439,
+        "pid": 0,
+        "name": "个护美妆",
+        "value": 439,
+        "label": "个护美妆",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 438,
+        "pid": 0,
+        "name": "母婴育儿",
+        "value": 438,
+        "label": "母婴育儿",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 437,
+        "pid": 0,
+        "name": "酒水饮料",
+        "value": 437,
+        "label": "酒水饮料",
+        "is_checked": false,
+        "leaf": true
+      },
+      {
+        "id": 436,
+        "pid": 0,
+        "name": "休闲食品",
+        "value": 436,
+        "label": "休闲食品",
+        "is_checked": false,
+        "leaf": true
+      }
+    ],
+    "typeList": [
+      {
+        "id": 185,
+        "type": 1,
+        "name": "服装",
+        "delflag": 0,
+        "created_at": 1646812803,
+        "updated_at": 1646812803
+      },
+      {
+        "id": 186,
+        "type": 1,
+        "name": "水果",
+        "delflag": 0,
+        "created_at": 1646812984,
+        "updated_at": 1646813056
+      },
+      {
+        "id": 200,
+        "type": 1,
+        "name": "麦科马克",
+        "delflag": 0,
+        "created_at": 1648558151,
+        "updated_at": 1648558151
+      },
+      {
+        "id": 205,
+        "type": 1,
+        "name": "规格很多",
+        "delflag": 0,
+        "created_at": 1652852931,
+        "updated_at": 1652852931
+      },
+      {
+        "id": 206,
+        "type": 1,
+        "name": "服装1",
+        "delflag": 0,
+        "created_at": 1653036361,
+        "updated_at": 1653036361
+      },
+      {
+        "id": 207,
+        "type": 1,
+        "name": "鞋类",
+        "delflag": 0,
+        "created_at": 1653289539,
+        "updated_at": 1653289539
+      }
+    ],
+    "label": [],
+    "attr": [
+      {
+        "id": 87,
+        "attr_id": 186,
+        "name": "大小",
+        "is_main": 0,
+        "sort": 0,
+        "is_unique": 0,
+        "goods_id": 0,
+        "is_color": 0,
+        "delflag": 0,
+        "created_at": 1646813008,
+        "updated_at": 1646813008,
+        "type_id": 186,
+        "values": [
+          {
+            "id": 11146,
+            "attr_id": 87,
+            "attr_item_id": 87,
+            "color": "",
+            "value": "小",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813008,
+            "updated_at": 1646813008,
+            "type_id": 186
+          },
+          {
+            "id": 11147,
+            "attr_id": 87,
+            "attr_item_id": 87,
+            "color": "",
+            "value": "中",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813008,
+            "updated_at": 1646813008,
+            "type_id": 186
+          },
+          {
+            "id": 11148,
+            "attr_id": 87,
+            "attr_item_id": 87,
+            "color": "",
+            "value": "大",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813008,
+            "updated_at": 1646813008,
+            "type_id": 186
+          }
+        ]
+      },
+      {
+        "id": 88,
+        "attr_id": 186,
+        "name": "重量",
+        "is_main": 0,
+        "sort": 0,
+        "is_unique": 0,
+        "goods_id": 0,
+        "is_color": 0,
+        "delflag": 0,
+        "created_at": 1646813623,
+        "updated_at": 1646813623,
+        "type_id": 186,
+        "values": [
+          {
+            "id": 11149,
+            "attr_id": 88,
+            "attr_item_id": 88,
+            "color": "",
+            "value": "1斤",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813623,
+            "updated_at": 1646813623,
+            "type_id": 186
+          },
+          {
+            "id": 11150,
+            "attr_id": 88,
+            "attr_item_id": 88,
+            "color": "",
+            "value": "2斤",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813623,
+            "updated_at": 1646813623,
+            "type_id": 186
+          },
+          {
+            "id": 11151,
+            "attr_id": 88,
+            "attr_item_id": 88,
+            "color": "",
+            "value": "3斤",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813623,
+            "updated_at": 1646813623,
+            "type_id": 186
+          },
+          {
+            "id": 11152,
+            "attr_id": 88,
+            "attr_item_id": 88,
+            "color": "",
+            "value": "5斤",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813623,
+            "updated_at": 1646813623,
+            "type_id": 186
+          }
+        ]
+      },
+      {
+        "id": 89,
+        "attr_id": 186,
+        "name": "产地",
+        "is_main": 0,
+        "sort": 0,
+        "is_unique": 0,
+        "goods_id": 0,
+        "is_color": 0,
+        "delflag": 0,
+        "created_at": 1646813647,
+        "updated_at": 1646813647,
+        "type_id": 186,
+        "values": [
+          {
+            "id": 11153,
+            "attr_id": 89,
+            "attr_item_id": 89,
+            "color": "",
+            "value": "成都",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813647,
+            "updated_at": 1646813647,
+            "type_id": 186
+          },
+          {
+            "id": 11154,
+            "attr_id": 89,
+            "attr_item_id": 89,
+            "color": "",
+            "value": "重庆",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813647,
+            "updated_at": 1646813647,
+            "type_id": 186
+          },
+          {
+            "id": 11155,
+            "attr_id": 89,
+            "attr_item_id": 89,
+            "color": "",
+            "value": "泰国",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813647,
+            "updated_at": 1646813647,
+            "type_id": 186
+          },
+          {
+            "id": 11156,
+            "attr_id": 89,
+            "attr_item_id": 89,
+            "color": "",
+            "value": "马来西亚",
+            "sort": 0,
+            "is_unique": 0,
+            "goods_id": 0,
+            "is_color": 0,
+            "delflag": 0,
+            "created_at": 1646813647,
+            "updated_at": 1646813647,
+            "type_id": 186
+          }
+        ]
+      }
+    ]
+  }
 }
