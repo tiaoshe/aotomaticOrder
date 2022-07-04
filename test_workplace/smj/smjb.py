@@ -47,7 +47,8 @@ class InterfaceModule(object):
     def update_vip_card(self, **kwargs):
         url = get_url(self.host, "update_vip_card")
         # 3 加款  4  扣钱
-        data = {"uid": 100029, "type": 4, "money": 19.9, "remark": "测试自动加钱", "password": "110114"}
+        data = {"uid": 100029, "type": 4, "money": 19.9, "remark": "测试自动加钱", "password": "110114", "card_user_num": 0,
+                "deposit_fid": 0}
         for key, value in kwargs.items():
             data[key] = value
         response = post(self.s, url, **data)

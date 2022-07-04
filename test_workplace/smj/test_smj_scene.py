@@ -9,12 +9,15 @@ from test_workplace.smj.smjqishouc import *
 from test_workplace.smj.smj_utils import *
 from common.controlexcel import ExcelUtil
 from common.rideexcel import ExcelUtil as EU
+from demo_300.demo_09 import QueryData as QD
+from io import BytesIO
 import pytest, random
 import allure
 import threading
 from datetime import datetime
 from faker import Faker
 import qiniu
+from PIL import Image
 import copy
 
 faker = Faker(locale='zh_CN')
@@ -29,7 +32,7 @@ class TestSmj(object):
     def setup_class(self):
         flag = "cs"
         if flag == "cs":
-            self.uid = 328884
+            self.uid = 103937
             s = Login().login_b("host_smj_b", "admin_login")
             self.WorkerB = InterfaceModule(s, host="host_smj_b")
             sc = Login().login_c(self.uid)
@@ -144,7 +147,7 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(10)])
+    @pytest.mark.parametrize("time", [x for x in range(20)])
     @pytest.mark.parametrize("goods_id", [1000076935])
     def test_submmit_order_pay_supermarket(self, time, goods_id):
         goods_id = goods_id
@@ -200,6 +203,7 @@ class TestSmj(object):
             # 抢单
             data = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637"}
             worker.get_order(**data)
+            return
             # 到店
             data1 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 5}
             worker.set_order_status(**data1)
@@ -716,7 +720,7 @@ class TestSmj(object):
         self.WorkerB.add_shop_account(**data)
 
     def test_get_goods_id_list(self):
-        data = {"goodsInfo": "【自营仓】-6月14日", "key": "all", "pageSize": 30, "page": 1}
+        data = {"goodsInfo": "【云仓】-6月20日", "key": "all", "pageSize": 30, "page": 1}
         p = self.WorkerB.get_goods_list(**data)
         goods_ids = []
         for i in p['data']['items']:
@@ -727,9 +731,9 @@ class TestSmj(object):
     # 创建添加商品
     def test_add_goods(self, time=20):
         goods_id_list = list()
-        for i in range(1):
-            data = {"title": "【云仓】-6月27日" + str(i) + faker.sentence(), "sort": "9999"}
-            data1 = {"title": "【自营仓】-6月27日" + str(100 + i) + faker.sentence(), "sort": "9999"}
+        for i in range(10):
+            data = {"title": "【云仓】-6月20日" + str(i) + faker.sentence(), "sort": "9999"}
+            data1 = {"title": "【自营仓】-6月20日" + str(100 + i) + faker.sentence(), "sort": "9999"}
             self.WorkerB.add_goods_shop_a(**data1)
             goods_id_list.append(str(get_max_goods_id() - 1))
             self.WorkerB.add_goods_yuncang(**data)
@@ -1206,14 +1210,12 @@ class TestSmj(object):
                 prodact_supermarket = random.randint(1, 6)
                 prodact_fuwu = random.randint(1, 7)
                 goods_id = random.choice(
-                    [1000076931, 1000076929, 1000076927, 1000076925, 1000076923, 1000076921, 1000076919, 1000076917,
-                     1000076915, 1000076913, 1000076911, 1000076909, 1000076907, 1000076905, 1000076903, 1000076901,
-                     1000076899, 1000076897, 1000076895, 1000076893])
+                    [1000076957, 1000076955, 1000076953, 1000076951, 1000076949, 1000076947, 1000076945, 1000076943,
+                     1000076941, 1000076939])
                 goods_id_supermarket = random.choice(
-                    [1000076930, 1000076928, 1000076926, 1000076924, 1000076922, 1000076920, 1000076918, 1000076916,
-                     1000076914, 1000076912, 1000076910, 1000076908, 1000076906, 1000076904, 1000076902, 1000076900,
-                     1000076898, 1000076896, 1000076894, 1000076892])
-                goods_id_fuwu = random.choice([1000072162, 1000072163])
+                    [1000076956, 1000076954, 1000076952, 1000076950, 1000076948, 1000076946, 1000076944, 1000076942,
+                     1000076940, 1000076938])
+                goods_id_fuwu = random.choice([1000076937, 1000076934])
                 t = threading.Thread(target=self.subbmit_yuncang, args=(goods_id, user, WorkerCC, prodact))
                 t.start()
                 threading_list.append(t)
@@ -1233,7 +1235,7 @@ class TestSmj(object):
     # 设置测试用户数据设置符合下单
     def test_set_user_good(self):
         # user_id_list = [100066, 100067, 100068, 100071, 100072, 100073, 100075, 100089, 100090, 100069]
-        user_id_list = [x for x in range(328884, 328885)]
+        user_id_list = [103937]
         for user_id in user_id_list:
             try:
                 sc = Login().login_c(user_id)
@@ -1242,6 +1244,7 @@ class TestSmj(object):
                 WorkerCC.add_address()
             except:
                 continue
+            return
             add_or_jian = 2
             # 1为扣减 2 不兑换 3 要兑换
             if add_or_jian == 1:
@@ -1903,24 +1906,63 @@ class TestSmj(object):
         self.WorkerC.new_login(**data)
 
     def test_new_people(self):
-
-        for i in range(9000):
-            threading_list = []
-            for x in range(10):
-                t1 = threading.Thread(target=self.new_people)
-                t1.start()
-                threading_list.append(t1)
-            for y in threading_list:
-                y.join()
+        try:
+            for i in range(1000000):
+                threading_list = []
+                for x in range(25):
+                    t1 = threading.Thread(target=self.new_people)
+                    t1.start()
+                    threading_list.append(t1)
+                for y in threading_list:
+                    y.join()
+        except Exception:
+            self.test_new_people()
 
     # 上传图片
     def test_uptoken(self):
-        with open("howell.jpeg", "rb") as f:
+        with open("howell.webp", "rb") as f:
             data_bytes = f.read()
+            f = BytesIO(data_bytes)
+            img = Image.open(f)
+            print(img.size)
+
         p = self.WorkerB.uptoken()
         ret, res = qiniu.put_data(p['data']['uptoken'], "howell001.jpeg", data_bytes)
         print(ret)
         print(res)
+
+    # 查询乐檬数据是否同步
+    def test_get_info(self):
+        phone_number = 13911112222
+        # 登录
+        data = {"phone": phone_number, "code": 135246, "type": random.choice([2, 3, 4]), "status": 1}
+        self.WorkerC.new_login(**data)
+        time.sleep(2)
+        sql = "SELECT customer_id FROM smj_member WHERE phone=%s" % phone_number
+        q = QD().get_data(sql)
+        print(q)
+        assert q[0][0] != 0
+
+    # 会员卡加扣款同步到乐檬
+    def test_add_jian_vip_card(self):
+        uid = "103937"
+        try:
+            sql1 = "SELECT card_user_num FROM smj_vip_card WHERE uid = %s" % uid
+            q = QD().get_data(sql1)
+            card_user_num = q[0][0]
+        except:
+            card_user_num = ""
+        try:
+            sql2 = "SELECT record_fid FROM smj_vip_card_record WHERE uid = %s" % uid
+            qq = QD().get_data(sql2)
+            deposit_fid = qq[4][0]
+        except:
+            deposit_fid = ""
+        # 3 加款  4  扣钱
+        data = {"uid": uid, "type": 3, "money": 400, "remark": "乐檬测试", "password": "110114",
+                "card_user_num": card_user_num,
+                "deposit_fid": deposit_fid}
+        self.WorkerB.update_vip_card(**data)
 
 
 if __name__ == '__main__':
