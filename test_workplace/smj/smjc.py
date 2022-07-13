@@ -60,7 +60,7 @@ class InterfaceModuleApi(object):
     # 支付
     def pay_order(self, **kwargs):
         url = get_url(self.host, "pay_order")
-        data = {"order_sn": "21112509570557172", "pay_info": [{"money": 100, "check": 1, "type": "balance"},
+        data = {"order_sn": "21112509570557172", "pay_info": [{"money": 0, "check": 0, "type": "balance"},
                                                               {"money": 0, "check": 0, "type": "vip_card"},
                                                               {"money": 0, "check": 0, "type": "wx"}]}
         for key, value in kwargs.items():

@@ -1343,7 +1343,7 @@ class InterfaceModule(object):
     # 同意售后
     def order_sale_detail(self, **kwargs):
         url = get_url(self.host, "order_sale_detail")
-        data = {"id": 1}
+        data = {}
         for key, value in kwargs.items():
             data[key] = value
         response = get(self.s, url, **data)

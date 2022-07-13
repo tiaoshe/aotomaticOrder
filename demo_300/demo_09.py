@@ -38,7 +38,7 @@ class QueryData(object):
                 # WriteLog(filepath_write_log).write_str(content="|%s|查询数据成功" % str_sql)
             else:
                 # WriteLog(filepath_write_log).write_str(content="查询%s返回数据为空" % str_sql)
-                results = ""
+                results = ((0,),)
         except BaseException as err:
             # WriteLog(filepath_write_log).write_str(content="查询发生错误:%s" % err)
             results = "查询发生了异常|%s" % err
@@ -62,4 +62,3 @@ def test_query(number="13104003890"):
     q = QueryData().get_data(sql)
     print(q)
     return q
-

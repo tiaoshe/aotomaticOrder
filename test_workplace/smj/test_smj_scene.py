@@ -32,7 +32,7 @@ class TestSmj(object):
     def setup_class(self):
         flag = "cs"
         if flag == "cs":
-            self.uid = 103937
+            self.uid = 105132
             s = Login().login_b("host_smj_b", "admin_login")
             self.WorkerB = InterfaceModule(s, host="host_smj_b")
             sc = Login().login_c(self.uid)
@@ -147,20 +147,21 @@ class TestSmj(object):
         data = {"uid": 13, "type": ty, "point": 10, "remark": mark}
         self.WorkerB.update_integral_record(**data)
 
-    @pytest.mark.parametrize("time", [x for x in range(20)])
-    @pytest.mark.parametrize("goods_id", [1000076935])
+    @pytest.mark.parametrize("time", [x for x in range(5)])
+    @pytest.mark.parametrize("goods_id", [1000076967])
     def test_submmit_order_pay_supermarket(self, time, goods_id):
         goods_id = goods_id
         sku_id = get_sku_id(goods_id)[0][0]
 
         address_id = get_user_address_id(self.uid)[0][0]
-        if self.uid == 100071:
-            shop_id = 31475
+        sql = "select id from smj_member_address where uid = %s and is_default=1;" % self.uid
+        address_id = QD().get_data(sql)[0][0]
+        if self.uid == 105132:
+            shop_id = 31476
         else:
             shop_id = get_shop_id(goods_id)[0][0]
         # shop_id = 31002
         # 1、快递，2、自提，3、同城
-        deliver_type = random.randint(2, 3)
         deliver_type = 3
         # 优惠券ID查询 以及使用
         # 1 = > '微信',
@@ -171,7 +172,7 @@ class TestSmj(object):
         # random.choice(["wechat", "mp", "ios", "android", "wap"])
         sql = "select id FROM smj_coupon_record where uid=%s and cid=5315 and is_used=0;" % self.uid
         coupon_id = QueryData().get_data(sql)[0][0]
-        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": random.randint(1, 2),
+        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 2,
                           "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 0, "buyer_message": "杜鲁门啊 杜鲁门"}}, "shopId": shop_id,
                           "deliver_type": deliver_type, "expect_to_time": get_now_time(60 * 3),
@@ -180,13 +181,18 @@ class TestSmj(object):
         response = self.WorkerC.submmit_order(**add_goods_data)
         order_sn = response['data']['order_sn']
         money = response['data']["actual_fee"]
-        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
+        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "vip_card"}]}
+        if data['pay_info'][0]["check"] == 1:
+            sql1 = "SELECT card_user_num FROM smj_vip_card WHERE uid = %s and default_card=1" % self.uid
+            q = QD().get_data(sql1)
+            card_user_num = q[0][0]
+            data['pay_info'][0]['card'] = card_user_num
         order_response = self.WorkerC.pay_order(**data)
         order_id = order_response['data']['id']
         # cancel_order = {"id": order_id}
         # # 取消订单
         # self.WorkerC.cancel_order(**cancel_order)
-        # return
+        return
         # 接单数据准备
         pick_order = {"ids": order_id}
         # 接单
@@ -203,7 +209,6 @@ class TestSmj(object):
             # 抢单
             data = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637"}
             worker.get_order(**data)
-            return
             # 到店
             data1 = {"order_id": order_id, "lng": "104.06353", "lat": "30.56637", "status": 5}
             worker.set_order_status(**data1)
@@ -232,7 +237,7 @@ class TestSmj(object):
 
     @pytest.mark.parametrize("i", [i for i in range(1)])
     def test_submmit_order_pay_yuncang(self, i):
-        goods_id = "1000076936"
+        goods_id = "1000063695"
         x = get_sku_id(goods_id)
         sku_id = x[random.randint(0, len(x) - 1)][0]
         address_id = get_user_address_id(self.uid)[0][0]
@@ -240,7 +245,7 @@ class TestSmj(object):
         # 优惠券ID查询 以及使用
         sql = "select id FROM smj_coupon_record where uid=%s and cid=5315 and is_used=0;" % self.uid
         coupon_id = QueryData().get_data(sql)[0][0]
-        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 1,
+        add_goods_data = {"goods_id": goods_id, "sku_id": sku_id, "nums": 3,
                           "address_ids": address_id,
                           "extend": {goods_id: {"buy_insurance": 1, "buyer_message": faker.sentence()}},
                           "shopId": shop_id,
@@ -251,10 +256,17 @@ class TestSmj(object):
         order_sn = response['data']['order_sn']
         money = response['data']["actual_fee"]
         # type balance|vip_card|wx
-        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"},
-                                                   {"money": 0, "check": 0, "type": "vip_card"},
+        data = {"order_sn": order_sn, "pay_info": [{"money": 100, "check": 1, "type": "balance"},
+                                                   {"money": money-100, "check": 1, "type": "vip_card"},
                                                    {"money": 0, "check": 0, "type": "wx"}]}
+        if data['pay_info'][1]["check"] == 1:
+            sql1 = "SELECT card_user_num FROM smj_vip_card WHERE uid = %s and default_card=1" % self.uid
+            q = QD().get_data(sql1)
+            card_user_num = q[0][0]
+            data['pay_info'][1]['card'] = card_user_num
         order_response = self.WorkerC.pay_order(**data)
+        return
+        time.sleep(10)
         order_id = order_response['data']['id']
         # cancel_order = {"id": order_id}
         # # 取消订单
@@ -278,7 +290,7 @@ class TestSmj(object):
                          "content": "视频-" + faker.text(max_nb_chars=120), "video": [get_video()],
                          "order_extend_id": order_extent_id}
         self.WorkerC.add_evaluate(**evaluate_data)
-        flag = 4
+        flag = 0
         if flag == 0:
             # 申请售后退货
             self.test_apply_sale(sku_id, order_id, shop_id, self.WorkerC)
@@ -316,6 +328,7 @@ class TestSmj(object):
 
     # 申请退货
     def test_apply_sale(self, sku_id, order_id, shop_id, workerCC):
+        print(order_id)
         # 申请售后 5 是补偿坏损  6是补发  1 退货 2换货
         sales_data = {"sale_type": 1, "sale_type_desc": "退货", "reason": "7天无理由退货", "description": faker.sentence(),
                       "imagesArr": [],
@@ -324,8 +337,9 @@ class TestSmj(object):
                       "video": ["https://smjcdn.jzwp.cn/_625e7d6635b3b.mp4", get_video(), get_video(), get_video()]}
         workerCC.order_sales(**sales_data)
         # 同意售后 1.查询售后信息
-        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
-        sale_id = QueryData().get_data(sql)[0][0]
+        sql = "SELECT id FROM smj_order_sales WHERE `order_id` = %s" % order_id
+        sale_id = QD().get_data(sql)[0][0]
+        # sale_id = QueryData().get_data(sql)[0][0]
         sale_data = {"id": sale_id}
         sale_response = self.WorkerB.order_sale_detail(**sale_data)
         goods_fee = sale_response['data']['orderInfo']['actual_fee']
@@ -396,8 +410,9 @@ class TestSmj(object):
                       "video": [get_video()]}
         workerCC.order_sales(**sales_data)
         # 同意售后 1.查询售后信息
-        sql = "SELECT id FROM `smj-dev`.`smj_order_sales` WHERE `order_id` = %s" % order_id
-        sale_id = QueryData().get_data(sql)[0][0]
+        sql = "SELECT id FROM smj_order_sales WHERE `order_id` = %s" % order_id
+        # sale_id = QueryData().get_data(sql)[0][0]
+        sale_id = QD().get_data(sql)[0][0]
         sale_data = {"id": sale_id}
         sale_response = self.WorkerB.order_sale_detail(**sale_data)
         goods_fee = sale_response['data']['detail']['goods_fee']
@@ -855,19 +870,6 @@ class TestSmj(object):
         q.update_data(sql_phone)
         data = {"sex": 0, "phone": faker.phone_number(), "nickname": "小米CS", "id": user_id}
         self.WorkerB.edit_user_info(**data)
-
-    # 会员卡充值
-    # @pytest.mark.parametrize("i", [i for i in range(20)])
-    @pytest.mark.parametrize("money", [300])
-    def test_confirm_vip(self, money):
-        money = money
-        data = {"money": money}
-        response = self.WorkerC.confirm_vip(**data)
-        order_sn = response['data']['order_sn']
-        # 准备支付数据
-        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
-        # 支付
-        self.WorkerC.pay_order(**data)
 
     # @pytest.mark.parametrize("i", [i for i in range(100012, 100013)])
     def test_set_money(self):
@@ -1933,19 +1935,28 @@ class TestSmj(object):
 
     # 查询乐檬数据是否同步
     def test_get_info(self):
-        phone_number = 13911112222
-        # 登录
-        data = {"phone": phone_number, "code": 135246, "type": random.choice([2, 3, 4]), "status": 1}
-        self.WorkerC.new_login(**data)
-        time.sleep(2)
+        phone_number = 13586250604
+        # # 登录
+        # data = {"phone": phone_number, "code": 135246, "type": random.choice([2, 3, 4]), "status": 1}
+        # self.WorkerC.new_login(**data)
+        # time.sleep(5)
         sql = "SELECT customer_id FROM smj_member WHERE phone=%s" % phone_number
-        q = QD().get_data(sql)
+        sql1 = "SELECT default_card FROM smj_vip_card WHERE  uid=(SELECT id from smj_member WHERE phone=%s)" % phone_number
+        sql2 = "SELECT point From smj_member_integral_record WHERE uid=(SELECT id from smj_member WHERE phone=%s)" % phone_number
+        connect = QD()
+        q = connect.get_data(sql)
+        q1 = connect.get_data(sql1)
+        q2 = connect.get_data(sql2)
         print(q)
-        assert q[0][0] != 0
+        print(q1)
+        print(q2)
+        # assert q[0][0] != 0
+        # assert q1[0][0] == 0
+        # assert q2[0][0] == 0
 
     # 会员卡加扣款同步到乐檬
     def test_add_jian_vip_card(self):
-        uid = "103937"
+        uid = "100004"
         try:
             sql1 = "SELECT card_user_num FROM smj_vip_card WHERE uid = %s" % uid
             q = QD().get_data(sql1)
@@ -1959,10 +1970,26 @@ class TestSmj(object):
         except:
             deposit_fid = ""
         # 3 加款  4  扣钱
-        data = {"uid": uid, "type": 3, "money": 400, "remark": "乐檬测试", "password": "110114",
+        data = {"uid": uid, "type": 3, "money": 100, "remark": "乐檬测试", "password": "110114",
                 "card_user_num": card_user_num,
                 "deposit_fid": deposit_fid}
         self.WorkerB.update_vip_card(**data)
+
+    # 会员卡充值
+    # @pytest.mark.parametrize("i", [i for i in range(20)])
+    @pytest.mark.parametrize("money", [300])
+    def test_confirm_vip(self, money):
+        money = money
+        sql1 = "SELECT card_user_num FROM smj_vip_card WHERE uid = %s" % self.uid
+        q = QD().get_data(sql1)
+        card_user_num = q[0][0]
+        data1 = {"money": money, "card_user_num": card_user_num}
+        response = self.WorkerC.confirm_vip(**data1)
+        order_sn = response['data']['order_sn']
+        # 准备支付数据
+        data = {"order_sn": order_sn, "pay_info": [{"money": money, "check": 1, "type": "balance"}]}
+        # 支付
+        self.WorkerC.pay_order(**data)
 
 
 if __name__ == '__main__':
